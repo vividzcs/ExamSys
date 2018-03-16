@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=ueditor-1.1.2.jar -DgroupId=com.baidu -DartifactId=ueditor -Dversion=1.1.2 -Dpackaging=jar
