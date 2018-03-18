@@ -46,5 +46,7 @@
 	<!-- 注解方式配置事务 -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-
+	<!--  <bean id="teacherDaoImpl" class="com.nwuer.daoimpl.TeacherDaoImpl">
+		 <property name="sessionFactory" ref="sessionFactory"></property> 
+	</bean>-->
 </beans>

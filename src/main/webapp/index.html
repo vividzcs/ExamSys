@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+
+    <title>登录页面</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link href="./css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="./font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+
+    <link href="./css/animate.css" rel="stylesheet">
+    <link href="./css/style.css?v=2.2.0" rel="stylesheet">
+   <style>
+   body{
+   	background: url(../img/bg .jpg) no-repeat center ;
+   	background-position: 500px 200px;
+   }
+   .login ul {
+    margin:35% auto;     	
+   }
+     .login ul li {
+     	float: left;
+     	list-style: none;
+     	width: 200px;
+     	height: 200px;
+     	background:#aaa;
+     	border-radius: 20%;
+     	text-align: center;
+     	font: 40px/200px "微软雅黑";
+     	margin-left: 20px;
+     	box-shadow: 2px 2px 10px #444444;
+     }
+          .code {
+          	border: 1px solid #990000;
+            background-image: url(code.jpg);
+            font-family: Arial;
+            font-style: italic;
+            color: Red;
+            border: 0;
+            padding: 2px 3px;
+            letter-spacing: 3px;
+            font-weight: bolder;
+            width: 100px;
+            font-size: 18px;
+        }
+        .unchanged {
+            border: 0;
+        }
+   </style>
+</head>
+
+<body onload="createCode()" >
+<div class="  loginscreen  animated fadeInDown">
+	<div class="col-lg-3"></div>
+ <div class="container  login col-lg-6">
+    <div class="list-group m-t">
+  	   <ul> 
+  	    <li class="col-sm-12">  <a href="./views/indexStudent.html">学生</a></li>
+  	    <li class="col-sm-12" data-toggle="modal" data-target="#teacherModal"> <a href="#" >教师</a></li>
+  	    <li class="col-sm-12" data-toggle="modal" data-target="#teacherModal">  <a href="#" onclick="createCode()">管理员</a></li>
+  	    </ul>
+    </div>
+    <div class="col-lg-3"></div>
+      <!-- 模态框 -->
+ </div>
+</div>
+ 
+  <!-- 模态框 -->
+  <div class="modal fade" id="teacherModal" style="height: auto" onload="createCode()" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+   
+        <!-- 模态框头部 -->
+        <div class="modal-header">
+          <h4 class="modal-title">教师登录系统</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <!-- 模态框主体 -->
+        </div>
+        <div class="modal-body">
+           <form class="form-horizontal" id="teacherLogin">
+               <div class="form-group">
+                  <label class="col-lg-3 control-label">用户名：</label>
+                     <div class="col-lg-8">
+                     <input type="username" placeholder="用户名" class="form-control"  required="">
+                  </div>
+               </div>
+               <div class="form-group">
+                <label class="col-lg-3 control-label">密码：</label>
+                   <div class="col-lg-8">
+                       <input type="password" placeholder="密码" class="form-control"  required="">
+                          </div>
+                  </div>
+                   <div class="form-group">
+                      <label class="col-lg-3 control-label">验证码</label>
+                        <div class="col-lg-8">
+                      <input type="type" id="input1" class="form-control verification"  required="">
+                       <input type="text" onclick="createCode()" readonly="readonly" id="checkCode" class="unchanged" style="width: 80px" />
+                          </div>
+                      </div>
+                      <div class="form-group">
+                     <div class="col-lg-offset-3 col-lg-8">
+                      <button class="btn btn-primary" type="submit">登 录</button>
+                        </div>
+                    </div>
+               </form>
+           </div>
+                 </div>
+        <!-- 模态框底部 -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        </div>
+   
+      </div>
+    </div>
+  </div>
+<!--  
+  <!-- 模态框 -->
+  <!--<div class="modal fade" id="adminModal" style="height: auto" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+   
+        <!-- 模态框头部 -->
+        <!--<div class="modal-header">
+          <h4 class="modal-title">管理员登录系统</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <!-- 模态框主体 -->
+        <!--</div>
+        <div class="modal-body">
+           <form class="form-horizontal" id='adminLogin'>
+                <div class="form-group">
+                  <label class="col-lg-3 control-label">用户名：</label>
+                     <div class="col-lg-8">
+                     <input type="username" placeholder="用户名" class="form-control"  required="">
+                  </div>
+               </div>
+               <div class="form-group">
+                <label class="col-lg-3 control-label">密码：</label>
+                   <div class="col-lg-8">
+                       <input type="password" placeholder="密码" class="form-control"  required="">
+                          </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-lg-3 control-label">验证码</label>
+                        <div class="col-lg-8">
+                      <input type="type" id="input1" class="form-control verification"  required="">
+                       <input type="text" onclick="createCode()" readonly="readonly" id="checkCode" class="unchanged" style="width: 80px" />
+                          </div>
+                      </div>
+                      <div class="form-group">
+                     <div class="col-lg-offset-3 col-lg-8">
+                      <button class="btn btn-primary" type="submit">登 录</button>
+                        </div>
+                    </div>
+               </form>
+           </div>
+                </div>-->
+        <!-- 模态框底部 -->
+        <!--<div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        </div>
+   
+      </div>-->
+    </div>
+  </div>
+  
+</div>
+
+
+    <!-- Mainly scripts -->
+    <script src="./js/jquery-2.1.1.min.js"></script>
+    <script src="./js/bootstrap.min.js?v=3.4.0"></script>
+    <script>
+    	 var code; //在全局 定义验证码
+        function createCode() {
+            code = "";
+            var codeLength = 4;//验证码的长度
+            var checkCode = document.getElementById("checkCode");
+            var selectChar = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9,'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');//所有候选组成验证码的字符，当然也可以用中文的
+            for (var i = 0; i < codeLength; i++) {
+                var charIndex = Math.floor(Math.random() * 52);
+                code += selectChar[charIndex];
+            }
+            //alert(code);
+            if (checkCode) {
+                checkCode.className = "code";
+                checkCode.value = code;
+            }
+        }
+        function validate() {
+            var inputCode = document.getElementById("input1").value;
+            if (inputCode.length <= 0) {
+                alert("请输入验证码！");
+            } else if (inputCode != code) {
+                alert("验证码输入错误！");
+                createCode();//刷新验证码
+            } else {
+                createCode();//刷新验证码
+            }
+        }
+ 
+    </script>
+</body>
+
+</html>

@@ -1,10 +1,14 @@
 package com.nwuer.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -14,12 +18,31 @@ public class Teacher {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int t_id;
 	@Column(length=10)
-	private String t_number; 
-	private String t_pass;
-	private int aca_id;
-	private String t_name;
-	private long create_time;
-	private long last_login;
+	private String t_number;  //工号 
+	@Column(length=32)
+	private String t_pass;  //密码
+	private String t_name;  //姓名
+	private byte t_sex;
+	public byte getT_sex() {
+		return t_sex;
+	}
+	public void setT_sex(byte t_sex) {
+		this.t_sex = t_sex;
+	}
+	private long create_time;  //创建时间
+	private long last_login;  //上次登录时间
+	@Column(columnDefinition="TINYINT default 1")
+	private byte status;  //是否能登录, 0不能,1能
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@JoinColumn(name="a_id")
+	private Academy academy;  //一个老师对应一个院系
+	
+	public Academy getAcademy() {
+		return academy;
+	}
+	public void setAcademy(Academy academy) {
+		this.academy = academy;
+	}
 	public int getT_id() {
 		return t_id;
 	}
@@ -38,12 +61,6 @@ public class Teacher {
 	public void setT_pass(String t_pass) {
 		this.t_pass = t_pass;
 	}
-	public int getAca_id() {
-		return aca_id;
-	}
-	public void setAca_id(int aca_id) {
-		this.aca_id = aca_id;
-	}
 	public String getT_name() {
 		return t_name;
 	}
@@ -61,5 +78,11 @@ public class Teacher {
 	}
 	public void setLast_login(long last_login) {
 		this.last_login = last_login;
+	}
+	public byte getStatus() {
+		return status;
+	}
+	public void setStatus(byte status) {
+		this.status = status;
 	}
 }

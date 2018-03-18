@@ -5,4 +5,32 @@
 	
 	<struts>
 		<constant name="struts.objectFactory" value="spring"></constant>
+		<package name="user" extends="struts-default,json-default" namespace="/">
+			<global-allowed-methods>regex:.*</global-allowed-methods>
+			<action name="teacher_*" class="teacherAction" method="{1}">
+				<result name="success" type="json">
+					<param name="root">result</param>
+				</result>
+				<result name="error" type="json">
+					<param name="root">result</param>
+				</result>
+			</action>
+			<action name="student_*" class="studentAction" method="{1}">
+				<result name="success" type="json">
+					<param name="root">result</param>
+				</result>
+				<result name="error" type="json">
+					<param name="root">result</param>
+				</result>
+			</action>			
+			<action name="admin_*" class="adminAction" method="{1}">
+				<result name="success" type="json">
+					<param name="root">result</param>
+				</result>
+				<result name="error" type="json">
+					<param name="root">result</param>
+				</result>
+			</action>
+			
+		</package>
 	</struts>
