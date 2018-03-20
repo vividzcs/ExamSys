@@ -7,10 +7,57 @@
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context.xsd">
 	
-	<!-- 引入属性文件 -->
-	<context:property-placeholder location="classpath:config.properties"/>
+	<!-- Action -->
+	<!-- <bean id="adminAction" class="com.nwuer.action.AdminAction">
+		<property name="adminService" ref="adminService"></property>
+		<property name="academyService" ref="academyService"></property>
+		<property name="majorService" ref="majorService"></property>
+		<property name="studentService" ref="studentService"></property>
+	</bean>
+	<bean id="studentAction" class="com.nwuer.action.StudentAction">
+		<property name="studentService" ref="studentService"></property>
+	</bean>
+	<bean id="teacherAction" class="com.nwuer.action.TeacherAction">
+		<property name="teacherService" ref="teacherService"></property>
+	</bean> -->
+	<!-- Service -->
+	<!-- <bean id="academyService" class="com.nwuer.service.AcademyService">
+		<property name="academyDaoImpl" ref="academyDaoImpl"></property>
+	</bean>
+	<bean id="adminService" class="com.nwuer.service.AdminService">
+		<property name="adminDaoImpl" ref="adminDaoImpl"></property>
+	</bean>
+	<bean id="majorService" class="com.nwuer.service.MajorService">
+		<property name="majorDaoImpl" ref="majorDaoImpl"></property>
+	</bean>
+	<bean id="studentService" class="com.nwuer.service.StudentService">
+		<property name="studentDaoImpl" ref="studentDaoImpl"></property>
+	</bean>
+	<bean id="teacherService" class="com.nwuer.service.TeacherService">
+		<property name="teacherDaoImpl" ref="teacherDaoImpl"></property>
+	</bean> -->
 	
-	<!-- 自动扫描 -->	
-	<context:component-scan base-package="com.nwuer.daoimpl,com.nwuer.service,com.nwuer.action,com.nwuer.utils"></context:component-scan>
+	<!-- DaoImpl -->
+	
+	<!-- <bean id="academyDaoImpl" class="com.nwuer.daoimpl.AcademyDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="adminDaoImpl" class="com.nwuer.daoimpl.AdminDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="majorDaoImpl" class="com.nwuer.daoimpl.MajorDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="studentDaoImpl" class="com.nwuer.daoimpl.StudentDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="teacherDaoImpl" class="com.nwuer.daoimpl.TeacherDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean> -->
+	<!-- 扫描所有的controller 但是不扫描service-->  
+	<context:component-scan base-package="com.nwuer">  
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />  
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />  
+	</context:component-scan> 
 	
 	</beans>

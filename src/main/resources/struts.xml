@@ -31,6 +31,16 @@
 					<param name="root">result</param>
 				</result>
 			</action>
-			
+		</package>
+		
+		<package name="admin" extends="struts-default,json-default" namespace="/admin">
+			<action name="importStudent" class="adminAction" method="importStudent">
+				<result name="success" type="json">
+					<param name="root">result</param>
+				</result>
+				<result name="error" type="json">
+					<param name="root">result</param>
+				</result>
+			</action>
 		</package>
 	</struts>

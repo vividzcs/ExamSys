@@ -1,22 +1,16 @@
 package com.nwuer.daoimpl;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import javax.annotation.Resource;
-
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.nwuer.dao.BaseDao;
 
 public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T> {
 	
-	private Class classType;
+	private Class<T> classType;
 	public BaseDaoImpl() {
 		//得到当前运行类的Class
 		Class clazz = this.getClass();
@@ -33,18 +27,18 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T> {
 	}
 	
 	@Override
-	public T getById(int id) {
+	public T getById(Serializable id) {
 		return (T) this.getHibernateTemplate().get(this.classType, id);
 	}
 
 	@Override
 	public int add(T t) {
-		return (int) this.getHibernateTemplate().save(t);
+		return  (int) this.getHibernateTemplate().save(t);
 	}
 
 	@Override
-	public void delete(T t) {
-		this.getHibernateTemplate().delete(t);
+	public void delete(Serializable id) {
+		this.getHibernateTemplate().delete(this.getById(id));
 	}
 
 	@Override

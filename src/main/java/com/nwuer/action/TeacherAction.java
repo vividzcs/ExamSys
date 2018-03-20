@@ -4,17 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.struts2.ServletActionContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
 
 import com.nwuer.entity.Teacher;
 import com.nwuer.service.TeacherService;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
-
-@Controller
-@Scope(value="prototype")
 public class TeacherAction extends ActionSupport implements ModelDriven<Teacher> {
 	private Teacher teacher = new Teacher();
 	@Override
@@ -30,9 +24,10 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		this.result = result;
 	} //传回前端的数据
 
-	@Autowired
 	private TeacherService teacherService;
-	
+	public void setTeacherService(TeacherService teacherService) {
+		this.teacherService = teacherService;
+	}
 	public String login() {
 		//验证
 		

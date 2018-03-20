@@ -29,7 +29,11 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	} //传回前端得Json数据
 	@Autowired
 	private StudentService studentService;
-	
+
+	/**
+	 * 登录
+	 * @return
+	 */
 	public String login() {
 		//验证
 		
@@ -51,4 +55,25 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		
 	}
 
+	/**
+	 * 添加学生
+	 * @return
+	 */
+	public String add() {
+		//验证
+		
+		int id = (int) this.studentService.add(student);
+		if(id > 0) {
+			//添加成功
+			return SUCCESS;
+		} else {
+			//添加失败
+			return ERROR;
+		}
+	}
+	
+	public String delete() {
+		
+		return SUCCESS;
+	}
 }

@@ -1,5 +1,12 @@
 package com.nwuer.service;
 
-public interface BaseService {
+import java.io.Serializable;
+
+public interface BaseService<T> {
 	
+	/**
+	 * Ôö¼Ó
+	 * @return
+	 */
+	public int add(T t);
 }

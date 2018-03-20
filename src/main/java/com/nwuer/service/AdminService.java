@@ -10,7 +10,7 @@ import com.nwuer.entity.Admin;
 public class AdminService {
 	@Autowired
 	private AdminDaoImpl adminDaoImpl;
-	
+
 	public Admin getByNumberAndPass(Admin admin) {
 		return this.adminDaoImpl.getByNumberAndPass(admin);
 	}

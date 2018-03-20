@@ -10,6 +10,10 @@
 	http://www.springframework.org/schema/aop/spring-aop.xsd
 	http://www.springframework.org/schema/tx
 	http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
+	<!-- 引入属性文件 -->
+	<context:property-placeholder location="classpath:config.properties"/>
+	
 	<!-- 配置数据源 -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass" value="${driverClass}"></property>
@@ -37,16 +41,17 @@
 			</list>
 		</property>
 	</bean>
-
+	
+	<context:component-scan base-package="com.nwuer">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
 	<!-- 事务管理器的配置 -->
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 	<!-- 注解方式配置事务 -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
-
-	<!--  <bean id="teacherDaoImpl" class="com.nwuer.daoimpl.TeacherDaoImpl">
-		 <property name="sessionFactory" ref="sessionFactory"></property> 
-	</bean>-->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
 </beans>

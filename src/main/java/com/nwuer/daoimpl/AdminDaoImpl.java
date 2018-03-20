@@ -11,7 +11,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.nwuer.entity.Admin;
 import com.nwuer.utils.MD5Util;
-
 @Repository
 public class AdminDaoImpl extends BaseDaoImpl<Admin> {
 	@Autowired

@@ -7,14 +7,15 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.nwuer.entity.Student;
 import com.nwuer.utils.MD5Util;
 
 @Repository
+@Transactional
 public class StudentDaoImpl extends BaseDaoImpl<Student> {
-	
 	@Autowired
 	public void setMySessionFactory(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);

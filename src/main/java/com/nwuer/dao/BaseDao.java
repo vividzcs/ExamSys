@@ -1,12 +1,14 @@
 package com.nwuer.dao;
 
+import java.io.Serializable;
+
 public interface BaseDao<T> {
 	/**
 	 * 根据id进行查询
 	 * @param id
 	 * @return
 	 */
-	public T getById(int id);
+	public T getById(Serializable id);
 	
 	/**
 	 * 添加
@@ -18,7 +20,7 @@ public interface BaseDao<T> {
 	 * 删除
 	 * @param t
 	 */
-	public void delete(T t);
+	public void delete(Serializable id);
 	
 	/**
 	 * 修改
