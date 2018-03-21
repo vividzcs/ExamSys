@@ -10,17 +10,20 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name="t_subject")
 public class Subject {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
+	@GenericGenerator(name="native",strategy="native")
 	private int sub_id;
 	private String sub_name;
 	@Column(length=8)
 	private String sub_number; //科目编号
 	private String sub_desc;
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	private Major major; //专业
 	
 	public int getSub_id() {

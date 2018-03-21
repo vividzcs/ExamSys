@@ -10,17 +10,20 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name="t_blank_question")
 public class BlankQuestion {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
+	@GenericGenerator(name="native",strategy="native")
 	private int blank_id;
 	@Column(length=500)
 	private String blank_question;
 	private String blank_answer;
 	private byte degree;
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	private Subject subject;
 	public int getBlank_id() {
 		return blank_id;

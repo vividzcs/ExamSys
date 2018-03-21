@@ -11,11 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name="t_student")
 public class Student {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
+	@GenericGenerator(name="native",strategy="native")
 	private int s_id;
 	@Column(length=10)
 	private String s_number;  //Ñ§ºÅ
@@ -32,7 +35,8 @@ public class Student {
 	private long create_time;
 	@Column(columnDefinition="tinyint default 1")
 	private byte status;
-	private long last_login;
+	@Column(nullable=true)
+	private Long last_login;
 	//×¨Òµ
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="m_id",referencedColumnName="m_id")

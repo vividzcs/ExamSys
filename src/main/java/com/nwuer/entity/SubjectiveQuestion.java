@@ -10,11 +10,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name="t_subjective_question")
 public class SubjectiveQuestion {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
+	@GenericGenerator(name="native",strategy="native")
 	private int sq_id;
 	@Column(columnDefinition="text")
 	private String sq_question;
@@ -22,7 +25,7 @@ public class SubjectiveQuestion {
 	private String sq_answer;
 	private byte degree;
 	private byte sq_kind; // 0:名词解释,1:简答,2:计算,3:综合
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	private Subject subject;
 	public int getSq_id() {
 		return sq_id;

@@ -11,20 +11,24 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name="t_admin")
 public class Admin {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
+	@GenericGenerator(name="native",strategy="native")
 	private int ad_id;
 	@Column(length=10)
 	private String ad_number; //¹¤ºÅ
 	@Column(length=32)
 	private String ad_pass;
 	private String ad_name;
-	private long last_login;
+	@Column(nullable=true)
+	private Long last_login;
 	
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="a_id",referencedColumnName="a_id")
 	private Academy academy;
 

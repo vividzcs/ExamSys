@@ -11,11 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name="t_teacher")  //Entity没注明映射表的名称时默认和name和table是同一值
 public class Teacher {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
+	@GenericGenerator(name="native",strategy="native")
 	private int t_id;
 	@Column(length=10)
 	private String t_number;  //工号 
@@ -30,10 +33,11 @@ public class Teacher {
 		this.t_sex = t_sex;
 	}
 	private long create_time;  //创建时间
-	private long last_login;  //上次登录时间
+	@Column(nullable=true)
+	private Long last_login;  //上次登录时间
 	@Column(columnDefinition="TINYINT default 1")
 	private byte status;  //是否能登录, 0不能,1能
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="a_id")
 	private Academy academy;  //一个老师对应一个院系
 	

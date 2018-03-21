@@ -11,11 +11,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name="t_choice_question")
 public class ChoiceQuestion {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
+	@GenericGenerator(name="native",strategy="native")
 	private int cho_id; 
 	@Column(length=500)
 	private String cho_question; //题目
@@ -24,7 +27,7 @@ public class ChoiceQuestion {
 	private String cho_answer_2;
 	private String cho_answer_3;
 	private byte degree; //难度  0:简单  1:较简单  2:中等  3 较难  4:较难
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.EAGER)
+	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)
 	@JoinColumn(name="sub_id")
 	private Subject subject;
 	public int getCho_id() {
