@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -79,15 +82,22 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	}
 	
 	public String importStudent() {
+		//先清空Student表,先判断学生表是否有数据
+		if(this.studentService.hasData()) {
+			this.studentService.clear();
+			if(this.studentService.hasData()) {
+				//没有清空表
+				result.put("status", "0");
+				result.put("msg", "历史学生数据无法清空!请稍后再试" );
+				return ERROR;
+			}
+		}
+		
 		FileInputStream excel = null;
 		Workbook wb =  null;
 		try {
 			ApplicationContext application = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-//			SessionFactory sessionFactory = (SessionFactory) application.getBean("sessionFactory");
-//			Session session = sessionFactory.getCurrentSession();
-//			Transaction ts = session.beginTransaction();
 			//事务开始
-			System.out.println("path:" + ServletActionContext.getServletContext().getResource("/modellist/studentListTemplate.xls").getPath());
 			File f = new File(ServletActionContext.getServletContext().getResource("/modellist/studentListTemplate.xls").getPath());
 			//得到Excel文件
 			excel = new FileInputStream(f);
@@ -116,7 +126,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					//不对
 					result.put("status", "0");
 					result.put("msg", "第" + j + "行学号有误" );
-					//ts.rollback();
 					return ERROR;
 				}
 				//处理密码
@@ -126,7 +135,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					//不对
 					result.put("status", "0");
 					result.put("msg", "第" + j + "行密码不能为空" );
-					//ts.rollback();
 					return ERROR;
 				}
 				//md5加密
@@ -140,7 +148,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					//不对
 					result.put("status", "0");
 					result.put("msg", "第" + j + "行姓名不能为空" );
-					//ts.rollback();
 					return ERROR;
 				}
 				
@@ -151,7 +158,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					//不对
 					result.put("status", "0");
 					result.put("msg", "第" + j + "行性别填写错误" );
-					//ts.rollback();
 					return ERROR;
 				}
 				byte s_sex = (byte) (sex.trim().equals("男") ? 1 : 0);
@@ -163,7 +169,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				if(academy.trim().equals("") || (a_id = this.academyService.getIdByName(academy)) ==0 ) {
 					result.put("status", "0");
 					result.put("msg", "第" + j + "行院系填写错误" );
-					//ts.rollback();
 					return ERROR;
 				}
 				
@@ -175,7 +180,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					
 					result.put("status", "0");
 					result.put("msg", "第" + j + "行专业填写错误" );
-					//ts.rollback();
 					return ERROR;
 				}
 				
@@ -186,7 +190,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					//不对
 					result.put("status", "0");
 					result.put("msg", "第" + j + "行登录状态填写错误" );
-					//ts.rollback();
 					return ERROR;
 				}
 				byte status = Byte.parseByte(login);
@@ -209,13 +212,11 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					//添加失败
 					result.put("status", "0");
 					result.put("msg", "第" + j + "个学生添加失败,请重试" );
-					//ts.rollback();
 					return ERROR;
 				}
 			}
 			
 			//添加完成
-			//ts.commit();
 			result.put("status", "1");
 			result.put("msg", "添加完成" );
 			return SUCCESS;

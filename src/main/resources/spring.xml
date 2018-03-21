@@ -54,10 +54,5 @@
 	<bean id="teacherDaoImpl" class="com.nwuer.daoimpl.TeacherDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean> -->
-	<!-- 扫描所有的controller 但是不扫描service-->  
-	<context:component-scan base-package="com.nwuer">  
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />  
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />  
-	</context:component-scan> 
 	
 	</beans>

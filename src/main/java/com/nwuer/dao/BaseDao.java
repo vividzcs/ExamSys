@@ -27,4 +27,5 @@ public interface BaseDao<T> {
 	 * @param t
 	 */
 	public void update(T t); 
+	
 }

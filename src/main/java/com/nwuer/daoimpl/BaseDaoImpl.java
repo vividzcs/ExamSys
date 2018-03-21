@@ -8,7 +8,7 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import com.nwuer.dao.BaseDao;
 
-public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T> {
+public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T> {
 	
 	private Class<T> classType;
 	public BaseDaoImpl() {

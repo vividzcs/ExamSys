@@ -4,17 +4,16 @@ import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.nwuer.entity.Student;
 import com.nwuer.utils.MD5Util;
 
 @Repository
-@Transactional
 public class StudentDaoImpl extends BaseDaoImpl<Student> {
 	@Autowired
 	public void setMySessionFactory(SessionFactory sessionFactory) {
@@ -29,5 +28,16 @@ public class StudentDaoImpl extends BaseDaoImpl<Student> {
 			return list.get(0);
 		else
 			return null;
+	}
+	
+	public void clear() {
+		this.getSessionFactory().getCurrentSession().createNativeQuery("truncate table t_student").executeUpdate();
+	}
+	
+	public boolean hasData() {
+		Query query =  this.getSessionFactory().getCurrentSession().createQuery("select count(*) from Student");
+		int rows = ((Number)query.list().get(0)).intValue();
+		return  rows == 0 ? false : true;
+		
 	}
 }

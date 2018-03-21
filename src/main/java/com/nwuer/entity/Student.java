@@ -34,11 +34,11 @@ public class Student {
 	private byte status;
 	private long last_login;
 	//רҵ
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="m_id",referencedColumnName="m_id")
 	private Major major;
 	//Ժϵ
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="a_id",referencedColumnName="a_id")
 	private Academy academy;
 	public int getS_id() {
