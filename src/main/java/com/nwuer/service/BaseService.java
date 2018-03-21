@@ -1,6 +1,6 @@
 package com.nwuer.service;
 
-import java.io.Serializable;
+import java.util.List;
 
 public interface BaseService<T> {
 	
@@ -9,4 +9,10 @@ public interface BaseService<T> {
 	 * @return
 	 */
 	public int add(T t);
+	
+	/**
+	 * ²éÑ¯ËùÓĞ
+	 * @return
+	 */
+	public List<T> getAll();
 }

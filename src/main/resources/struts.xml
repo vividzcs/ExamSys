@@ -34,6 +34,7 @@
 		</package>
 		
 		<package name="admin" extends="struts-default,json-default" namespace="/admin">
+			<global-allowed-methods>regex:.*</global-allowed-methods>
 			<action name="importStudent" class="adminAction" method="importStudent">
 				<result name="success" type="json">
 					<param name="root">result</param>
@@ -41,6 +42,12 @@
 				<result name="error" type="json">
 					<param name="root">result</param>
 				</result>
+			</action>
+			
+			<action name="teacher_*" class="teacherAction" method="{1}">
+				<result name="showAdd">manageTeacher.jsp</result>
+				<result name="success" type="redirectAction">teacher_showAdd.action?v=3.0#editTeacher</result>
+				<result name="error">manageTeacher.jsp</result>
 			</action>
 		</package>
 	</struts>

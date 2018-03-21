@@ -29,11 +29,11 @@ public class Academy {
 	private long create_time;
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	@JoinColumn(name="t_id")
+	@JoinColumn(name="academy_teacher")
 	private Set<Teacher> t_set = new HashSet<Teacher>();
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	@JoinColumn(name="m_id")
+	@JoinColumn(name="academy_major")
 	private Set<Major> m_set = new HashSet<Major>();
 
 	public int getA_id() {

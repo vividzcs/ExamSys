@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -26,6 +27,7 @@ public class SubjectiveQuestion {
 	private byte degree;
 	private byte sq_kind; // 0:名词解释,1:简答,2:计算,3:综合
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
+	@JoinColumn(name="subj_sub")
 	private Subject subject;
 	public int getSq_id() {
 		return sq_id;

@@ -39,11 +39,11 @@ public class Student {
 	private Long last_login;
 	//רҵ
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-	@JoinColumn(name="m_id",referencedColumnName="m_id")
+	@JoinColumn(name="major_stu")
 	private Major major;
 	//Ժϵ
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-	@JoinColumn(name="a_id",referencedColumnName="a_id")
+	@JoinColumn(name="academy_stu")
 	private Academy academy;
 	public int getS_id() {
 		return s_id;

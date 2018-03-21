@@ -25,7 +25,7 @@ public class Major {
 	@Column(columnDefinition="text")
 	private String m_desc;
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)
-	@JoinColumn(name="a_id")
+	@JoinColumn(name="academy_major")
 	private Academy academy;
 	public int getM_id() {
 		return m_id;

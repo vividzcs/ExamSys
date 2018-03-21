@@ -35,9 +35,10 @@ public class StudentDaoImpl extends BaseDaoImpl<Student> {
 	}
 	
 	public boolean hasData() {
-		Query query =  this.getSessionFactory().getCurrentSession().createQuery("select count(*) from Student");
-		int rows = ((Number)query.list().get(0)).intValue();
-		return  rows == 0 ? false : true;
-		
+//		Query query =  this.getSessionFactory().getCurrentSession().createQuery("select count(*) from Student");
+//		int rows = ((Number)query.list().get(0)).intValue();
+//		return  rows == 0 ? false : true;
+		List<Student> list = (List<Student>) this.getHibernateTemplate().find("from Student where s_id=1");
+		return (list!=null && list.size()>0) ? true : false;
 	}
 }

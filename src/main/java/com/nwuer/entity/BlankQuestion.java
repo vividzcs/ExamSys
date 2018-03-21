@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -24,6 +25,7 @@ public class BlankQuestion {
 	private String blank_answer;
 	private byte degree;
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
+	@JoinColumn(name="sub_blank")
 	private Subject subject;
 	public int getBlank_id() {
 		return blank_id;

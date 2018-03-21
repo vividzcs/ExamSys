@@ -28,7 +28,7 @@ public class ChoiceQuestion {
 	private String cho_answer_3;
 	private byte degree; //难度  0:简单  1:较简单  2:中等  3 较难  4:较难
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)
-	@JoinColumn(name="sub_id")
+	@JoinColumn(name="sub_choice")
 	private Subject subject;
 	public int getCho_id() {
 		return cho_id;

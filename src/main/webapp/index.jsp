@@ -12,93 +12,73 @@
     <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
     <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
 
-    <link href="style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link href="style/font-awesome/style/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="./style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="./style/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
 
-    <link href="style/css/animate.css" rel="stylesheet">
-    <link href="style/css/style.css?v=2.2.0" rel="stylesheet">
+    <link href="./style/css/animate.css" rel="stylesheet">
+    <link href="./style/css/style.css?v=2.2.0" rel="stylesheet">
    <style>
    body{
-   	background: url(style/img/bg .jpg) no-repeat center ;
+   	background: url(./style/img/bg .jpg) no-repeat center ;
    	background-position: 500px 200px;
    }
-   .login ul {
+  .login .role {
     margin:35% auto;     	
    }
-     .login ul li {
+     .login .role a {
+	 display:block;
      	float: left;
      	list-style: none;
-     	width: 150px;
-     	height: 150px;
-     	background:#aaa;
-     	border-radius: 20%;
+     	width: 200px;
+     	height: 150px; 
+     	border-radius: 30%;
      	text-align: center;
-     	font: 30px/150px "微软雅黑";
+     	font: 40px/150px "微软雅黑";
      	margin-left: 20px;
      	box-shadow: 2px 2px 10px #444444;
      }
+          .code {
+          	border: 1px solid #990000;
+            font-family: Arial;
+            font-style: italic;
+            border: 0;
+            padding: 2px 3px;
+            width: 150px;
+            height:50px;
+            font-size: 18px;
+        }
+        .unchanged {
+            border: 0;
+        }
+        
+        .code_input {
+        	width:50%;
+        	float:left;
+        }
    </style>
 </head>
 
-<body >
+<body>
 <div class="  loginscreen  animated fadeInDown">
 	<div class="col-lg-3"></div>
  <div class="container  login col-lg-6">
-    <div class="list-group m-t">
-  	   <ul> 
-  	    <li class="col-sm-12" data-toggle="modal" data-target="#studentModal"> <a href="#" >学生</a></li>
+    <div class="list-group role m-t">
+		<div class="col-lg-4"><a class="btn btn-info btn-rounded" href="./student/index.html">学生</a></div>
+         <div class="col-lg-4"><a class="btn btn-warning btn-rounded" data-toggle="modal" data-target="#teacherModal" href="#" onclick="changeCode()">教师</a></div>
+        <div class="col-lg-4"><a class="btn btn-danger btn-rounded" data-toggle="modal" data-target="#adminModal" href="#" onclick="changeCode()">管理员</a></div>
+  	 <!--  <ul> 
+  	    <li class="col-sm-12">  <a href="./views/indexStudent.html">学生</a></li>
   	    <li class="col-sm-12" data-toggle="modal" data-target="#teacherModal"> <a href="#" >教师</a></li>
-  	    <li class="col-sm-12" data-toggle="modal" data-target="#adminModal">  <a href="#">管理员</a></li>
-  	    </ul>
+  	    <li class="col-sm-12" data-toggle="modal" data-target="#teacherModal">  <a href="#" onclick="createCode()">管理员</a></li>
+  	    </ul>-->
     </div>
     <div class="col-lg-3"></div>
       <!-- 模态框 -->
  </div>
 </div>
- <!-- 模态框 -->
- <div class="modal fade" id="studentModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-   
-        <!-- 模态框头部 -->
-        <div class="modal-header">
-          <h4 class="modal-title">学生登录系统</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <!-- 模态框主体 -->
-        </div>
-        <div class="modal-body">
-           <form class="form-horizontal" id="studentLogin" action="" method="post">
-                <div class="form-group">
-                  <label class="col-lg-3 control-label">用户名：</label>
-                     <div class="col-lg-8">
-                     <input type="username" placeholder="用户名" class="form-control" name="s_number" id="s_number">
-                  </div>
-               </div>
-               <div class="form-group">
-                <label class="col-lg-3 control-label">密码：</label>
-                   <div class="col-lg-8">
-                       <input type="password" placeholder="密码" class="form-control" name="s_pass" id="s_pass">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                     <div class="col-lg-offset-3 col-lg-8">
-                       <button class="btn btn-primary" type="button" id="s_login">登 录</button>
-                        </div>
-                    </div>
-               </form>
-           </div>
-                 </div>
-        <!-- 模态框底部 -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-        </div>
-   
-      </div>
-    </div>
-  </div>
  
   <!-- 模态框 -->
-  <div class="modal fade" id="teacherModal">
+  <div class="modal fade" id="teacherModal" style="height: auto">
     <div class="modal-dialog">
       <div class="modal-content">
    
@@ -109,22 +89,28 @@
         <!-- 模态框主体 -->
         </div>
         <div class="modal-body">
-           <form class="form-horizontal" id="teacherLogin" action="" method="post">
-                <div class="form-group">
+           <form class="form-horizontal" id="teacherLogin">
+               <div class="form-group">
                   <label class="col-lg-3 control-label">用户名：</label>
                      <div class="col-lg-8">
-                     <input type="username" placeholder="用户名" class="form-control" name="t_number" id="t_number">
+                     <input type="username" placeholder="用户名" class="form-control" id="t_number"  required="">
                   </div>
                </div>
                <div class="form-group">
                 <label class="col-lg-3 control-label">密码：</label>
                    <div class="col-lg-8">
-                       <input type="password" placeholder="密码" class="form-control" name="t_pass" id="t_pass">
+                       <input type="password" id="t_pass" placeholder="密码" class="form-control"  required="">
                           </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-lg-3 control-label">验证码</label>
+                        <div class="col-lg-8">
+                        	<input type="text" placeholder="验证码" id="t_code" class="form-control code_input" required="" />&nbsp;&nbsp;&nbsp;<img class="code" src="${pageContext.request.contextPath }/Kaptcha.jpg" alt="验证码位置" onclick="changeCode()" />
+                      </div>
                       </div>
                       <div class="form-group">
                      <div class="col-lg-offset-3 col-lg-8">
-                       <button class="btn btn-primary" type="button" id="t_login">登 录</button>
+                      <button class="btn btn-primary" type="button" id="t_login">登 录</button>&nbsp;&nbsp;&nbsp;<span id="t_warn"></span>
                         </div>
                     </div>
                </form>
@@ -138,9 +124,9 @@
       </div>
     </div>
   </div>
-  
+
   <!-- 模态框 -->
-  <div class="modal fade" id="adminModal">
+  <div class="modal fade" id="adminModal" style="height: auto" >
     <div class="modal-dialog">
       <div class="modal-content">
    
@@ -155,18 +141,24 @@
                 <div class="form-group">
                   <label class="col-lg-3 control-label">用户名：</label>
                      <div class="col-lg-8">
-                     <input type="username" placeholder="用户名" class="form-control" name="ad_number" id="ad_number">
+                     <input type="username" placeholder="用户名" class="form-control" id="ad_number" required="">
                   </div>
                </div>
                <div class="form-group">
                 <label class="col-lg-3 control-label">密码：</label>
                    <div class="col-lg-8">
-                       <input type="password" placeholder="密码" class="form-control" name="ad_pass" id="ad_pass">
+                       <input type="password" placeholder="密码" class="form-control" id="ad_pass" required="">
                           </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-lg-3 control-label">验证码</label>
+                        <div class="col-lg-8">
+                        	<input type="text" placeholder="验证码" id="ad_code" class="form-control code_input" required="" />&nbsp;&nbsp;&nbsp;<img class="code" src="${pageContext.request.contextPath }/Kaptcha.jpg" alt="验证码位置"  onclick="changeCode()" />
+                      </div>
                       </div>
                       <div class="form-group">
                      <div class="col-lg-offset-3 col-lg-8">
-                      <button class="btn btn-primary" type="button" id="ad_login">登 录</button>
+                      <button class="btn btn-primary" type="button" id="ad_login">登 录</button>&nbsp;&nbsp;&nbsp;<span id="ad_warn"></span>
                         </div>
                     </div>
                </form>
@@ -180,32 +172,19 @@
       </div>
     </div>
   </div>
+  
 </div>
+
     <!-- Mainly scripts -->
-    <script src="style/js/jquery-2.1.1.min.js"></script>
-    <script src="style/js/bootstrap.min.js?v=3.4.0"></script>
-</body>
-<script>
-	$("#s_login").click(function() {
-		var s_number = $("#s_number").val();
-		var s_pass = $("#s_pass").val();
-		var data = {s_number:s_number,s_pass:s_pass};
-		$.post('${pageContext.request.contextPath}/student_login.action',data,function(data){
-			//console.log(data)
-			if(data.status == 1) {
-				//登录成功
-				$(window).attr("location","${pageContext.request.contextPath}/student/");
-			} else {
-				//展示错误数据
-			}
-		},"json")
-		
-	})
+    <script src="./style/js/jquery-2.1.1.min.js"></script>
+    <script src="./style/js/bootstrap.min.js?v=3.4.0"></script>
+    <script>
 	
 	$("#t_login").click(function() {
 		var t_number = $("#t_number").val();
 		var t_pass = $("#t_pass").val();
-		var data = {t_number:t_number,t_pass:t_pass};
+		var code = $("#t_code").val();
+		var data = {t_number:t_number,t_pass:t_pass,code:code};
 		$.post('${pageContext.request.contextPath}/teacher_login.action',data,function(data){
 			//console.log(data)
 			if(data.status == 1) {
@@ -213,6 +192,7 @@
 				$(window).attr("location","${pageContext.request.contextPath}/teacher/");
 			} else {
 				//展示错误数据
+				$("#t_warn").css("display","inline-block").css("color","red").html(data.msg);
 			}
 		},"json")
 		
@@ -221,7 +201,8 @@
 	$("#ad_login").click(function() {
 		var ad_number = $("#ad_number").val();
 		var ad_pass = $("#ad_pass").val();
-		var data = {ad_number:ad_number,ad_pass:ad_pass};
+		var code = $("#ad_code").val();
+		var data = {ad_number:ad_number,ad_pass:ad_pass,code:code};
 		$.post('${pageContext.request.contextPath}/admin_login.action',data,function(data){
 			//console.log(data)
 			if(data.status == 1) {
@@ -229,9 +210,17 @@
 				$(window).attr("location","${pageContext.request.contextPath}/admin/");
 			} else {
 				//展示错误数据
+				$("#ad_warn").css("display","inline-block").css("color","red").html(data.msg);
 			}
 		},"json")
 		
 	})
-</script>
+ 	
+	function changeCode() {
+    	$(".code").attr("src","${pageContext.request.contextPath }/Kaptcha.jpg?code=" + Math.random());
+    }
+    </script>
+</body>
+
 </html>
+

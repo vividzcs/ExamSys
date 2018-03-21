@@ -25,7 +25,7 @@ public class JudgeQuestion {
 	private byte jud_answer; //0:F , 1:T
 	private byte degree;
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-	@JoinColumn(name="sub_id")
+	@JoinColumn(name="sub_judge")
 	private Subject subject;
 	public int getJud_id() {
 		return jud_id;

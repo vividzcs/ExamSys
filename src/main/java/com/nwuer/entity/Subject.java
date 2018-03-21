@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -24,6 +25,7 @@ public class Subject {
 	private String sub_number; //科目编号
 	private String sub_desc;
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
+	@JoinColumn(name="major_sub")
 	private Major major; //专业
 	
 	public int getSub_id() {

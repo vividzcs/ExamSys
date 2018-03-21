@@ -1,6 +1,7 @@
 package com.nwuer.dao;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface BaseDao<T> {
 	/**
@@ -27,5 +28,11 @@ public interface BaseDao<T> {
 	 * @param t
 	 */
 	public void update(T t); 
+	
+	/**
+	 * 查询所有信息
+	 * @return
+	 */
+	public List<T> getAll();
 	
 }

@@ -38,7 +38,7 @@ public class Teacher {
 	@Column(columnDefinition="TINYINT default 1")
 	private byte status;  //是否能登录, 0不能,1能
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-	@JoinColumn(name="a_id")
+	@JoinColumn(name="academy_teacher")
 	private Academy academy;  //一个老师对应一个院系
 	
 	public Academy getAcademy() {

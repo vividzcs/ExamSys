@@ -5,12 +5,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.struts2.ServletActionContext;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ import com.nwuer.service.AcademyService;
 import com.nwuer.service.AdminService;
 import com.nwuer.service.MajorService;
 import com.nwuer.service.StudentService;
+import com.nwuer.service.TeacherService;
 import com.nwuer.utils.MD5Util;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -47,6 +49,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	private MajorService majorService;
 	@Autowired
 	private StudentService studentService;
+	@Autowired
+	private TeacherService teacherService;
 	private Map<String,String> result = new HashMap<String,String>();
 	public Map<String, String> getResult() {
 		return result;
@@ -54,21 +58,40 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	public void setResult(Map<String, String> result) {
 		this.result = result;
 	}  //返回JSON数据
-
-
+	
+	/**
+	 * 展示维护学生的页面
+	 * @return
+	 */
+	public String showManageStudent() {
+		
+		return "showManageStudent";
+	}
+	
+	
 	/**
 	 * 登录
 	 * @return
 	 */
 	public String login() {
 		//验证
-		
+		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpSession session = request.getSession();
+		//验证验证码
+		String code = request.getParameter("code");
+		String codeReal = (String)session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+		if(!codeReal.equalsIgnoreCase(code)) {
+			result = new HashMap<String,String>();
+			result.put("status","0");
+			result.put("msg", "验证码错误");
+			return ERROR;
+		}
 		
 		Admin adminConfirm = this.adminService.getByNumberAndPass(this.admin);
 		if(adminConfirm != null) {
 			//成功
 			adminConfirm.setAd_pass(null);
-			ServletActionContext.getRequest().getSession().setAttribute("admin", adminConfirm);
+			session.setAttribute("admin", adminConfirm);
 			this.result.put("status","1");
 			this.result.put("msg", "登录成功");
 			return SUCCESS;

@@ -61,7 +61,7 @@
                         <ul class="nav nav-second-level">
                                <li><a class="J_menuItem" href="mangeStudent.html">管理学生信息</a>
                             </li>
-                            <li><a class="J_menuItem" href="mangeTeacher.html">管理教师信息</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/teacher_showAdd.action">管理教师信息</a>
                             </li>
                             <li><a class="J_menuItem" href="mangeSelf.html">管理个人信息</a>
                             </li>

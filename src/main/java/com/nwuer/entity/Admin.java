@@ -29,7 +29,7 @@ public class Admin {
 	private Long last_login;
 	
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-	@JoinColumn(name="a_id",referencedColumnName="a_id")
+	@JoinColumn(name="academy_admin")
 	private Academy academy;
 
 	public int getAd_id() {

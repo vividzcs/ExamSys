@@ -3,6 +3,7 @@ package com.nwuer.daoimpl;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
@@ -46,4 +47,9 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
 		this.getHibernateTemplate().update(t);
 	}
 
+	@Override
+	public List<T> getAll() {
+		return (List<T>) this.getHibernateTemplate().find("from Academy");
+	}
+	
 }

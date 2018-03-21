@@ -1,5 +1,7 @@
 package com.nwuer.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,5 +33,11 @@ public class StudentService implements BaseService<Student> {
 	
 	public boolean hasData() {
 		return this.StudentDaoImpl.hasData();
+	}
+
+	@Override
+	public List<Student> getAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

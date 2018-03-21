@@ -39,25 +39,22 @@
 				   
 				  <!-- Nav tabs -->
 				  <ul class="nav nav-tabs " role="tablist">
-				  	  <li class="nav-item active">
-				      <a class="nav-link active" data-toggle="tab" href="#editStudent"> 编辑学生</a>
+				    <li class="nav-item active">
+				      <a class="nav-link  active" data-toggle="tab" href="#addStudent">添加学生</a>
 				    </li>
 				    <li class="nav-item ">
-				      <a class="nav-link " data-toggle="tab" href="#addStudent">添加学生</a>
+				      <a class="nav-link  " data-toggle="tab" href="#editStudent">编辑学生</a>
 				    </li>
-				    
 				    <li class="nav-item">
 				      <a class="nav-link" data-toggle="tab" href="#importStudent"> 导入学生名单</a>
 				    </li>
 				      <li class="nav-item">
 				      <a class="nav-link" data-toggle="tab" href="#emportStudent"> 导出学生名单</a>
 				    </li>
-				  
 				  </ul>
-				
 				  <!-- Tab panes -->
 				  <div class="tab-content">
-				    <div id="addStudent" class="container tab-pane  col-lg-12"><br>
+				    <div id="addStudent" class=" active container tab-pane  col-lg-12"><br>
 				      <p> 
 				       <div class="col-lg-12" ng-controller="addStudent">
                         <div class="ibox float-e-margins">
@@ -70,7 +67,7 @@
                                 </div>
                             </div>
                             <div class="ibox-content">
-                                <form class="form-horizontal m-t" id="addStudentForm" action="${pageContext.request.contextPath }/admin/student_add.action">
+                                <form class="form-horizontal m-t" id="addStudentForm">
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">姓名</label>
                                         <div class="col-sm-8">
@@ -123,46 +120,7 @@
                         </div>
                       </div>
 				    </div>
-				     <div id="editStudent" class="container tab-pane col-lg-12 active"><br>
-				            <div class="ibox-content">
-                                <table class="table   table-striped table-bordered table-hover dataTables-example">
-                                    <thead>
-                                        <tr>
-                                             <th>姓名</th>
-											 <th>学号</th>
-											 <th>性别</th>
-											 <th>密码</th>
-											 <th>院系 </th>
-											 <th>专业</th>
-											  <th>操作</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="gradeX">
-                                             <th>张三</th>
-											 <th>201688584</th>
-											 <th>密码</th>
-											 <th>性别</th>
-											 <th>信息学院</th>
-											 <th>电子信息</th>
-                                            <td class="center"><a href="" class="delete">删除</a>&nbsp;<a href="editStudentInfromation.html" class="edit">修改</a></td>
-                                        </tr>
-                                            <tr class="gradeA">
-                                             <th>文科</th>
-											 <th>难</th>
-											 <th>女</th>
-											 <th>数学院 </th>
-											 <th>5</th>
-											 <th>应用数学</th>
-                                            <td class="center"><a href="">删除</a>&nbsp;<a href="editStudentInfromation.html">修改</a></td>
-                                        </tr>
-                                         
-                                    </tbody>
-                                </table>
-
-                            </div>
-				    </div>
-				    <div id="importStudent" class="container tab-pane fade col-lg-12"><br>
+			     <div id="importStudent" class=" container tab-pane  col-lg-12"><br>
 				      <p> 
 				       <div class="col-lg-12" ng-controller="addStudent">
                         <div class="ibox float-e-margins">
@@ -201,7 +159,7 @@
                                     </div>
                                       <div class="form-group">
                                         <div class="col-sm-8 col-sm-offset-3">
-                                           <a href="mangeStudent.html"> 下载学生模板</a>  <button class="btn btn-primary" type="submit"  >导入名单</button>
+                                           <a href="E:/www/javaDemo/ExamSys_html/modellist/教师名单模板.xlsx"> 下载学生模板</a>  <button class="btn btn-primary" type="submit"  >导入名单</button>
                                         </div>
                                     </div>
                                 </form>
@@ -210,7 +168,11 @@
                       </div>
                    </p>
 				    </div>
-				     <div id="emportStudent" class="container tab-pane fade col-lg-12"><br>
+				      
+			     <div id="editStudent" class=" container tab-pane  col-lg-12"><br>
+				        <iframe class="J_iframe" name="iframe0" width="100%" height="900px" src="editStudent.html" frameborder="0" data-id="hello.html" seamless></iframe>
+				    </div>
+				    <div id="emportStudent" class="container tab-pane fade col-lg-12"><br>
 				      <p>
 				      	<div class="col-lg-12" ng-controller="addStudent">
                         <div class="ibox float-e-margins">
@@ -224,7 +186,6 @@
                             </div>
                             <div class="ibox-content">
                                 <form class="form-horizontal m-t" id="emportStudentForm">
-                                   
                                   <div class="form-group">
                                         <label class="col-sm-3 control-label">院系</label>
                                         <div class="col-sm-8">
@@ -274,10 +235,6 @@
     <script src="../style/js/plugins/validate/messages_zh.min.js"></script>
     <!-- iCheck -->
     <script src="../style/js/plugins/iCheck/icheck.min.js"></script>
-    <script src="../style/js/plugins/jeditable/jquery.jeditable.js"></script>
-    <script src="../style/js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="../style/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-    <!-- Page-Level Scripts -->
     <script>
         
 
@@ -364,29 +321,6 @@
                   usernumber:'输入学号'
                 }
 
-            });
-        });
-        $(document).ready(function () {
-            $('.dataTables-example').dataTable(); 
-
-            /* Init DataTables */
-            var oTable = $('#editable').dataTable();
-
-            /* Apply the jEditable handlers to the table */
-            oTable.$('td').editable('../example_ajax.php', {
-                "callback": function (sValue, y) {
-                    var aPos = oTable.fnGetPosition(this);
-                    oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-                },
-                "submitdata": function (value, settings) {
-                    return {
-                        "row_id": this.parentNode.getAttribute('id'),
-                        "column": oTable.fnGetPosition(this)[2]
-                    };
-                },
-
-                "width": "90%",
-                "height": "100%"
             });
         });
 </script>
