@@ -22,7 +22,6 @@ public class Admin {
 	private int ad_id;
 	@Column(length=10)
 	private String ad_number; //¹¤ºÅ
-	@Column(length=32)
 	private String ad_pass;
 	private String ad_name;
 	@Column(nullable=true)

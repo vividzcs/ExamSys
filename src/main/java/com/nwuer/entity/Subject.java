@@ -22,7 +22,9 @@ public class Subject {
 	private int sub_id;
 	private String sub_name;
 	@Column(length=8)
+	private long create_time;  //创建时间
 	private String sub_number; //科目编号
+	@Column(columnDefinition="text")
 	private String sub_desc;
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="major_sub")

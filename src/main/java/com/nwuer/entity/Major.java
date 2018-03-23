@@ -21,12 +21,15 @@ public class Major {
 	@GenericGenerator(name="native",strategy="native")
 	private int m_id;
 	private String m_name;
+	@Column(columnDefinition="int not null default 0")
 	private int m_num; //专业人数
-	@Column(columnDefinition="text")
-	private String m_desc;
+	@Column(length=5)
+	private String m_number; //院系编号
+	private long create_time;  //创建时间
+	
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)
 	@JoinColumn(name="academy_major")
-	private Academy academy;
+	private Academy academy = new Academy();
 	public int getM_id() {
 		return m_id;
 	}
@@ -45,17 +48,23 @@ public class Major {
 	public void setM_num(int m_num) {
 		this.m_num = m_num;
 	}
-	public String getM_desc() {
-		return m_desc;
-	}
-	public void setM_desc(String m_desc) {
-		this.m_desc = m_desc;
-	}
 	public Academy getAcademy() {
 		return academy;
 	}
 	public void setAcademy(Academy academy) {
 		this.academy = academy;
+	}
+	public String getM_number() {
+		return m_number;
+	}
+	public void setM_number(String m_number) {
+		this.m_number = m_number;
+	}
+	public long getCreate_time() {
+		return create_time;
+	}
+	public void setCreate_time(long create_time) {
+		this.create_time = create_time;
 	}
 	
 }

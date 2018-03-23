@@ -35,4 +35,14 @@ public interface BaseDao<T> {
 	 */
 	public List<T> getAll();
 	
+	/**
+	 * 按照时间倒序查询所有数据
+	 * @return
+	 */
+	public List<T> getAllByTimeDesc();
+	
+	/**
+	 * 查询总记录数
+	 */
+	public int count();
 }

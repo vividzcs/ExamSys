@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.nwuer.entity.Admin;
-import com.nwuer.utils.MD5Util;
+import com.nwuer.utils.Crpty;
 @Repository
 public class AdminDaoImpl extends BaseDaoImpl<Admin> {
 	@Autowired
@@ -20,8 +20,8 @@ public class AdminDaoImpl extends BaseDaoImpl<Admin> {
 	
 	public Admin getByNumberAndPass(Admin admin) {
 		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		MD5Util md5 = (MD5Util) applicationContext.getBean("mD5Util");
-		List<Admin> list = (List<Admin>) this.getHibernateTemplate().find("from Admin where ad_number=? and ad_pass=?", admin.getAd_number(),md5.encrypt(admin.getAd_pass()));
+		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
+		List<Admin> list = (List<Admin>) this.getHibernateTemplate().find("from Admin where ad_number=? and ad_pass=?", admin.getAd_number(),crpty.encrypt(admin.getAd_pass()));
 		if(list!=null && list.size()>0)
 			return list.get(0);
 		else

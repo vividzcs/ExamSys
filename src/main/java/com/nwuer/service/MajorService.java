@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nwuer.bean.BaseBean;
 import com.nwuer.daoimpl.MajorDaoImpl;
 import com.nwuer.entity.Major;
 
@@ -17,7 +18,8 @@ public class MajorService implements BaseService<Major> {
 	@Override
 	@Transactional
 	public int add(Major t) {
-		return 0;
+		t.setCreate_time(System.currentTimeMillis());
+		return this.majorDaoImpl.add(t);
 	}
 	
 	public int getIdByName(String name) {
@@ -26,8 +28,17 @@ public class MajorService implements BaseService<Major> {
 
 	@Override
 	public List<Major> getAll() {
-		// TODO Auto-generated method stub
+		return this.majorDaoImpl.getAll();
+	}
+
+	@Override
+	public Major getById(int id) {
 		return null;
+	}
+
+	@Override
+	public List<Major> getAllByTimeDesc() {
+		return this.majorDaoImpl.getAllByTimeDesc();
 	}
 
 }

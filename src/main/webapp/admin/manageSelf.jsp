@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <!DOCTYPE html>
 <html>
 
@@ -13,83 +14,70 @@
     <meta name="keywords" content="学生考试系统，专为学生打造在校考试功能">
     <meta name="description" content="大学生在线考试系统，学生在网络上在线填写试卷">
 
-    <link href=" ../style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link href=" ../style/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../style/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
 
     <!-- Morris -->
-    <link href="../../ css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+    <link href="../style/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
 
     <!-- Gritter -->
-    <link href="../../ js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+    <link href="../style/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
 
-    <link href=" ../style/css/animate.css" rel="stylesheet">
-    <link href=" ../style/css/style.css?v=2.2.0" rel="stylesheet">
-    <!--<link rel="stylesheet" type="text/css" href="../../style/css/self.css"/>-->
-
+    <link href="../style/css/animate.css" rel="stylesheet">
+    <link href="../style/css/style.css?v=2.2.0" rel="stylesheet">
+  <link rel="stylesheet" href="	../style/css/self.css" />
 </head>
 
-<body ng-app="exam">
+<body>
 <!--侧栏部分结束-->
 <!--右侧的部分-->
             <!--右侧的顶部结束-->
-          <div class="white-bg" style="height: 100%;">
-			<div class="col-lg-8" style="height: 500px;">
+            <div class="row  border-bottom white-bg dashboard-header" style="height: 100%;">
+            	<div class="manageSlef">
+            	 <div class="col-lg-12">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <h5>学校信息修改</h5>
+                                <h5>更改个人信息</h5>
                                 <div class="ibox-tools">
                                     <a class="collapse-link">
                                         <i class="fa fa-chevron-up"></i>
                                     </a>
-                                </div>
                             </div>
                             <div class="ibox-content">
-                                <form class="form-horizontal m-t" id="schoolInformationForm">
+                                <form class="form-horizontal m-t" id="signupForm">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">编号</label>
+                                        <label class="col-sm-3 control-label">用户名：</label>
                                         <div class="col-sm-8">
-                                            <input id="snumber" name="snumber" class="form-control" type="text">
+                                            <input id="username" name="ad_name" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">名称</label>
+                                        <label class="col-sm-3 control-label">密码：</label>
                                         <div class="col-sm-8">
-                                            <input id="sname" name="sname" class="form-control" type="type">
+                                            <input id="password" name="ad_pass" class="form-control" type="password">
                                         </div>
                                     </div>
-                                   
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">简介</label>
+                                        <label class="col-sm-3 control-label">确认密码：</label>
                                         <div class="col-sm-8">
-                                        	<textarea id="sintroduce" name="sintroduce" class="form-control"></textarea>
-                                        </div>
-                                    </div>
-                                      <div class="form-group">
-                                        <label class="col-sm-3 control-label">院系数</label>
-                                        <div class="col-sm-8">
-                                            <input id="dnumber" name="dnumber" class="form-control" type="type">
-                                        </div>
-                                    </div>
-                                      <div class="form-group">
-                                        <label class="col-sm-3 control-label">专业数</label>
-                                        <div class="col-sm-8">
-                                            <input id="pnumber" name="pnumber" class="form-control" type="type">
+                                            <input id="confirm_password" name="password" class="form-control" type="password">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-sm-8 col-sm-offset-3">
-                                            <button class="btn btn-primary" type="submit">修改</button>
+                                            <button id="ad_update" class="btn btn-primary" type="submit">提交</button>&nbsp;&nbsp;&nbsp;<span id="t_warn"></span>
                                         </div>
                                     </div>
+                                    
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-               
+                   </div>
         </div>
-       
-  <script src="../style/js/jquery-2.1.1.min.js"></script>
+    </div>
+    <script src="../style/js/jquery-2.1.1.min.js"></script>
       <script src="../style/js/bootstrap.min.js?v=3.4.0"></script>
     <script src="../style/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../style/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
@@ -104,12 +92,12 @@
     <!-- jQuery Validation plugin javascript-->
     <script src="../style/js/plugins/validate/jquery.validate.min.js"></script>
     <script src="../style/js/plugins/validate/messages_zh.min.js"></script>
+
     <!-- iCheck -->
     <script src="../style/js/plugins/iCheck/icheck.min.js"></script>
     <script>
-        
-
-      $.validator.setDefaults({
+        //以下为修改jQuery Validation插件兼容Bootstrap的方法，没有直接写在插件中是为了便于插件升级
+        $.validator.setDefaults({
             highlight: function (element) {
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
             },
@@ -129,31 +117,57 @@
             $("#commentForm").validate();
 
             // validate signup form on keyup and submit
-            $("#schoolInformationForm").validate({
+            $("#signupForm").validate({
                 rules: {
-                    sname: {
+                    username: {
                         required: true,
+                        minlength: 2
                     },
-                     snumber: "required",
-                    dnumber: {
+                    password: {
                         required: true,
+                        minlength: 5
                     },
-                    pnumber:"required",
-                    sintroduce:"required"
-                    
+                    confirm_password: {
+                        required: true,
+                        minlength: 5,
+                        equalTo: "#password"
+                    }
                 },
                 messages: {
-                   sname: "输入学校名称",
-                    snumber:'输入学校编号',
-                   dnumber:  "输入院系数",
-                   pnumber:'输入专业数',
-                   sintroduce:"输入学校描述"
-                    
-                }
-
+                    username: {
+                        required: "请输入您的用户名",
+                        minlength: "用户名必须两个字符以上"
+                    },
+                    password: {
+                        required: "请输入您的密码",
+                        minlength: "密码必须5个字符以上"
+                    },
+                    confirm_password: {
+                        required: "请再次输入密码",
+                        equalTo: "两次输入的密码不一致"
+                    },
+                
+                },
+                submitHandler:function(form){
+                		var ad_name = $("input[name='ad_name']").val();
+                		var ad_pass = $("input[name='ad_pass']").val();
+                		var data = {ad_name:ad_name,ad_pass:ad_pass};
+                		$.post('${pageContext.request.contextPath}/admin_update.action',data,function(data){
+                			//console.log(data)
+                			if(data.status == 1) {
+                				//登录成功
+                				$(window).attr("location","${pageContext.request.contextPath}/admin/hello.html");
+                			} else {
+                				//展示错误数据
+                				$("#t_warn").css("display","inline-block").css("color","red").html(data.msg);
+                			}
+                		},"json")
+                } 
             });
         });
-</script>
+         
+    </script>
+
 
 </body>
 

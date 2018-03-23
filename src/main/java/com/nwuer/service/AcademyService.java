@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nwuer.bean.AcademyBean;
+import com.nwuer.bean.BaseBean;
 import com.nwuer.daoimpl.AcademyDaoImpl;
 import com.nwuer.entity.Academy;
 @Service
@@ -17,7 +19,8 @@ public class AcademyService implements BaseService<Academy>{
 	@Override
 	@Transactional
 	public int add(Academy t) {
-		return 0;
+		t.setCreate_time(System.currentTimeMillis());
+		return this.academyDaoImpl.add(t);
 	}
 	
 	/**
@@ -33,5 +36,19 @@ public class AcademyService implements BaseService<Academy>{
 	public List<Academy> getAll() {
 		return this.academyDaoImpl.getAll();
 	}
+
+	@Override
+	public Academy getById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Academy> getAllByTimeDesc() {
+		return this.academyDaoImpl.getAllByTimeDesc();
+	}
+
 	
+
+
 }

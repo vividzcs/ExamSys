@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,7 +29,7 @@ import com.nwuer.service.AdminService;
 import com.nwuer.service.MajorService;
 import com.nwuer.service.StudentService;
 import com.nwuer.service.TeacherService;
-import com.nwuer.utils.MD5Util;
+import com.nwuer.utils.Crpty;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -51,21 +54,40 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	private StudentService studentService;
 	@Autowired
 	private TeacherService teacherService;
-	private Map<String,String> result = new HashMap<String,String>();
-	public Map<String, String> getResult() {
+	private Map result = new HashMap();
+	public Map getResult() {
 		return result;
 	}
-	public void setResult(Map<String, String> result) {
+	public void setResult(Map result) {
 		this.result = result;
 	}  //返回JSON数据
 	
 	/**
-	 * 展示维护学生的页面
+	 * 维护管理员信息
 	 * @return
 	 */
-	public String showManageStudent() {
+	public String update() {
+		HttpServletRequest req = ServletActionContext.getRequest();
+		String newPass = req.getParameter("newPass");
+		//验证密码
 		
-		return "showManageStudent";
+		//验证管理员用户信息
+		
+		
+		//查询数据
+		int ad_id = ((Admin)req.getSession().getAttribute("admin")).getAd_id();
+		Admin newAdmin = this.adminService.getById(ad_id);
+		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
+		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
+		//修改
+		String pass = crpty.encrypt(admin.getAd_pass());
+		
+		newAdmin.setAd_pass(pass);
+		newAdmin.setAd_name(admin.getAd_name());
+		this.adminService.update(newAdmin);
+		this.result.put("status","1");
+		this.result.put("msg", "修改成功");
+		return SUCCESS;
 	}
 	
 	
@@ -77,11 +99,11 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		//验证
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
+		
 		//验证验证码
 		String code = request.getParameter("code");
 		String codeReal = (String)session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
 		if(!codeReal.equalsIgnoreCase(code)) {
-			result = new HashMap<String,String>();
 			result.put("status","0");
 			result.put("msg", "验证码错误");
 			return ERROR;
@@ -161,7 +183,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					return ERROR;
 				}
 				//md5加密
-				MD5Util md5 = (MD5Util) application.getBean("mD5Util");
+				Crpty md5 = (Crpty) application.getBean("mD5Util");
 				pass = md5.encrypt(pass);
 				
 				//处理姓名
@@ -264,4 +286,28 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		}
 		return ERROR;
 	}
+	public String mes() {
+		List<Academy> academys = this.academyService.getAll();
+		
+		/*{
+	      	department:'信息科学与技术学院',
+	      	profess:['软件工程','计算机科学与技术','电子信息','通信工程']
+	      },*/
+		Set<Major> majors = null;
+		for(int i=0; i<academys.size(); i++) {
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("department", academys.get(i).getA_name());
+			List<String> profess = new ArrayList<String>();
+			majors = academys.get(i).getM_set();
+			Iterator<Major> it = majors.iterator();
+			while (it.hasNext()) {
+				profess.add(it.next().getM_name());
+			}
+			//
+			map.put("profess", profess);
+			this.result.put(i, map);
+		}
+		return SUCCESS;
+	}
 }
+

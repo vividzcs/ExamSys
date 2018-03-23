@@ -15,4 +15,22 @@ public interface BaseService<T> {
 	 * @return
 	 */
 	public List<T> getAll();
+	
+	/**
+	 * 得到分页Bean
+	 */
+	//public BaseBean list(int nowPage,int size);
+	
+	/**
+	 * 根据id进行查询
+	 * @param id
+	 * @return
+	 */
+	public T getById(int id);
+	
+	/**
+	 * 根据时间倒叙查询所有数据
+	 * @return
+	 */
+	public List<T> getAllByTimeDesc();
 }

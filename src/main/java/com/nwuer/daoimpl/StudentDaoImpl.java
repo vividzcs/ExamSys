@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.nwuer.entity.Student;
-import com.nwuer.utils.MD5Util;
+import com.nwuer.utils.Crpty;
 
 @Repository
 public class StudentDaoImpl extends BaseDaoImpl<Student> {
@@ -22,7 +22,7 @@ public class StudentDaoImpl extends BaseDaoImpl<Student> {
 	
 	public Student getByNumberAndPass(Student stu) {
 		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		MD5Util md5 = (MD5Util) applicationContext.getBean("mD5Util");
+		Crpty md5 = (Crpty) applicationContext.getBean("mD5Util");
 		List<Student> list = (List<Student>) this.getHibernateTemplate().find("from Student where s_number=? and s_pass=?", stu.getS_number(),md5.encrypt(stu.getS_pass()));
 		if(list != null && list.size()>0)
 			return list.get(0);

@@ -24,9 +24,11 @@ public class Academy {
 	@GenericGenerator(name="native",strategy="native")
 	private int a_id;
 	private String a_name;
-	@Column(columnDefinition="text")
-	private String a_desc;
+	@Column(columnDefinition="int not null default 0")
+	private int a_num;  //专业数
 	private long create_time;
+	@Column(length=4)
+	private String a_number; //院系编号
 	
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="academy_teacher")
@@ -35,6 +37,14 @@ public class Academy {
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
 	@JoinColumn(name="academy_major")
 	private Set<Major> m_set = new HashSet<Major>();
+
+	public int getA_num() {
+		return a_num;
+	}
+
+	public void setA_num(int a_num) {
+		this.a_num = a_num;
+	}
 
 	public int getA_id() {
 		return a_id;
@@ -50,14 +60,6 @@ public class Academy {
 
 	public void setA_name(String a_name) {
 		this.a_name = a_name;
-	}
-
-	public String getA_desc() {
-		return a_desc;
-	}
-
-	public void setA_desc(String a_desc) {
-		this.a_desc = a_desc;
 	}
 
 	public long getCreate_time() {
@@ -83,5 +85,11 @@ public class Academy {
 	public void setM_set(Set<Major> m_set) {
 		this.m_set = m_set;
 	}
-	
+	public String getA_number() {
+		return a_number;
+	}
+
+	public void setA_number(String a_number) {
+		this.a_number = a_number;
+	}
 }

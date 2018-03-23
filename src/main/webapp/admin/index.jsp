@@ -61,13 +61,13 @@
                         <ul class="nav nav-second-level">
                                <li><a class="J_menuItem" href="mangeStudent.html">管理学生信息</a>
                             </li>
-                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/teacher_showAdd.action">管理教师信息</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/teacher_list.action">管理教师信息</a>
                             </li>
-                            <li><a class="J_menuItem" href="mangeSelf.html">管理个人信息</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/manageSelf.jsp">管理个人信息</a>
                             </li>
-                            <li><a class="J_menuItem" href="manageDepartment.html">管理院系信息</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/department_list.action">管理院系信息</a>
                             </li>
-                            <li><a class="J_menuItem" href="manageProfess.html">管理专业信息</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/profess_list.action">管理专业信息</a>
                             </li>
                         </ul>
                     </li>

@@ -96,4 +96,6 @@ iframe{
 iframe{
 	height:900px;
 }
- 
+.form-control input,.form-control select{
+	width: 50%;
+}

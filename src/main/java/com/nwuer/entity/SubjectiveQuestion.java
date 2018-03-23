@@ -24,7 +24,9 @@ public class SubjectiveQuestion {
 	private String sq_question;
 	@Column(columnDefinition="text")
 	private String sq_answer;
+	@Column(columnDefinition="tinyint not null default 0")
 	private byte degree;
+	private long create_time;  //创建时间
 	private byte sq_kind; // 0:名词解释,1:简答,2:计算,3:综合
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="subj_sub")

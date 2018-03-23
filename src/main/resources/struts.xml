@@ -35,6 +35,14 @@
 		
 		<package name="admin" extends="struts-default,json-default" namespace="/admin">
 			<global-allowed-methods>regex:.*</global-allowed-methods>
+			<action name="admin_*" class="adminAction" method="{1}">
+				<result name="success" type="json">
+					<param name="root">result</param>
+				</result>
+				<result name="error" type="json">
+					<param name="root">result</param>
+				</result>
+			</action>
 			<action name="importStudent" class="adminAction" method="importStudent">
 				<result name="success" type="json">
 					<param name="root">result</param>
@@ -45,9 +53,30 @@
 			</action>
 			
 			<action name="teacher_*" class="teacherAction" method="{1}">
-				<result name="showAdd">manageTeacher.jsp</result>
-				<result name="success" type="redirectAction">teacher_showAdd.action?v=3.0#editTeacher</result>
+				<result name="list">manageTeacher.jsp</result>
+				<result name="success" type="redirectAction">teacher_list.action</result>
 				<result name="error">manageTeacher.jsp</result>
+			</action>
+			
+			<action name="department_*" class="academyAction" method="{1}" >
+				<result name="showAdd">addDepartment.jsp</result>
+				<result name="list">manageDepartment.jsp</result>
+				<result name="success" type="redirectAction">department_list</result>
+				<result name="error">addDepartment.jsp</result>
+			</action>
+			<action name="profess_*" class="majorAction" method="{1}" >
+				<result name="showAdd">addProfess.jsp</result>
+				<result name="list">manageProfess.jsp</result>
+				<result name="success" type="redirectAction">profess_list</result>
+				<result name="error">addProfess.jsp</result>
+			</action>
+			<action name="student_*" class="studentAction" method="{1}" >
+				<result name="success" type="json">
+					<param name="root">result</param>
+				</result>
+				<result name="error" type="json">
+					<param name="root">result</param>
+				</result>
 			</action>
 		</package>
 	</struts>

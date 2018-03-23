@@ -1,13 +1,21 @@
 package com.nwuer.action;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import com.nwuer.entity.Academy;
+import com.nwuer.entity.Major;
 import com.nwuer.entity.Student;
+import com.nwuer.service.AcademyService;
+import com.nwuer.service.MajorService;
 import com.nwuer.service.StudentService;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -20,15 +28,20 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		return student;
 	}  //模型驱动获取数据
 	
-	private Map<String,String> result = new HashMap<String,String>();
-	public Map<String, String> getResult() {
+	private Map result = new HashMap();
+	public Map getResult() {
 		return result;
 	}
-	public void setResult(Map<String, String> result) {
+	public void setResult(Map result) {
 		this.result = result;
 	} //传回前端得Json数据
 	@Autowired
 	private StudentService studentService;
+	@Autowired
+	private AcademyService academyService; 
+	@Autowired
+	private MajorService majorService;
+	
 
 	/**
 	 * 登录
@@ -54,7 +67,7 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		}
 		
 	}
-
+	
 	/**
 	 * 添加学生
 	 * @return

@@ -23,10 +23,12 @@ public class ChoiceQuestion {
 	@Column(length=500)
 	private String cho_question; //题目
 	private String cho_answer; //正确答案
-	private String cho_answer_1;
-	private String cho_answer_2;
-	private String cho_answer_3;
+	private String cho_choice_1;
+	private String cho_choice_2;
+	private String cho_choice_3;
+	@Column(columnDefinition="tinyint not null default 0")
 	private byte degree; //难度  0:简单  1:较简单  2:中等  3 较难  4:较难
+	private long create_time;  //创建时间
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)
 	@JoinColumn(name="sub_choice")
 	private Subject subject;
@@ -48,23 +50,23 @@ public class ChoiceQuestion {
 	public void setCho_answer(String cho_answer) {
 		this.cho_answer = cho_answer;
 	}
-	public String getCho_answer_1() {
-		return cho_answer_1;
+	public String getCho_choice_1() {
+		return cho_choice_1;
 	}
-	public void setCho_answer_1(String cho_answer_1) {
-		this.cho_answer_1 = cho_answer_1;
+	public void setCho_choice_1(String cho_choice_1) {
+		this.cho_choice_1 = cho_choice_1;
 	}
-	public String getCho_answer_2() {
-		return cho_answer_2;
+	public String getCho_choice_2() {
+		return cho_choice_2;
 	}
-	public void setCho_answer_2(String cho_answer_2) {
-		this.cho_answer_2 = cho_answer_2;
+	public void setCho_choice_2(String cho_choice_2) {
+		this.cho_choice_2 = cho_choice_2;
 	}
-	public String getCho_answer_3() {
-		return cho_answer_3;
+	public String getCho_choice_3() {
+		return cho_choice_3;
 	}
-	public void setCho_answer_3(String cho_answer_3) {
-		this.cho_answer_3 = cho_answer_3;
+	public void setCho_choice_3(String cho_choice_3) {
+		this.cho_choice_3 = cho_choice_3;
 	}
 	public byte getDegree() {
 		return degree;

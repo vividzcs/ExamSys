@@ -22,9 +22,9 @@ public class Student {
 	private int s_id;
 	@Column(length=10)
 	private String s_number;  //Ñ§ºÅ
-	@Column(length=32)
 	private String s_pass;  //ÃÜÂë
 	private String s_name;
+	@Column(columnDefinition="tinyint not null default 1")
 	private byte s_sex;
 	public byte getS_sex() {
 		return s_sex;

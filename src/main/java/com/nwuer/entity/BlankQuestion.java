@@ -23,7 +23,9 @@ public class BlankQuestion {
 	@Column(length=500)
 	private String blank_question;
 	private String blank_answer;
+	@Column(columnDefinition="tinyint not null default 0")
 	private byte degree;
+	private long create_time;  //创建时间
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="sub_blank")
 	private Subject subject;

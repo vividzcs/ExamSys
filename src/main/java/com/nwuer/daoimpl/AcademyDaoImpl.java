@@ -24,5 +24,5 @@ public class AcademyDaoImpl extends BaseDaoImpl<Academy> {
 		else
 			return 0;
 	}
-	
+
 }

@@ -40,4 +40,16 @@ public class StudentService implements BaseService<Student> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Student getById(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Student> getAllByTimeDesc() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

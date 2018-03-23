@@ -1,5 +1,6 @@
-package com.nwuer.utils;
+package com.nwuer.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseBean<T> {

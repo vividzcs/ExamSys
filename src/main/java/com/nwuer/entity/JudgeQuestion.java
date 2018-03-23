@@ -23,7 +23,9 @@ public class JudgeQuestion {
 	@Column(length=500)
 	private String jud_question;
 	private byte jud_answer; //0:F , 1:T
+	@Column(columnDefinition="tinyint not null default 0")
 	private byte degree;
+	private long create_time;  //创建时间
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="sub_judge")
 	private Subject subject;

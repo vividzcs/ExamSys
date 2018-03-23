@@ -5,6 +5,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.query.Query;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import com.nwuer.dao.BaseDao;
@@ -34,6 +37,7 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
 
 	@Override
 	public int add(T t) {
+		this.getHibernateTemplate().flush();
 		return  (int) this.getHibernateTemplate().save(t);
 	}
 
@@ -49,7 +53,18 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
 
 	@Override
 	public List<T> getAll() {
-		return (List<T>) this.getHibernateTemplate().find("from Academy");
+		return (List<T>) this.getHibernateTemplate().find("from " + this.classType.getSimpleName());
+	}
+
+	@Override
+	public List<T> getAllByTimeDesc() {
+		return (List<T>) this.getHibernateTemplate().find("from " + this.classType.getSimpleName() + " order by create_time desc");
+	}
+	
+	@Override
+	public int count() {
+		Query query = this.getSessionFactory().getCurrentSession().createQuery("select count(*) from " + this.classType.getSimpleName());
+		return (int) query.list().get(0);
 	}
 	
 }
