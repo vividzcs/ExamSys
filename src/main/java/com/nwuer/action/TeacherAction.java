@@ -4,11 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
@@ -18,8 +23,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.nwuer.entity.Academy;
+import com.nwuer.entity.Student;
 import com.nwuer.entity.Teacher;
 import com.nwuer.service.AcademyService;
+import com.nwuer.service.StudentService;
 import com.nwuer.service.TeacherService;
 import com.nwuer.utils.Crpty;
 import com.opensymphony.xwork2.ActionSupport;
@@ -29,6 +36,11 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+import jxl.write.Label;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
 
 @Controller
 public class TeacherAction extends ActionSupport implements ModelDriven<Teacher> {
@@ -50,7 +62,76 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	private TeacherService teacherService;
 	@Autowired
 	private AcademyService academyService;
+	@Autowired
+	private StudentService studentService;
 	
+	/**
+	 * 查找学生信息
+	 */
+	private String s_number;
+	public String getS_number() {
+		return s_number;
+	}
+	public void setS_number(String s_number) {
+		this.s_number = s_number;
+	}
+	public String findStu() {
+		//检查数据合法性
+		if(s_number == null || s_number.equals("")) {
+			return "find";
+		}
+		Student s = this.studentService.getByNumber(s_number);
+		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
+		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
+		s.setS_pass(crpty.decrypt(s.getS_pass()));
+		ServletActionContext.getRequest().setAttribute("student", s);
+		return "find";
+	}
+	
+	
+	/**
+	 * 更新教师信息
+	 * @return
+	 */
+	public String update() {
+		//验证信息
+		
+		Teacher tSelf = (Teacher) ServletActionContext.getRequest().getSession().getAttribute("teacher");
+		Teacher t = this.teacherService.getByIdEager(tSelf.getT_id());
+		//姓名 密码 院系
+		t.setT_name(teacher.getT_name());
+		t.setT_pass(teacher.getT_pass());
+		Academy a = new Academy();
+		a.setA_id(teacher.getAcademy().getA_id());
+		t.setAcademy(a);
+		this.teacherService.update(t);
+		
+		return SUCCESS;
+	}
+	/**
+	 * 显示编辑教师页面
+	 * @return
+	 */
+	public String edit() {
+		Teacher tSelf = (Teacher) ServletActionContext.getRequest().getSession().getAttribute("teacher");
+		Teacher t = this.teacherService.getByIdEager(tSelf.getT_id());  //得到老师信息
+		List<Academy> list = this.academyService.getAll();//得到学院信息
+		HttpServletRequest req = ServletActionContext.getRequest();
+		req.setAttribute("teacher", t);
+		req.setAttribute("list", list);
+		
+		return "edit";
+	}
+	
+	public String logout() {
+		ServletActionContext.getRequest().getSession().setAttribute("teacher", null);
+		return "logout";
+	}
+	
+	/**
+	 * 登录
+	 * @return
+	 */
 	public String login() {
 		//验证
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -68,7 +149,8 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		Teacher confirmTeacher = this.teacherService.getByNumberAndPass(teacher);
 		if(confirmTeacher != null) {
 			//登录成功
-			confirmTeacher.setT_pass(null);
+			this.teacher.setT_pass(null);
+			this.teacherService.updateLastLogin(System.currentTimeMillis(),confirmTeacher.getT_id());
 			session.setAttribute("teacher", confirmTeacher);
 			result.put("status","1");
 			result.put("msg", "登录成功");
@@ -81,7 +163,112 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		}
 		
 	}
-	
+	private int a_id;  //会上传院系id根据院系id导入教师名单
+	public int getA_id() {
+		return a_id;
+	}
+	public void setA_id(int a_id) {
+		this.a_id = a_id;
+	}//导入教师名单
+	public String downloadTeacher() {
+		Academy academy = academyService.getById(a_id);
+		Set<Teacher> set = academy.getT_set();
+		//开始写入
+		ServletOutputStream sos = null;
+		WritableWorkbook wwk = null;
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType("application/octet-stream");
+		String a_name = academy.getA_name() + "教师名单.xls";
+		try {
+			a_name = new String(a_name.getBytes("UTF-8"),"ISO-8859-1");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		response.setHeader("Content-Disposition","attachment;fileName=" + a_name);
+		try {
+			sos = response.getOutputStream();
+			//创建一个可以写的工作簿
+			wwk = Workbook.createWorkbook(sos);
+			//创建可写入的工作表
+			WritableSheet sheet = wwk.createSheet("教师信息", 0);
+			
+			sheet.setColumnView(0, 15);//根据内容自动设置列宽
+			sheet.setColumnView(1, 30);//根据内容自动设置列宽
+			sheet.setColumnView(2, 12);//根据内容自动设置列宽
+			sheet.setColumnView(4, 15);//根据内容自动设置列宽
+			//先创建表头    列 行
+			Label lab_00 = new Label(0, 0, "工号");
+			Label lab_10 = new Label(1, 0, "密码");
+			Label lab_20 = new Label(2, 0, "姓名");
+			Label lab_30 = new Label(3, 0, "性别");
+			Label lab_40 = new Label(4, 0, "院系");
+			Label lab_50 = new Label(5, 0, "状态");
+			sheet.addCell(lab_00);
+			sheet.addCell(lab_10);
+			sheet.addCell(lab_20);
+			sheet.addCell(lab_30);
+			sheet.addCell(lab_40);
+			sheet.addCell(lab_50);
+			//开始写入表内容
+			Iterator<Teacher> iterator = set.iterator();
+			int i=1;
+			Teacher teacher = null;
+			ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
+			Crpty crpty = (Crpty) applicationContext.getBean("crpty");
+			while(iterator.hasNext()) {
+				teacher = iterator.next();
+				Label lab_0 = new Label(0, i, teacher.getT_number());
+				Label lab_1 = new Label(1, i, crpty.decrypt(teacher.getT_pass()));
+				Label lab_2 = new Label(2, i, teacher.getT_name());
+				String sex = teacher.getT_sex() == 1 ? "男" : "女";
+				Label lab_3 = new Label(3, i, sex);
+				Label lab_4 = new Label(4, i, teacher.getAcademy().getA_name());
+				Label lab_5 = new Label(5, i, Byte.toString(teacher.getStatus()));
+				
+				sheet.addCell(lab_0);
+				sheet.addCell(lab_1);
+				sheet.addCell(lab_2);
+				sheet.addCell(lab_3);
+				sheet.addCell(lab_4);
+				sheet.addCell(lab_5);
+				
+				i++;
+			}
+			
+			//添加完成
+			wwk.write();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (RowsExceededException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (WriteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+				try {
+					if(wwk != null)
+						wwk.close();
+					if(sos != null) {
+						sos.close();
+						sos.flush();
+						response.setHeader("Content-Disposition","attachment;fileName=导出教师出错");
+					}
+						
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (WriteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		
+		return NONE;
+	}
 	
 	public String list() {
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -162,6 +349,9 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 					req.setAttribute("info", info);
 					return ERROR;
 				}
+				//工号不能重复
+				
+				
 				//处理密码
 				Cell passCell = sheet.getCell(1,j);
 				String pass = passCell.getContents();
@@ -171,10 +361,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 					req.setAttribute("info", info);
 					return ERROR;
 				}
-				//md5加密
-				Crpty crpty = (Crpty) application.getBean("crpty");
-				pass = crpty.encrypt(pass);
-				
+
 				//处理姓名
 				Cell nameCell = sheet.getCell(2,j);
 				String name = nameCell.getContents();

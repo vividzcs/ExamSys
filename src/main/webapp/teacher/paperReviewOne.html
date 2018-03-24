@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+  
+
+    <link href="../style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../style/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+
+    <!-- Morris -->
+    <link href="../style/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="../style/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <link href="../style/css/animate.css" rel="stylesheet">
+    <link href="../style/css/style.css?v=2.2.0" rel="stylesheet">
+
+	
+</head>
+
+<body>
+			<div class="row  border-bottom white-bg dashboard-header" style="height: 100%;">
+			 <tr><td align="center">试卷编号:</td><td>2018010001</td></tr><!--从页面传值 未实现-->
+			       <div class="row">
+                    <div class="col-lg-6">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content"><!--动态生成题目答案的展现个数 题号也由数据库产生-->
+                                <form class="form-horizontal m-t" id="scoreForm">
+                                    
+									<div class="form-group">
+                                        <label class="col-sm-3 control-label">题号：</label>
+                                        <div class="col-sm-8">
+                                            答案：<textarea readonly id="answer" name="answer" class="form-control" required="" aria-required="true"></textarea>
+                                        </div>
+										
+                                    </div>
+	                                <div class="form-group">
+                                        <div class="col-sm-2 col-sm-offset-3">
+                                            评分:<textarea id="score" name="score" class="form-control" required="" aria-required="true"></textarea>
+                                        </div>
+                                    </div>
+
+									
+									<div class="form-group">
+                                        <label class="col-sm-3 control-label">题号：</label>
+                                        <div class="col-sm-8">
+                                            答案：<textarea readonly id="answer" name="answer" class="form-control" required="" aria-required="true"></textarea>
+                                        </div>									
+                                    </div>
+	                                <div class="form-group">
+                                        <div class="col-sm-2 col-sm-offset-3">
+                                            评分:<textarea id="score" name="score" class="form-control" required="" aria-required="true"></textarea>
+                                        </div>
+                                    </div>
+									
+									
+                                    <div class="form-group">
+                                        <div class="col-sm-4 col-sm-offset-3">
+                                            <button class="btn btn-primary" type="submit">提交</button>
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp
+											<button class="btn btn-primary" type="reset">重阅</button>
+                                        </div>
+                                    </div>
+
+
+                                </form>
+                            </div>
+                        </div>
+			 <!--<tr><td height=35px>题号:</td>
+				 <td>答案：<input type="text" name="answer" size=22 autocomplete="off"></td> 
+				 <td height=35px>评分：<input type="text" name="score" size=22 autocomplete="off"></td>
+			 </tr>
+			 <tr>aaaaaaa</tr>
+			 -->
+			<!--<table align="center" width="500" height="75" border="2" cellpadding="0" cellspacing="0" >
+				 <tr>
+				 <td align="center">题号</td>
+				 <td align="center">答案</td>
+				 <td align="center">评分</td>
+				 </tr>-->
+				<!--从数据库动态获取-->
+			<!--	 <tr>
+				 <td align="center">1</td>
+				 <td align="center">xxxxxxxxxxxxx</td>
+				 <td align="center"><input type="text" width="5" name="score" size=22 autocomplete="off"></td>
+				 </tr>
+				 <tr align="center"><td colspan="2" height=35px><INPUT TYPE="submit">&nbsp;&nbsp;&nbsp;&nbsp;<INPUT TYPE="reset" value="重阅"></td>
+				 <td>总分：</td>
+				 </tr>
+			</table>-->
+			<!--计算总分 算法未实现-->
+			<!--<tr>总分：</tr>-->
+			
+			
+           
+
+    <!-- Mainly scripts -->
+    <script src="../style/js/jquery-2.1.1.min.js"></script>
+    <script src="../style/js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="../style/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../style/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="../style/js/hplus.js?v=2.2.0"></script>
+    <script src="../style/js/plugins/pace/pace.min.js"></script>
+
+
+</body>
+
+</html>

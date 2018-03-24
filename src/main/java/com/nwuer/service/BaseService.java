@@ -1,5 +1,6 @@
 package com.nwuer.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 public interface BaseService<T> {
@@ -33,4 +34,8 @@ public interface BaseService<T> {
 	 * @return
 	 */
 	public List<T> getAllByTimeDesc();
+	
+	public T getByIdEager(Serializable id);
+	
+	public void update(T t);
 }

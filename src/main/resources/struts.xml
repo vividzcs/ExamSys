@@ -42,6 +42,7 @@
 				<result name="error" type="json">
 					<param name="root">result</param>
 				</result>
+				<result name="logout">/index.jsp</result>
 			</action>
 			<action name="importStudent" class="adminAction" method="importStudent">
 				<result name="success" type="json">
@@ -56,6 +57,11 @@
 				<result name="list">manageTeacher.jsp</result>
 				<result name="success" type="redirectAction">teacher_list</result>
 				<result name="error">opationError.jsp</result>
+				<!-- <result name="toexcelOK" type="stream">  
+			       <param name="contentType">application/vnd.ms-excel</param>                   
+			       <param name="contentDisposition">attachment;filename="${fileName}"</param>   
+			       <param name="inputName">excelIS</param>  
+			    </result> -->
 			</action>
 			
 			<action name="department_*" class="academyAction" method="{1}" >
@@ -77,6 +83,23 @@
 				<result name="error" type="json">
 					<param name="root">result</param>
 				</result>
+			</action>
+			<action name="school_*" class="schoolAction" method="{1}" >
+				<result name="edit">manageSchool.jsp</result>
+				<result name="success" type="redirectAction">school_edit</result>
+				<result name="error">manageSchool.jsp</result>
+			</action>
+			
+		</package>
+		
+		<package name="teacher" extends="struts-default,json-default" namespace="/teacher" >
+			<global-allowed-methods>regex:.*</global-allowed-methods>
+			<action name="teacher_*" class="teacherAction" method="{1}">
+				<result name="find">passwordFind.jsp</result>
+				<result name="edit">teacherInformationChange.jsp</result>
+				<result name="success">hello.html</result>
+				<result name="error">teacherInformationChange.jsp</result>
+				<result name="logout">/index.jsp</result>
 			</action>
 		</package>
 	</struts>

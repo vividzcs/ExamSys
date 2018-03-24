@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
@@ -30,10 +29,17 @@ public class StudentDaoImpl extends BaseDaoImpl<Student> {
 			return null;
 	}
 	
+	/**
+	 * 清空学生表的数据
+	 */
 	public void clear() {
 		this.getSessionFactory().getCurrentSession().createNativeQuery("truncate table t_student").executeUpdate();
 	}
 	
+	/**
+	 * 检测学生表是否有数据
+	 * @return
+	 */
 	public boolean hasData() {
 //		Query query =  this.getSessionFactory().getCurrentSession().createQuery("select count(*) from Student");
 //		int rows = ((Number)query.list().get(0)).intValue();
@@ -41,4 +47,13 @@ public class StudentDaoImpl extends BaseDaoImpl<Student> {
 		List<Student> list = (List<Student>) this.getHibernateTemplate().find("from Student where s_id=1");
 		return (list!=null && list.size()>0) ? true : false;
 	}
+	
+	public Student getByNumber(String number) {
+		List<Student> list = (List<Student>) this.getHibernateTemplate().find("from Student where s_number=?", number);
+		if(list != null && list.size()>0)
+			return list.get(0);
+		else
+			return null;
+	}
 }
+

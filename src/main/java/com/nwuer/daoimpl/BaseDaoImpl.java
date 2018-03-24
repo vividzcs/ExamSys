@@ -32,7 +32,11 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
 	
 	@Override
 	public T getById(Serializable id) {
-		return (T) this.getHibernateTemplate().get(this.classType, id);
+		return this.getHibernateTemplate().load(this.classType, id);
+	}
+	
+	public T getByIdEager(Serializable id) {
+		return this.getHibernateTemplate().get(classType, id);
 	}
 
 	@Override
@@ -48,6 +52,7 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
 
 	@Override
 	public void update(T t) {
+		this.getHibernateTemplate().flush();
 		this.getHibernateTemplate().update(t);
 	}
 
@@ -66,5 +71,7 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
 		Query query = this.getSessionFactory().getCurrentSession().createQuery("select count(*) from " + this.classType.getSimpleName());
 		return (int) query.list().get(0);
 	}
+	
+	
 	
 }

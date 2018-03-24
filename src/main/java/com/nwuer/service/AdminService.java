@@ -1,5 +1,6 @@
 package com.nwuer.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,15 @@ public class AdminService implements BaseService<Admin> {
 	public List<Admin> getAllByTimeDesc() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Admin getByIdEager(Serializable id) {
+		return this.adminDaoImpl.getByIdEager(id);
+	}
+	
+	@Transactional
+	public void updateLastLogin(long t,int id) {
+		this.adminDaoImpl.updateLastLogin(t,id);
 	}
 }

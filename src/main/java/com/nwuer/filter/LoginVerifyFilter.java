@@ -41,16 +41,25 @@ public class LoginVerifyFilter implements Filter {
 		
 		//否则就检查Session里面有没有要检查的key,如果没有就拦截
 		Object key = req.getSession().getAttribute(checkSessionKey);
-		if(key != null) {
-			//说明已经登录,在分析他想进的页面
-			
-			if(checkSessionKey.equals("student")) { //说明是学生
-				if(url.startsWith("/student/")) { //说明请求的是学生界面
+		
+		//学生页面单独考虑
+		if(url.startsWith("/student/")) { //说明请求的是学生页面
+			if(url.indexOf("/more/") == -1) { //说明请求的是不需要登录的页面
+				chain.doFilter(request, response);
+				return;
+			}else { //请求的是要登录的页面
+				if(key == null) { //没有登录
+					res.sendRedirect(req.getContextPath() + "/index.jsp");
+				}else{
 					chain.doFilter(request, response);
 					return;
 				}
 			}
-			
+		}
+		
+		
+		if(key != null) {
+			//说明已经登录,在分析他想进的页面
 			
 			if(checkSessionKey.equals("teacher")) { //说明是老师
 				if(url.startsWith("/teacher/")) { //说明请求的是老师界面
@@ -81,6 +90,7 @@ public class LoginVerifyFilter implements Filter {
 			//没有登录
 			res.sendRedirect(req.getContextPath() + "/index.jsp");
 		}
+		
 		
 	}
 

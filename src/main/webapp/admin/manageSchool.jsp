@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 
@@ -42,36 +44,47 @@
                                 </div>
                             </div>
                             <div class="ibox-content">
-                                <form class="form-horizontal m-t" id="schoolInformationForm">
+                                <form class="form-horizontal m-t" id="schoolInformationForm" action="${pageContext.request.contextPath }/admin/school_update.action" method="post">
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">编号</label>
                                         <div class="col-sm-8">
-                                            <input id="snumber" name="snumber" class="form-control" type="text">
+                                            <input id="snumber" name="sch_number" class="form-control" type="text" value="${school.sch_number }">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">名称</label>
                                         <div class="col-sm-8">
-                                            <input id="sname" name="sname" class="form-control" type="type">
+                                            <input id="sname" name="sch_name" class="form-control" type="type" value="${school.sch_name }">
                                         </div>
                                     </div>
-                                   
+                                   <div class="form-group">
+                                        <label class="col-sm-3 control-label">学校地址</label>
+                                        <div class="col-sm-8">
+                                            <input id="sch_address" name="sch_address" class="form-control" type="type" value="${school.sch_address }">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">学校网站</label>
+                                        <div class="col-sm-8">
+                                            <input id="sch_website" name="sch_website" class="form-control" type="type"  value="${school.sch_website }">
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">简介</label>
                                         <div class="col-sm-8">
-                                        	<textarea id="sintroduce" name="sintroduce" class="form-control"></textarea>
+                                        	<textarea id="sintroduce" name="sch_desc" class="form-control">${school.sch_desc }</textarea>
                                         </div>
                                     </div>
                                       <div class="form-group">
                                         <label class="col-sm-3 control-label">院系数</label>
                                         <div class="col-sm-8">
-                                            <input id="dnumber" name="dnumber" class="form-control" type="type">
+                                            <input id="dnumber" name="sch_aca_count" class="form-control" type="type" value="${school.sch_aca_count }">
                                         </div>
                                     </div>
                                       <div class="form-group">
                                         <label class="col-sm-3 control-label">专业数</label>
                                         <div class="col-sm-8">
-                                            <input id="pnumber" name="pnumber" class="form-control" type="type">
+                                            <input id="pnumber" name="sch_major_count" class="form-control" type="type" value="${school.sch_major_count }">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -137,16 +150,18 @@
                         required: true,
                     },
                     pnumber:"required",
-                    sintroduce:"required"
-                    
+                    sintroduce:"required",
+                    sch_address:"required",
+                    sch_website:"required",
                 },
                 messages: {
-                   sname: "输入学校名称",
-                    snumber:'输入学校编号',
-                   dnumber:  "输入院系数",
-                   pnumber:'输入专业数',
-                   sintroduce:"输入学校描述"
-                    
+                   sname: "请输入学校名称",
+                    snumber:'请输入学校编号',
+                   dnumber:  "请输入院系数",
+                   pnumber:'请输入专业数',
+                   sintroduce:"请输入学校描述",
+                	sch_address:"请输入学校地址",
+                	sch_website:"请输入学校网站",
                 }
 
             });

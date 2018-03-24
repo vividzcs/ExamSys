@@ -193,17 +193,21 @@
                                 </div>
                             </div>
                             <div class="ibox-content">
-                                <form class="form-horizontal m-t" id="emportTeacherForm">
+                                <form class="form-horizontal m-t" id="emportTeacherForm" action="${pageContext.request.contextPath }/admin/teacher_downloadTeacher.action" method="post">
                                         <div class="form-group" ng-controller="department">
                                         <label class="col-sm-3 control-label">院系</label>
                                         <div class="col-sm-8">
-                                            <select class="form-control m-b"  ng-model="selected" ng-options="m.department for m in departments"  >
-                                                 <option value="">-- 请选择 --</option>
+                                            <select class="form-control m-b"  ng-model="selected" ng-options="m.department for m in departments" id="a_id" name="a_id">
+                                                 <option value="0">-- 请选择 --</option>
+                                                 <c:forEach items="${aca_list }" var="academy">
+                                                 <option value="${academy.a_id }">${academy.a_name }</option>
+                                                 </c:forEach>
                                             </select>
                                         </div>
                                     <div class="form-group">
                                         <div class="col-sm-8 col-sm-offset-3">
-                                            <button class="btn btn-primary" type="submit"  class=" search">下载名单</button>
+                                            <button class="btn btn-primary" type="submit"   class=" search">下载名单</button>
+                                            <!-- onclick="downloadTeacher()" -->
                                         </div>
                                     </div>
                                 </form>
@@ -279,6 +283,14 @@
             $('.dataTables-example').dataTable();
             
         })
+        
+        function downloadTeacher(){
+        	var a_id = $("#a_id").val();
+        	var data = {a_id:a_id};
+        	$.post('${pageContext.request.contextPath}/teacher_downloadTeacher.action',data,function(data){
+    			//console.log(data)
+    		},"json")
+        }
         </script>
    <!--<script src="../style/js/anjularJS/bower_components/angular/angular.min.js"></script>
   <script src="../style/js/anjularJS/bower_components/angular-route/angular-route.js"></script>

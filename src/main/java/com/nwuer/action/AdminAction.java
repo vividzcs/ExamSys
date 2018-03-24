@@ -90,6 +90,10 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		return SUCCESS;
 	}
 	
+	public String logout() {
+		ServletActionContext.getRequest().getSession().setAttribute("admin", null);
+		return "logout";
+	}
 	
 	/**
 	 * 登录
@@ -113,6 +117,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		if(adminConfirm != null) {
 			//成功
 			adminConfirm.setAd_pass(null);
+			this.adminService.updateLastLogin(System.currentTimeMillis(), adminConfirm.getAd_id());
 			session.setAttribute("admin", adminConfirm);
 			this.result.put("status","1");
 			this.result.put("msg", "登录成功");

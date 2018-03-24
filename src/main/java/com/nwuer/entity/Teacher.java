@@ -77,10 +77,10 @@ public class Teacher {
 	public void setCreate_time(long create_time) {
 		this.create_time = create_time;
 	}
-	public long getLast_login() {
+	public Long getLast_login() {
 		return last_login;
 	}
-	public void setLast_login(long last_login) {
+	public void setLast_login(Long last_login) {
 		this.last_login = last_login;
 	}
 	public byte getStatus() {

@@ -39,8 +39,7 @@ public class AcademyService implements BaseService<Academy>{
 
 	@Override
 	public Academy getById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.academyDaoImpl.getById(id);
 	}
 
 	@Override

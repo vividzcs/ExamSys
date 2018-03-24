@@ -1,5 +1,6 @@
 package com.nwuer.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,20 @@ public class StudentService implements BaseService<Student> {
 	public List<Student> getAllByTimeDesc() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Student getByIdEager(Serializable id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void update(Student t) {
+		// TODO Auto-generated method stub
+	}
+	
+	public Student getByNumber(String number) {
+		return this.StudentDaoImpl.getByNumber(number);
 	}
 }

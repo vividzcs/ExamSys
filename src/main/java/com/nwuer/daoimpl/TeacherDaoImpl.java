@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
@@ -27,5 +28,11 @@ public class TeacherDaoImpl extends BaseDaoImpl<Teacher> {
 		else
 			return null;
 		
+	}
+	
+	public void updateLastLogin(long t,int id) {
+		this.getHibernateTemplate().clear();
+		Query query = this.getHibernateTemplate().getSessionFactory().getCurrentSession().createNativeQuery("update t_teacher set last_login=" + t + " where t_id=" + id);
+		query.executeUpdate();
 	}
 }

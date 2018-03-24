@@ -1,5 +1,6 @@
 package com.nwuer.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
@@ -36,10 +37,34 @@ public class TeacherService implements BaseService<Teacher> {
 	}
 	@Override
 	public Teacher getById(int id) {
-		return this.teacherDaoImpl.getById(id);
+		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
+		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
+		Teacher t = this.teacherDaoImpl.getById(id);
+		t.setT_pass(crpty.decrypt(t.getT_pass()));
+		return t;
 	}
 	@Override
 	public List<Teacher> getAllByTimeDesc() {
 		return this.teacherDaoImpl.getAllByTimeDesc();
 	}
+	@Override
+	public Teacher getByIdEager(Serializable id) {
+		return this.teacherDaoImpl.getByIdEager(id);
+	}
+	@Transactional
+	public void updateLastLogin(long t,int id) {
+		this.teacherDaoImpl.updateLastLogin(t,id);
+	}
+	@Override
+	@Transactional
+	public void update(Teacher t) {
+		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
+		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
+		t.setT_pass(crpty.encrypt(t.getT_pass()));
+		
+		this.teacherDaoImpl.update(t);
+		
+	}
+	
+	
 }
