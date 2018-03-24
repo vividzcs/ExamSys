@@ -54,8 +54,8 @@
 			
 			<action name="teacher_*" class="teacherAction" method="{1}">
 				<result name="list">manageTeacher.jsp</result>
-				<result name="success" type="redirectAction">teacher_list.action</result>
-				<result name="error">manageTeacher.jsp</result>
+				<result name="success" type="redirectAction">teacher_list</result>
+				<result name="error">opationError.jsp</result>
 			</action>
 			
 			<action name="department_*" class="academyAction" method="{1}" >

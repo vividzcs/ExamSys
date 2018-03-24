@@ -18,8 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.nwuer.entity.Academy;
-import com.nwuer.entity.Major;
-import com.nwuer.entity.Student;
 import com.nwuer.entity.Teacher;
 import com.nwuer.service.AcademyService;
 import com.nwuer.service.TeacherService;
@@ -130,6 +128,8 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		//开始导入
 		FileInputStream excel = null;
 		Workbook wb =  null;
+		String info = "";
+		HttpServletRequest req = ServletActionContext.getRequest();
 		try {
 			ApplicationContext application = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
 			//事务开始
@@ -158,8 +158,8 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				String number = numCell.getContents();
 				if(number.trim().length() != 10) {
 					//不对
-					result.put("status", "0");
-					result.put("msg", "第" + j + "行工号有误" );
+					info =  "第" + j + "行工号有误" ;
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 				//处理密码
@@ -167,8 +167,8 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				String pass = passCell.getContents();
 				if(pass.trim().equals("")) {
 					//不对
-					result.put("status", "0");
-					result.put("msg", "第" + j + "行密码不能为空" );
+					info = "第" + j + "行密码不能为空";
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 				//md5加密
@@ -180,8 +180,8 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				String name = nameCell.getContents();
 				if(name.trim().equals("")) {
 					//不对
-					result.put("status", "0");
-					result.put("msg", "第" + j + "行姓名不能为空" );
+					info = "第" + j + "行姓名不能为空";
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 				
@@ -190,8 +190,8 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				String sex = sexCell.getContents();
 				if(!sex.trim().equals("男") && !sex.trim().equals("女")) {
 					//不对
-					result.put("status", "0");
-					result.put("msg", "第" + j + "行性别填写错误" );
+					info = "第" + j + "行性别填写错误";
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 				byte s_sex = (byte) (sex.trim().equals("男") ? 1 : 0);
@@ -201,8 +201,8 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				String academy = academyCell.getContents();
 				int a_id = 0;
 				if(academy.trim().equals("") || (a_id = this.academyService.getIdByName(academy)) ==0 ) {
-					result.put("status", "0");
-					result.put("msg", "第" + j + "行院系填写错误" );
+					info = "第" + j + "行院系填写错误";
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 				
@@ -211,8 +211,8 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				String login = loginCell.getContents();
 				if(!login.trim().equals("0") && !login.trim().equals("1")) {
 					//不对
-					result.put("status", "0");
-					result.put("msg", "第" + j + "行登录状态填写错误" );
+					info = "第" + j + "行登录状态填写错误";
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 				byte status = Byte.parseByte(login);
@@ -230,15 +230,13 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				int id = this.teacherService.add(teacher);
 				if(id <= 0) {
 					//添加失败
-					result.put("status", "0");
-					result.put("msg", "第" + j + "个学生添加失败,请重试" );
+					info = "第" + j + "个学生添加失败,请重试";
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 			}
 			
 			//添加完成
-			result.put("status", "1");
-			result.put("msg", "添加完成" );
 			return SUCCESS;
 			
 		} catch (FileNotFoundException e) {

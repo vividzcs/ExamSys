@@ -84,6 +84,7 @@
                                     </tbody>
                                 </table>
                             </div>  </div>
+                            
 				    <div id="addTeacher" class="  container tab-pane  col-lg-12"><br>
 				     <p> 
 				       <div class="col-lg-12"  >
@@ -160,18 +161,18 @@
                                 </div>
                             </div>
                             <div class="ibox-content">
-                               <form class="form-horizontal m-t" id="importTeacherForm">
+                               <form class="form-horizontal m-t" id="importTeacherForm" method="post" action="${pageContext.request.contextPath }/admin/teacher_importTeacher.action" enctype="multipart/form-data">
                                	  <div class="form-group" ng-controller="department">
                                       <div class="form-group">
                                         <label class="col-sm-3 control-label">教师名单</label>
                                         <div class="col-sm-8">
-                                            <input id="upfile" type="file" name="upload"  >
+                                            <input id="upfile" type="file" name="file_upload"  >
                                         </div>
                                     </div>
                                    
                                       <div class="form-group">
                                         <div class="col-sm-8 col-sm-offset-3">
-                                           <a href="mangeStudent.html"> 下载教师名单模板</a>  <button class="btn btn-primary" type="button" onclick="upload_file()">导入名单</button>
+                                           <a href="mangeStudent.html"> 下载教师名单模板</a>  <button class="btn btn-primary" type="submit">导入名单</button>
                                         </div>
                                     </div>
                                 </form>
@@ -273,31 +274,16 @@
             });
               
         });
-        function upload_file(){
-        	var fd = new FormData();
-        	var fm = document.getElementById("upfile").files[0];
-        	fd.append("file_upload",fm);
-        	$.ajax({
-        		type:"post",
-        		url:"${pageContext.request.contextPath }/admin/teacher_add.action",
-        		data:fd,
-                dataType:"json",
-        		mimeType:"multipart/form-data",
-        		success:function(data){
-            		if(data.status == 0) {
-            			//上传失败
-            			$("#t_warn").css("display","inline-block").css("color","red").html(data.msg);
-            		}else {
-            			window.location.href = window.location.href;
-            		}
-            	}
-        	});
-    	}
+         
+        $(document).ready(function () {
+            $('.dataTables-example').dataTable();
+            
+        })
         </script>
-   <script src="../style/js/anjularJS/bower_components/angular/angular.min.js"></script>
+   <!--<script src="../style/js/anjularJS/bower_components/angular/angular.min.js"></script>
   <script src="../style/js/anjularJS/bower_components/angular-route/angular-route.js"></script>
-   <script src="../style/js/anjularJS/anjularjs/app.js"></script>
-   <script src="../style/js/anjularJS/anjularjs/control.js"></script>
+    <script src="../style/js/anjularJS/anjularjs/app.js"></script>
+   <script src="../style/js/anjularJS/anjularjs/control.js"></script> -->
   
 </body>
 
