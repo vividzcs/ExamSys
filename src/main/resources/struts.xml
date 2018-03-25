@@ -44,7 +44,15 @@
 				</result>
 				<result name="logout">/index.jsp</result>
 			</action>
-			<action name="importStudent" class="adminAction" method="importStudent">
+			<action name="importStudent" class="studentAction" method="importStudent">
+				<result name="success" type="json">
+					<param name="root">result</param>
+				</result>
+				<result name="error" type="json">
+					<param name="root">result</param>
+				</result>
+			</action>
+			<action name="importQuestionBank" class="adminAction" method="importQuestionBank">
 				<result name="success" type="json">
 					<param name="root">result</param>
 				</result>

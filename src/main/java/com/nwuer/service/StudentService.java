@@ -3,12 +3,16 @@ package com.nwuer.service;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.nwuer.daoimpl.StudentDaoImpl;
 import com.nwuer.entity.Student;
+import com.nwuer.utils.Crpty;
 
 @Service
 public class StudentService implements BaseService<Student> {
@@ -23,7 +27,10 @@ public class StudentService implements BaseService<Student> {
 	@Transactional
 	public int add(Student t) {
 		//处理数据
+		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
+		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
 		t.setCreate_time(System.currentTimeMillis());
+		t.setS_pass(crpty.encrypt(t.getS_pass()));
 		return this.StudentDaoImpl.add(t);
 	}
 	
@@ -38,31 +45,36 @@ public class StudentService implements BaseService<Student> {
 
 	@Override
 	public List<Student> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.StudentDaoImpl.getAll();
 	}
 
 	@Override
 	public Student getById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
+		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
+		Student s = this.StudentDaoImpl.getById(id);
+		s.setS_pass(crpty.decrypt(s.getS_pass()));
+		return s;
 	}
 
 	@Override
 	public List<Student> getAllByTimeDesc() {
-		// TODO Auto-generated method stub
-		return null;
+		return StudentDaoImpl.getAllByTimeDesc();
 	}
 
 	@Override
 	public Student getByIdEager(Serializable id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getByIdEager(id);
 	}
 
 	@Override
+	@Transactional
 	public void update(Student t) {
-		// TODO Auto-generated method stub
+		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
+		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
+		t.setS_pass(crpty.encrypt(t.getS_pass()));
+		
+		this.StudentDaoImpl.update(t);
 	}
 	
 	public Student getByNumber(String number) {

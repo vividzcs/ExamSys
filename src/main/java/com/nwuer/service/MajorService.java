@@ -1,12 +1,12 @@
 package com.nwuer.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nwuer.bean.BaseBean;
 import com.nwuer.daoimpl.MajorDaoImpl;
 import com.nwuer.entity.Major;
 
@@ -33,12 +33,23 @@ public class MajorService implements BaseService<Major> {
 
 	@Override
 	public Major getById(int id) {
-		return null;
+		return this.getById(id);
 	}
 
 	@Override
 	public List<Major> getAllByTimeDesc() {
 		return this.majorDaoImpl.getAllByTimeDesc();
+	}
+
+	@Override
+	public Major getByIdEager(Serializable id) {
+		return this.getByIdEager(id);
+	}
+
+	@Override
+	@Transactional
+	public void update(Major t) {
+		this.majorDaoImpl.update(t);
 	}
 
 }

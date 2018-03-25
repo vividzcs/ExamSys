@@ -1,5 +1,6 @@
 package com.nwuer.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,17 @@ public class AcademyService implements BaseService<Academy>{
 	@Override
 	public List<Academy> getAllByTimeDesc() {
 		return this.academyDaoImpl.getAllByTimeDesc();
+	}
+
+	@Override
+	public Academy getByIdEager(Serializable id) {
+		return this.getByIdEager(id);
+	}
+
+	@Override
+	@Transactional
+	public void update(Academy t) {
+		this.academyDaoImpl.update(t);
 	}
 
 	

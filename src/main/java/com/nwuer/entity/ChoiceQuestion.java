@@ -29,9 +29,12 @@ public class ChoiceQuestion {
 	@Column(columnDefinition="tinyint not null default 0")
 	private byte degree; //难度  0:简单  1:较简单  2:中等  3 较难  4:较难
 	private long create_time;  //创建时间
-	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)
+	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="sub_choice")
-	private Subject subject;
+	private Subject subject = new Subject();
+	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
+	@JoinColumn(name="major_choice")
+	private Major major = new Major();
 	public int getCho_id() {
 		return cho_id;
 	}
@@ -80,5 +83,16 @@ public class ChoiceQuestion {
 	public void setSubject(Subject subject) {
 		this.subject = subject;
 	}
-	
+	public long getCreate_time() {
+		return create_time;
+	}
+	public void setCreate_time(long create_time) {
+		this.create_time = create_time;
+	}
+	public Major getMajor() {
+		return major;
+	}
+	public void setMajor(Major major) {
+		this.major = major;
+	}
 }

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -43,6 +44,7 @@ import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 
 @Controller
+@Scope("prototype")
 public class TeacherAction extends ActionSupport implements ModelDriven<Teacher> {
 	private Teacher teacher = new Teacher();
 	@Override

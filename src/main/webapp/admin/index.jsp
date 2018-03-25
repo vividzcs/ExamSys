@@ -48,9 +48,9 @@
                     <li  >
                         <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">题库维护</span> <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a class="J_menuItem" href="importQbank.html">导入题库</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/importQbank.jsp">导入题库</a>
                             </li>
-                            <li><a class="J_menuItem" href="emportQbank.html">导出题库</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/showExport.action">导出题库</a>
                             </li>
                         </ul>
                     </li>

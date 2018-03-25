@@ -27,10 +27,26 @@ public class SubjectiveQuestion {
 	@Column(columnDefinition="tinyint not null default 0")
 	private byte degree;
 	private long create_time;  //创建时间
-	private byte sq_kind; // 0:名词解释,1:简答,2:计算,3:综合
+	private byte sq_kind; // 0:名词解释,1:填空,2:简答,3:计算,4:综合
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-	@JoinColumn(name="subj_sub")
-	private Subject subject;
+	@JoinColumn(name="major_subj")
+	private Major major = new Major();
+	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
+	@JoinColumn(name="sub_subj")
+	private Subject subject = new Subject();
+	
+	public long getCreate_time() {
+		return create_time;
+	}
+	public void setCreate_time(long create_time) {
+		this.create_time = create_time;
+	}
+	public Major getMajor() {
+		return major;
+	}
+	public void setMajor(Major major) {
+		this.major = major;
+	}
 	public int getSq_id() {
 		return sq_id;
 	}

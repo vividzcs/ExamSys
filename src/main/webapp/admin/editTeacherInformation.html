@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="exam">
 	<head>
 		<meta charset="UTF-8">
 		<title>学生考试系统</title>
@@ -14,7 +14,7 @@
     <link href="../style/css/animate.css" rel="stylesheet">
     <link href="../style/css/style.css?v=2.2.0" rel="stylesheet">
 	</head>
-	<body>
+	<body ng-controller="department">
 		       <div class="row  border-bottom white-bg dashboard-header" style="height: 100%;">
 		         <div id="addDepartment" class="container tab-pane active"><br>
 				       <div class="col-lg-10" >
@@ -56,18 +56,17 @@
                                        <span class="sex">女</span><input   type="radio" name="sex">
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                 <div class="form-group" ng-controller="department">
                                         <label class="col-sm-3 control-label">院系</label>
                                         <div class="col-sm-8">
-                                           <select class="form-control m-b"  ng-model="selected" ng-options="m for m in tdepartment" >
+                                            <select class="form-control m-b"  ng-model="selected" ng-options="m.department for m in departments"  >
                                                  <option value="">-- 请选择 --</option>
                                             </select>
                                         </div>
-                                    </div>
                                     <div class="form-group">
                                         <div class="col-sm-8 col-sm-offset-3">
                                             <button class="btn btn-primary addStudet" type="submit"> 确认添加</button>
-                                <button class="btn btn-primary addStudet" type="submit"> <a href="mangeTeacher.html" style="color: white;">返回列表</a></button>
+                                <button class="btn btn-primary addStudet" type="submit"> <a href="../manTeaInformation/mangeTeacher.html" style="color: white;">返回列表</a></button>
 
                                         </div>
                                     </div>
@@ -133,5 +132,10 @@
         
         });
         </script>
+         <script src="../style/js/anjularJS/bower_components/angular/angular.min.js"></script>
+  <script src="../style/js/anjularJS/bower_components/angular-route/angular-route.js"></script>
+   <script src="../style/js/anjularJS/anjularjs/app.js"></script>
+   <script src="../style/js/anjularJS/anjularjs/control.js"></script>
+  
 	</body>
 </html>

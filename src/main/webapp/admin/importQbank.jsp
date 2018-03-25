@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html ng-app="exam">
 
@@ -41,43 +43,21 @@
                                 </div>
                             </div>
                             <div class="ibox-content">
-                                <form class="form-horizontal m-t" id="signupForm">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">题库名称</label>
-                                        <div class="col-sm-8">
-                                            <input id="Bname" name="Bname" style="width:50%" class="form-control" type="text">
-                                        </div>
-                                    </div>
+                                <form class="form-horizontal m-t" id="signupForm" action="${pageContext.request.contextPath }/admin/importQuestionBank.action" method="post" enctype="multipart/form-data">
                                       <div class="form-group" >
                                         <label class="col-sm-3 control-label">题库类型</label>
                                         <div class="col-sm-8">
-                                              <select class="form-control m-b"  style="width:50%" ng-model="selectePaper" ng-options="m for m in paperStyle" >
-                                                 <option value="单选">单选</option>
-                                                 <option value="判断">判断</option>
-                                                 <option value="">主观题</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">专业</label>
-                                        <div class="col-sm-8">
-                                            <select class="form-control m-b" style="width: 50%" ng-model="selected" ng-options="m.profess for m in professes" ng-change="changeClassification(selected)">
-                                                 <option value="">-- 请选择 --</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">科目</label>
-                                        <div class="col-sm-8">
-                                             <select class="form-control m-b" style="width: 50%" ng-model="selected2" ng-options="m for m in course" >
-                                             	  <option value="">-- 请选择 --</option>
+                                              <select class="form-control m-b"  style="width:50%" ng-model="selectePaper" ng-options="m for m in paperStyle" name="kind">
+                                                 <option value="0">单选</option>
+                                                 <option value="1">判断</option>
+                                                 <option value="2">主观题</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">上传题库</label>
                                         <div class="col-sm-8">
-                                            <input id="upflie" type="file"    type="text" aria-required="true" aria-invalid="true" class="error">
+                                            <input id="upflie" type="file" name="file_upload" type="text" aria-required="true" aria-invalid="true" class="error">
                                         </div>
                                     </div>
                                     <div class="form-group">

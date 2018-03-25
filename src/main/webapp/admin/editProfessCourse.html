@@ -16,11 +16,11 @@
 	</head>
 	<body>
 		            <div class="row  border-bottom white-bg dashboard-header" style="height: 100%;">
-		         <div id="editDepartment" class="container tab-pane active"><br>
+		         <div id="addDepartment" class="container tab-pane active"><br>
 				       <div class="col-lg-10" >
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <h5> 编辑院系</h5>
+                                <h5> 编辑科目</h5>
                                 <div class="ibox-tools">
                                     <a class="collapse-link">
                                         <i class="fa fa-chevron-up"></i>
@@ -28,25 +28,30 @@
                                 </div>
                             </div>
                             <div class="ibox-content">
-                                <form class="form-horizontal m-t" id="editDepartmentForm">
-                                	<div class="form-group">
-                                        <label class="col-sm-3 control-label">专业编号</label>
+                                <form class="form-horizontal m-t" id="editProfessForm">
+                                     <div class="form-group">
+                                        <label class="col-sm-3 control-label">院系名称</label>
                                         <div class="col-sm-8">
-                                            <input id="dnumber" name="dnumber" value="要修改的专业号" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error sname">
+                                            <input id="departmentname" name="departmentname" value="要修改的院系名称" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error sname">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">院系名称</label>
+                                        <label class="col-sm-3 control-label">专业编号</label>
                                         <div class="col-sm-8">
-                                            <input id="dname" name="dname" value="要修改的院系名称" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error sname">
+                                            <input id="professnumber" name="professnumber" value="要修改的专业号" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error sname">
+                                        </div>
+                                    </div>
+                                      <div class="form-group">
+                                        <label class="col-sm-3 control-label">专业名称</label>
+                                        <div class="col-sm-8">
+                                            <input id="professname" name="professname" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error sname">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-sm-8 col-sm-offset-3">
-                                            <button class="btn btn-primary addStudet" type="submit"> 确认修改</button>&nbsp;&nbsp;&nbsp;
-                                            <button class="btn btn-primary addStudet" ><a href="manageProfess.html" style="color: white;">返回列表</a></button>
+                                            <button class="btn btn-primary  " type="submit"> 确认修改</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-primary addStudet" type="submit" ><a href="manageProfess.html" style="color: white;">返回列表</a></button>
 
-                                         </div>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -95,16 +100,22 @@
             $("#commentForm").validate();
 
             // validate signup form on keyup and submit
-            $("#editDepartmentForm").validate({
+         
+            // validate signup form on keyup and submit
+            $("#addProfessForm").validate({
                 rules: {
-                    dname:  "required",
-                    dnumber:"required",
+                    professCnumber:  "required",
+                    professCname:"required",
                 },
                 messages: {
-                   dname:'输入院系名称',
-                    dnumber:"输入院系编号",
+                  
+                    professCnumber:'输入科目编号',
+                    professCname:"输入科目名称",
+                 
                 }
-                });
+
+            });
+        
              });
         
         </script>

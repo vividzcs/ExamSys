@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.nwuer.entity.Academy;
@@ -16,6 +17,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
 @Controller
+@Scope("prototype")
 public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 	private Map<String,String> result = new HashMap<String,String>();
 	public Map<String, String> getResult() {
