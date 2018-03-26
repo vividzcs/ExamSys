@@ -61,5 +61,12 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 		}
 		
 	}
+	
+	public String delete() {
+		//验证数据
+		
+		this.majorService.delete(this.major.getM_id());
+		return SUCCESS;
+	}
 
 }

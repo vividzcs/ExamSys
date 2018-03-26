@@ -110,6 +110,14 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		
 		return SUCCESS;
 	}
+	
+	public String delete() {
+		//验证
+		
+		this.teacherService.delete(this.teacher.getT_id());
+		return SUCCESS;
+	}
+	
 	/**
 	 * 显示编辑教师页面
 	 * @return

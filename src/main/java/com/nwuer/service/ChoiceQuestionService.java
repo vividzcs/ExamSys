@@ -54,4 +54,10 @@ public class ChoiceQuestionService implements BaseService<ChoiceQuestion> {
 		this.choiceQuestionDaoImpl.clear();
 	}
 
+	@Override
+	@Transactional
+	public void delete(int id) {
+		this.choiceQuestionDaoImpl.delete(id);
+	}
+
 }

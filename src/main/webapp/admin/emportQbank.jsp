@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div class="ibox-content">
-                                <form class="form-horizontal m-t" id="signupForm" action="" method="post">
+                                <form class="form-horizontal m-t" id="signupForm" action="${pageContext.request.contextPath }/admin/admin_downloadQuestionBank.action" method="post">
                                            <div class="form-group">
                                         <label class="col-sm-3 control-label">题库类型</label>
                                         <div class="col-sm-8">

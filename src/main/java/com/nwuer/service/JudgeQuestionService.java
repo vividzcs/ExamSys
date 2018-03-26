@@ -55,4 +55,10 @@ public class JudgeQuestionService implements BaseService<JudgeQuestion> {
 		this.judgeQuestionImpl.clear();
 	}
 
+	@Override
+	@Transactional
+	public void delete(int id) {
+		this.judgeQuestionImpl.delete(id);
+	}
+
 }

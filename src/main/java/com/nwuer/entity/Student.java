@@ -40,11 +40,11 @@ public class Student {
 	//רҵ
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="major_stu")
-	private Major major;
+	private Major major = new Major();
 	//Ժϵ
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="academy_stu")
-	private Academy academy;
+	private Academy academy = new Academy();
 	public int getS_id() {
 		return s_id;
 	}

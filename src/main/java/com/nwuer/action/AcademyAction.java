@@ -41,8 +41,20 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 	 */
 	public String add() {
 		//验证
+		try {
+			this.academyService.add(academy);
+		}catch(Exception e) {
+			String info = "此院系下还有其他专业,请先清理此院系下的专业";
+			
+		}
 		
-		this.academyService.add(academy);
+		return SUCCESS;
+	}
+	
+	public String delete() {
+		//验证
+		
+		this.academyService.delete(this.academy.getA_id());
 		return SUCCESS;
 	}
 	

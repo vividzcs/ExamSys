@@ -52,4 +52,10 @@ public class MajorService implements BaseService<Major> {
 		this.majorDaoImpl.update(t);
 	}
 
+	@Override
+	@Transactional
+	public void delete(int id) {
+		this.majorDaoImpl.delete(id);
+	}
+
 }

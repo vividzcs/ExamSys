@@ -61,4 +61,9 @@ public class AdminService implements BaseService<Admin> {
 	public void updateLastLogin(long t,int id) {
 		this.adminDaoImpl.updateLastLogin(t,id);
 	}
+
+	@Override
+	public void delete(int id) {
+		
+	}
 }

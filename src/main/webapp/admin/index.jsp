@@ -50,7 +50,7 @@
                         <ul class="nav nav-second-level">
                             <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/importQbank.jsp">导入题库</a>
                             </li>
-                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/showExport.action">导出题库</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/emportQbank.jsp">导出题库</a>
                             </li>
                         </ul>
                     </li>
@@ -59,7 +59,7 @@
                     <li>
                         <a href="index.html#"><i class="fa fa fa-globe"></i> <span class="nav-label">人员维护信息</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                               <li><a class="J_menuItem" href="mangeStudent.html">管理学生信息</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/student_list.action">管理学生信息</a>
                             </li>
                             <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/teacher_list.action">管理教师信息</a>
                             </li>
@@ -68,6 +68,8 @@
                             <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/department_list.action">管理院系信息</a>
                             </li>
                             <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/profess_list.action">管理专业信息</a>
+                            </li>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/subject_list.action">管理科目信息</a>
                             </li>
                             <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/school_edit.action">管理学校信息</a>
                             </li>

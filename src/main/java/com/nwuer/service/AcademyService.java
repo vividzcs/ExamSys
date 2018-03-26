@@ -59,6 +59,12 @@ public class AcademyService implements BaseService<Academy>{
 		this.academyDaoImpl.update(t);
 	}
 
+	@Override
+	@Transactional
+	public void delete(int id) {
+		this.academyDaoImpl.delete(id);
+	}
+
 	
 
 

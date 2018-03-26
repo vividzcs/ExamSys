@@ -65,6 +65,11 @@ public class TeacherService implements BaseService<Teacher> {
 		this.teacherDaoImpl.update(t);
 		
 	}
+	@Override
+	@Transactional
+	public void delete(int id) {
+		this.teacherDaoImpl.delete(id);
+	}
 	
 	
 }

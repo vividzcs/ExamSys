@@ -37,5 +37,15 @@ public interface BaseService<T> {
 	
 	public T getByIdEager(Serializable id);
 	
+	/**
+	 * ¸üÐÂ
+	 * @param t
+	 */
 	public void update(T t);
+	
+	/**
+	 * É¾³ý
+	 * @param id
+	 */
+	public void delete(int id);
 }

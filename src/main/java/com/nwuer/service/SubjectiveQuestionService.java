@@ -53,4 +53,10 @@ public class SubjectiveQuestionService implements BaseService<SubjectiveQuestion
 	public void clear() {
 		this.subjectiveQuestionDaoImpl.clear();
 	}
+
+	@Override
+	@Transactional
+	public void delete(int id) {
+		this.subjectiveQuestionDaoImpl.delete(id);
+	}
 }

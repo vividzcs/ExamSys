@@ -50,4 +50,10 @@ public class SubjectService implements BaseService<Subject> {
 		return this.subjectDaoImpl.getIdByName(name);
 	}
 
+	@Override
+	@Transactional
+	public void delete(int id) {
+		this.subjectDaoImpl.delete(id);
+	}
+
 }

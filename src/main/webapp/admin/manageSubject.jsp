@@ -36,7 +36,7 @@
                     <div class="col-lg-12">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <h5>院系管理 <a href="#">   <button class="btn btn-primary addStudet" type="submit"><a href="${pageContext.request.contextPath }/admin/addDepartment.jsp" style="color: white;">添加院系</a></button></a></h5>
+                                <h5>科目管理 <a href="#">   <button class="btn btn-primary addStudet" type="submit"><a href="${pageContext.request.contextPath }/admin/addSubject.jsp" style="color: white;">添加科目</a></button></a></h5>
                                 <div class="ibox-tools">
                                     <a class="collapse-link">
                                         <i class="fa fa-chevron-up"></i>
@@ -47,20 +47,24 @@
                                 <table class="table table-striped table-bordered table-hover dataTables-example">
                                     <thead>
                                         <tr>
-                                        	 <th>院系编号</th>
-                                            <th>院系名称</th>
+                                        	 <th>院系</th>
+                                            <th>专业</th>
+                                            <th>课程</th>
+                                            <th>课程编号</th>
                                             <th>操作</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                      <c:forEach items="${list }" var="academy">
+                                    <c:forEach items="${list }" var="subject">
                                         <tr class="gradeX">
-                                            <td> ${academy.a_number }</td>
-                                            <td> ${academy.a_name }</td>
-                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/department_edit.action?a_id=${academy.a_id }">修改</a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath }/admin/department_delete.action?a_id=${academy.a_id }" class="deletedepartment">删除</a></td>
+                                            <td> ${subject.major.academy.a_name }</td>
+                                              <td> ${subject.major.m_name }</td>
+                                           <td> ${subject.sub_name }</td>
+                                            <td> ${subject.sub_number }</td>
+                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/subject_edit.action?sub_id=${subject.sub_id}">修改</a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath }/admin/subject_delete.action?sub_id=${subject.sub_id}" class="deletedepartment">删除</a></td>
                                         </tr>
-                                       </c:forEach>
-                                    </tbody><!-- 删除院系,院系下的老师也会被删除 -->
+                                        </c:forEach>
+                                    </tbody>
                                     <tfoot>
                                     </tfoot>
                                 </table>

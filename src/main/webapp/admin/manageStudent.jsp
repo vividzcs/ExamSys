@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html ng-app="exam">
 
@@ -62,31 +65,25 @@
                                              <th>姓名</th>
 											 <th>学号</th>
 											 <th>性别</th>
-											 <th>密码</th>
 											 <th>院系 </th>
 											 <th>专业</th>
 											  <th>操作</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                    <c:forEach items="${s_list }"  var="stu">
                                         <tr class="gradeX">
-                                             <th>张三</th>
-											 <th>201688584</th>
-											 <th>密码</th>
-											 <th>性别</th>
-											 <th>信息学院</th>
-											 <th>电子信息</th>
-                                            <td class="center"><a href="" class="delete">删除</a>&nbsp;<a href="../editStudentInfromation.html" class="edit">修改</a></td>
+                                             <th>${stu.s_name }</th>
+											 <th>${stu.s_number }</th>
+											 <th>
+											 	<c:if test="${stu.s_sex eq 1 }">男</c:if>
+											 	<c:if test="${stu.s_sex eq 0 }">女</c:if>
+											 </th>
+											 <th>${stu.academy.a_name }</th>
+											 <th>${stu.major.m_name}</th>
+                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/student_delete.action?s_id=${stu.s_id}" class="delete">删除</a>&nbsp;<a href="${pageContext.request.contextPath }/admin/student_edit.action?s_id=${stu.s_id}" class="edit">修改</a></td>
                                         </tr>
-                                            <tr class="gradeA">
-                                             <th>文科</th>
-											 <th>难</th>
-											 <th>女</th>
-											 <th>数学院 </th>
-											 <th>5</th>
-											 <th>应用数学</th>
-                                            <td class="center"><a href="">删除</a>&nbsp;<a href="../editStudentInfromation.html">修改</a></td>
-                                        </tr>
+                                        </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
@@ -164,27 +161,11 @@
                                 </div>
                             </div>
                             <div class="ibox-content">
-                                <form class="form-horizontal m-t" id="importStudentForm">
-                                      <div class="form-group">
-                                        <label class="col-sm-3 control-label">院系</label>
-                                        <div class="col-sm-8">
-                                            <select class="form-control m-b"  ng-model="selected" ng-options="m.department for m in departments" ng-change="changeClassification(selected)">
-                                                 <option value="">-- 请选择 --</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">专业</label>
-                                        <div class="col-sm-8">
-                                             <select class="form-control m-b" ng-model="selected2" ng-options="m for m in profess" >
-                                             	  <option value="">-- 请选择 --</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                <form class="form-horizontal m-t" id="importStudentForm" action="${pageContext.request.contextPath }/admin/student_importStudent.action" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">学生名单</label>
                                         <div class="col-sm-8">
-                                            <input id=" upfile"   type="file"   >
+                                            <input id="upfile"   type="file" name="file_upload"  >
                                         </div>
                                     </div>
                                       <div class="form-group">
@@ -208,23 +189,7 @@
                                 </div>
                             </div>
                             <div class="ibox-content">
-                                <form class="form-horizontal m-t" id="emportStudentForm">
-                                       <div class="form-group">
-                                        <label class="col-sm-3 control-label">院系</label>
-                                        <div class="col-sm-8">
-                                            <select class="form-control m-b"  ng-model="selected" ng-options="m.department for m in departments" ng-change="changeClassification(selected)">
-                                                 <option value="">-- 请选择 --</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">专业</label>
-                                        <div class="col-sm-8">
-                                             <select class="form-control m-b" ng-model="selected2" ng-options="m for m in profess" >
-                                             	  <option value="">-- 请选择 --</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                <form class="form-horizontal m-t" id="emportStudentForm" action="${pageContext.request.contextPath }/admin/student_exportStudent.action" method="post">
                                     <div class="form-group">
                                         <div class="col-sm-8 col-sm-offset-3">
                                             <button class="btn btn-primary" type="submit"  class=" search">下载名单</button>

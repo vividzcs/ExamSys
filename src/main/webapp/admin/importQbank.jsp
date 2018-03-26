@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                             <div class="ibox-content">
-                                <form class="form-horizontal m-t" id="signupForm" action="${pageContext.request.contextPath }/admin/importQuestionBank.action" method="post" enctype="multipart/form-data">
+                                <form class="form-horizontal m-t" id="signupForm" action="${pageContext.request.contextPath }/admin/admin_importQuestionBank.action" method="post" enctype="multipart/form-data">
                                       <div class="form-group" >
                                         <label class="col-sm-3 control-label">题库类型</label>
                                         <div class="col-sm-8">

@@ -44,32 +44,11 @@
 				</result>
 				<result name="logout">/index.jsp</result>
 			</action>
-			<action name="importStudent" class="studentAction" method="importStudent">
-				<result name="success" type="json">
-					<param name="root">result</param>
-				</result>
-				<result name="error" type="json">
-					<param name="root">result</param>
-				</result>
-			</action>
-			<action name="importQuestionBank" class="adminAction" method="importQuestionBank">
-				<result name="success" type="json">
-					<param name="root">result</param>
-				</result>
-				<result name="error" type="json">
-					<param name="root">result</param>
-				</result>
-			</action>
 			
 			<action name="teacher_*" class="teacherAction" method="{1}">
 				<result name="list">manageTeacher.jsp</result>
 				<result name="success" type="redirectAction">teacher_list</result>
 				<result name="error">opationError.jsp</result>
-				<!-- <result name="toexcelOK" type="stream">  
-			       <param name="contentType">application/vnd.ms-excel</param>                   
-			       <param name="contentDisposition">attachment;filename="${fileName}"</param>   
-			       <param name="inputName">excelIS</param>  
-			    </result> -->
 			</action>
 			
 			<action name="department_*" class="academyAction" method="{1}" >
@@ -84,14 +63,20 @@
 				<result name="success" type="redirectAction">profess_list</result>
 				<result name="error">addProfess.jsp</result>
 			</action>
-			<action name="student_*" class="studentAction" method="{1}" >
-				<result name="success" type="json">
-					<param name="root">result</param>
-				</result>
-				<result name="error" type="json">
-					<param name="root">result</param>
-				</result>
+			
+			<action name="subject_*" class="subjectAction" method="{1}" >
+				<result name="showAdd">addSubject.jsp</result>
+				<result name="list">manageSubject.jsp</result>
+				<result name="success" type="redirectAction">subject_list</result>
+				<result name="error">addSubject.jsp</result>
 			</action>
+			
+			<action name="student_*" class="studentAction" method="{1}">
+				<result name="list">manageStudent.jsp</result>
+				<result name="success" type="redirectAction">student_list</result>
+				<result name="error">opationError.jsp</result>
+			</action>
+			
 			<action name="school_*" class="schoolAction" method="{1}" >
 				<result name="edit">manageSchool.jsp</result>
 				<result name="success" type="redirectAction">school_edit</result>

@@ -80,4 +80,10 @@ public class StudentService implements BaseService<Student> {
 	public Student getByNumber(String number) {
 		return this.StudentDaoImpl.getByNumber(number);
 	}
+
+	@Override
+	@Transactional
+	public void delete(int id) {
+		this.StudentDaoImpl.delete(id);
+	}
 }
