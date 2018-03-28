@@ -18,6 +18,8 @@ import com.nwuer.utils.Crpty;
 public class AdminService implements BaseService<Admin> {
 	@Autowired
 	private AdminDaoImpl adminDaoImpl;
+	@Autowired
+	private Crpty crpty;
 
 	public Admin getByNumberAndPass(Admin admin) {
 		return this.adminDaoImpl.getByNumberAndPass(admin);
@@ -25,8 +27,6 @@ public class AdminService implements BaseService<Admin> {
 	
 	@Transactional
 	public void update(Admin t) {
-		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
 		t.setAd_pass(crpty.encrypt(t.getAd_pass()));
 		this.adminDaoImpl.update(t);
 	}
@@ -64,6 +64,5 @@ public class AdminService implements BaseService<Admin> {
 
 	@Override
 	public void delete(int id) {
-		
 	}
 }

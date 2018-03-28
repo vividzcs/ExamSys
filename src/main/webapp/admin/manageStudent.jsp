@@ -1,39 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html>
-<html ng-app="exam">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="renderer" content="webkit">
-
-    <title>学生考试系统</title>
-    <meta name="keywords" content="学生考试系统，专为学生打造在校考试功能">
-    <meta name="description" content="大学生在线考试系统，学生在网络上在线填写试卷">
-
-    <link href="../style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link href="../style/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
-
-    <!-- Morris -->
-    <link href="../style/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
-
-    <!-- Gritter -->
-    <link href="../style/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
-
-    <link href="../style/css/animate.css" rel="stylesheet">
-    <link href="../style/css/style.css?v=2.2.0" rel="stylesheet">
-    <!--<link rel="stylesheet" type="text/css" href="../style/css/self.css"/>-->
+<jsp:include page="/head.jsp"></jsp:include>
     	<style>
     			.pagination{
     		float: right;
     	}
     	</style>
-    
-</head>
-
+    	
 <body ng-controller="department">
 <!--侧栏部分结束-->
 <!--右侧的部分-->
@@ -317,35 +291,16 @@
           $(document).ready(function () {
             $('.dataTables-example').dataTable(); 
 
-            /* Init DataTables */
-            var oTable = $('#editable').dataTable();
-
-            /* Apply the jEditable handlers to the table */
-            oTable.$('td').editable('../../../example_ajax.php', {
-                "callback": function (sValue, y) {
-                    var aPos = oTable.fnGetPosition(this);
-                    oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-                },
-                "submitdata": function (value, settings) {
-                    return {
-                        "row_id": this.parentNode.getAttribute('id'),
-                        "column": oTable.fnGetPosition(this)[2]
-                    };
-                },
-
-                "width": "90%",
-                "height": "100%"
-            });
         });
-     //改变url中的参数
-//   $(".nav-link").on("click",function(){
-//   	var test= window.location.href;
-//   	var index = test.indexOf("?");
-//      window.location.href=window.location.href.substring(0,index)+"#"+this.href;
-//     console.log(window.location.href);
-//   })
-        </script>
-   
-</body>
+        
+          $(function(){
+        	  $.post('${pageContext.request.contextPath }/admin/admin_mes.action',{},function(data){
+      			console.log(data)
+      			
+      		},"json")
+          })
+        
+   </script>     
+        </body>
 
 </html>

@@ -6,26 +6,20 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.nwuer.entity.Academy;
 import com.nwuer.entity.Major;
 import com.nwuer.entity.Student;
-import com.nwuer.entity.Teacher;
 import com.nwuer.service.AcademyService;
 import com.nwuer.service.MajorService;
 import com.nwuer.service.StudentService;
@@ -65,6 +59,8 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	private AcademyService academyService; 
 	@Autowired
 	private MajorService majorService;
+	@Autowired
+	private Crpty crpty;
 	
 
 	/**
@@ -135,8 +131,6 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		//开始写入
 		ServletOutputStream sos = null;
 		WritableWorkbook wwk = null;
-		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setContentType("application/octet-stream");
 		String a_name = "全部学生名单.xls";

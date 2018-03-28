@@ -19,10 +19,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.nwuer.entity.Academy;
 import com.nwuer.entity.Admin;
@@ -31,7 +29,6 @@ import com.nwuer.entity.JudgeQuestion;
 import com.nwuer.entity.Major;
 import com.nwuer.entity.Subject;
 import com.nwuer.entity.SubjectiveQuestion;
-import com.nwuer.entity.Teacher;
 import com.nwuer.service.AcademyService;
 import com.nwuer.service.AdminService;
 import com.nwuer.service.ChoiceQuestionService;
@@ -40,11 +37,11 @@ import com.nwuer.service.MajorService;
 import com.nwuer.service.SubjectService;
 import com.nwuer.service.SubjectiveQuestionService;
 import com.nwuer.utils.Crpty;
+import com.nwuer.utils.ValidateUtil;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
 import jxl.Cell;
-import jxl.CellView;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
@@ -75,6 +72,11 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	private JudgeQuestionService judgeQuestionService;
 	@Autowired
 	private SubjectiveQuestionService subjectiveQuestionService;
+	@Autowired
+	private Crpty crpty;
+	@Autowired
+	private ValidateUtil validateUtil;
+	
 	private Map result = new HashMap();
 	public Map getResult() {
 		return result;
@@ -98,8 +100,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		//查询数据
 		int ad_id = ((Admin)req.getSession().getAttribute("admin")).getAd_id();
 		Admin newAdmin = this.adminService.getById(ad_id);
-		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
 		//修改
 		String pass = crpty.encrypt(admin.getAd_pass());
 		
@@ -133,7 +133,19 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 			result.put("msg", "验证码错误");
 			return ERROR;
 		}
-		
+		//验证登录信息
+		String msg = this.validateUtil.validateNumber(this.admin.getAd_number(), 10);
+		if(msg!= null) {
+			result.put("status","0");
+			result.put("msg", "验证码错误");
+			return ERROR;
+		}
+		msg = this.validateUtil.validateMinLength(this.admin.getAd_pass(), 6);
+		if(msg!= null) {
+			result.put("status","0");
+			result.put("msg", "验证码错误");
+			return ERROR;
+		}
 		Admin adminConfirm = this.adminService.getByNumberAndPass(this.admin);
 		if(adminConfirm != null) {
 			//成功

@@ -66,6 +66,8 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	private AcademyService academyService;
 	@Autowired
 	private StudentService studentService;
+	@Autowired
+	private Crpty crpty;
 	
 	/**
 	 * 查找学生信息
@@ -83,8 +85,6 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 			return "find";
 		}
 		Student s = this.studentService.getByNumber(s_number);
-		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
 		s.setS_pass(crpty.decrypt(s.getS_pass()));
 		ServletActionContext.getRequest().setAttribute("student", s);
 		return "find";
@@ -223,8 +223,6 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 			Iterator<Teacher> iterator = set.iterator();
 			int i=1;
 			Teacher teacher = null;
-			ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-			Crpty crpty = (Crpty) applicationContext.getBean("crpty");
 			while(iterator.hasNext()) {
 				teacher = iterator.next();
 				Label lab_0 = new Label(0, i, teacher.getT_number());

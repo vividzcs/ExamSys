@@ -12,14 +12,14 @@
     <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
     <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
 
-    <link href="./style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link href="./style/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="${pageContext.request.contextPath }/style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="${pageContext.request.contextPath }/style/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
 
-    <link href="./style/css/animate.css" rel="stylesheet">
-    <link href="./style/css/style.css?v=2.2.0" rel="stylesheet">
+    <link href="${pageContext.request.contextPath }/style/css/animate.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath }/style/css/style.css?v=2.2.0" rel="stylesheet">
    <style>
    body{
-   	background: url(./style/img/bg .jpg) no-repeat center ;
+   	background: url(${pageContext.request.contextPath }/style/img/bg .jpg) no-repeat center ;
    	background-position: 500px 200px;
    }
   .login .role {

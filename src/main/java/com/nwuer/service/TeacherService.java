@@ -18,6 +18,8 @@ import com.nwuer.utils.Crpty;
 public class TeacherService implements BaseService<Teacher> {
 	@Autowired
 	private TeacherDaoImpl teacherDaoImpl;
+	@Autowired
+	private Crpty crpty;
 	
 	public Teacher getByNumberAndPass(Teacher teacher) {
 		return this.teacherDaoImpl.getByNumberAndPass(teacher);
@@ -25,8 +27,6 @@ public class TeacherService implements BaseService<Teacher> {
 	@Override
 	@Transactional
 	public int add(Teacher t) {
-		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
 		t.setCreate_time(System.currentTimeMillis());
 		t.setT_pass(crpty.encrypt(t.getT_pass()));
 		return this.teacherDaoImpl.add(t);
@@ -37,8 +37,6 @@ public class TeacherService implements BaseService<Teacher> {
 	}
 	@Override
 	public Teacher getById(int id) {
-		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
 		Teacher t = this.teacherDaoImpl.getById(id);
 		t.setT_pass(crpty.decrypt(t.getT_pass()));
 		return t;
@@ -58,8 +56,6 @@ public class TeacherService implements BaseService<Teacher> {
 	@Override
 	@Transactional
 	public void update(Teacher t) {
-		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
 		t.setT_pass(crpty.encrypt(t.getT_pass()));
 		
 		this.teacherDaoImpl.update(t);

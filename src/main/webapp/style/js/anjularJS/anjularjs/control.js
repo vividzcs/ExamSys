@@ -5,32 +5,32 @@ angular.module('Controllers', [])
 .controller('department',['$scope','$http',function($scope,$http){
 	   //首先要添加我们选项内的院系信息
 //	   先要获取到院系信息
-      $scope.departments = [
-      {
-      	department:'信息科学与技术学院',
-      	profess:['软件工程','计算机科学与技术','电子信息','通信工程']
-      },
-       {
-      	department:'数学学院',
-      	profess:[ '金融数学','应用数学','数学建模','通信工程' 	]
-      },
-        {
-      	department:'化学材料学院',
-      	profess:['应用化学','材料管理','应用化学','通信工程1']
-      }
-      ];
+//      $scope.departments = [
+//      {
+//      	department:'信息科学与技术学院',
+//      	profess:['软件工程','计算机科学与技术','电子信息','通信工程']
+//      },
+//       {
+//      	department:'数学学院',
+//      	profess:[ '金融数学','应用数学','数学建模','通信工程' 	]
+//      },
+//        {
+//      	department:'化学材料学院',
+//      	profess:['应用化学','材料管理','应用化学','通信工程1']
+//      }
+//      ];
         $scope.changeClassification=function(selectD){
         	$scope.profess=selectD.profess;
         }
         
         //使用时利用http
-//     $http({
-//     	url:'返回院系和专业的后台文件',
-//     	method:'get'
-//     }).success(function(info){
-//     	  $scope.departments=info;
-//     })
-//    
+     $http({
+     	url:'${pageContext.request.contextPath }/admin/student_mes.action',
+     	method:'get'
+     }).success(function(info){
+     	  $scope.departments=info;
+     })
+    
 }])
 ////管理教师的控制器
 //.controller('teacher',['$scope','$http',function($scope,$http){

@@ -16,7 +16,7 @@ public class ValidateUtil {
 	 * @return
 	 */
 	public String validateEmpty(String str) {
-		return "".equals(str) ? "此字段不能为空" : null;
+		return "".equals(str) ? "字段不能为空" : null;
 	}
 	
 	/**
@@ -24,10 +24,27 @@ public class ValidateUtil {
 	 * @param str
 	 * @return
 	 */
-	public String validateLength(int len, String str) {
+	public String validateLength(String str, int len) {
 		if(str == null)
-			return "此字段格式错误";
-		return str.length() == len ? null : "此字段长度错误";
+			return "字段格式错误";
+		return str.length() == len ? null : "字段长度错误";
+	}
+	
+	public String validateMinLength(String str, int len) {
+		if(str == null)
+			return "字段格式错误";
+		return str.length() >= len ? null : "字段长度错误";
+	}
+	/**
+	 * 验证字符串为数字字符串,并且长度确定
+	 * @param number
+	 * @return
+	 */
+	public String validateNumber(String number,int len) {
+		if(!number.matches("[0-9]{10}")) {
+			return "字段格式错误";
+		}else
+			return null;
 	}
 	
 	

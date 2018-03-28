@@ -18,7 +18,9 @@ import com.nwuer.utils.Crpty;
 public class StudentService implements BaseService<Student> {
 	@Autowired
 	private StudentDaoImpl StudentDaoImpl;
-
+	@Autowired
+	private Crpty crpty;
+	
 	public Student getByNumberAndPass(Student stu) {
 		return this.StudentDaoImpl.getByNumberAndPass(stu);
 	}
@@ -27,8 +29,6 @@ public class StudentService implements BaseService<Student> {
 	@Transactional
 	public int add(Student t) {
 		//处理数据
-		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
 		t.setCreate_time(System.currentTimeMillis());
 		t.setS_pass(crpty.encrypt(t.getS_pass()));
 		return this.StudentDaoImpl.add(t);
@@ -50,8 +50,6 @@ public class StudentService implements BaseService<Student> {
 
 	@Override
 	public Student getById(int id) {
-		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
 		Student s = this.StudentDaoImpl.getById(id);
 		s.setS_pass(crpty.decrypt(s.getS_pass()));
 		return s;
@@ -70,8 +68,6 @@ public class StudentService implements BaseService<Student> {
 	@Override
 	@Transactional
 	public void update(Student t) {
-		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
 		t.setS_pass(crpty.encrypt(t.getS_pass()));
 		
 		this.StudentDaoImpl.update(t);

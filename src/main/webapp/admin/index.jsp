@@ -1,30 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="renderer" content="webkit">
-
-    <title>学生考试系统</title>
-    <meta name="keywords" content="学生考试系统，专为学生打造在校考试功能">
-    <meta name="description" content="大学生在线考试系统，学生在网络上在线填写试卷">
-
-    <link href="../style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link href="../style/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
-
-    <!-- Morris -->
-    <link href="../style/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
-    <!-- Gritter -->
-    <link href="../style/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
-
-    <link href="../style/css/animate.css" rel="stylesheet">
-    <link href="../style/css/style.css?v=2.2.0" rel="stylesheet">
-
-</head>
+<jsp:include page="/head.jsp"></jsp:include>
 
 <body  style="height: 100%;">
     <div id="wrapper">

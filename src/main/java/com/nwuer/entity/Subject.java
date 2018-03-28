@@ -23,6 +23,12 @@ public class Subject {
 	private String sub_name;
 	@Column(length=8)
 	private long create_time;  //创建时间
+	public long getCreate_time() {
+		return create_time;
+	}
+	public void setCreate_time(long create_time) {
+		this.create_time = create_time;
+	}
 	private String sub_number; //科目编号
 	@Column(columnDefinition="text")
 	private String sub_desc;
@@ -30,6 +36,12 @@ public class Subject {
 	@JoinColumn(name="major_sub")
 	private Major major; //专业
 	
+	public Major getMajor() {
+		return major;
+	}
+	public void setMajor(Major major) {
+		this.major = major;
+	}
 	public int getSub_id() {
 		return sub_id;
 	}
