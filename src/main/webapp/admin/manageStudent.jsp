@@ -73,36 +73,36 @@
                                 </div>
                             </div>
                             <div class="ibox-content">
-                                <form class="form-horizontal m-t" id="addStudentForm">
+                                <form class="form-horizontal m-t" id="addStudentForm" action="${pageContext.request.contextPath }/admin/student_add.action" method="post">
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">姓名</label>
                                         <div class="col-sm-8">
-                                            <input id="username" name="username" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error sname">
+                                            <input id="username" name="s_name" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error sname">
                                         </div>
                                     </div>
                                       <div class="form-group">
                                         <label class="col-sm-3 control-label">学号</label>
                                         <div class="col-sm-8">
-                                            <input id="usernumber" name="usernumber" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber">
+                                            <input id="usernumber" name="s_number" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">密码</label>
                                         <div class="col-sm-8">
-                                            <input id="password" name="password" class="form-control" type="password" class="spassword" require>
+                                            <input id="password" name="s_pass" class="form-control" type="password" class="spassword" require>
                                         </div>
                                     </div>
                                       <div class="form-group">
                                         <label class="col-sm-3 control-label">性别</label>
                                         <div class="col-sm-8">
-                                       <span class="sex">男</span>&nbsp;<input  checked="checked" type="radio" name="sex"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                       <span class="sex">女</span>&nbsp;<input   type="radio" name="sex">
+                                       <span class="sex">男</span>&nbsp;<input  checked="checked" type="radio" name="s_sex" value="1"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                       <span class="sex">女</span>&nbsp;<input   type="radio" name="s_sex" value="0">
                                         </div>
                                     </div>
                                        <div class="form-group">
                                         <label class="col-sm-3 control-label">院系</label>
                                         <div class="col-sm-8">
-                                            <select class="form-control m-b"  ng-model="selected" ng-options="m.department for m in departments" ng-change="changeClassification(selected)">
+                                            <select id="department" name="academy.a_id" class="form-control m-b"  ng-model="selected" ng-options="m.department for m in departments" ng-change="changeClassification(selected)">
                                                  <option value="">-- 请选择 --</option>
                                             </select>
                                         </div>
@@ -110,7 +110,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">专业</label>
                                         <div class="col-sm-8">
-                                             <select class="form-control m-b" ng-model="selected2" ng-options="m for m in profess" >
+                                             <select id="profess" name="major.m_id" class="form-control m-b" ng-model="selected2" ng-options="m for m in profess" >
                                              	  <option value="">-- 请选择 --</option>
                                             </select>
                                         </div>
@@ -292,13 +292,37 @@
             $('.dataTables-example').dataTable(); 
 
         });
-        
+          
+          /**
+          * 院系和专业的联动
+          */
+        var allData;
           $(function(){
-        	  $.post('${pageContext.request.contextPath }/admin/admin_mes.action',{},function(data){
-      			console.log(data)
+        	  $.post('${pageContext.request.contextPath }/admin/admin_mesDF.action',{},function(data){
+        		  allData = data;
+      			var strDept = '<option value="">-- 请选择 --</option>';
+      			for(var i in data) {
+      				strDept += '<option value="' + i + '">'+ data[i].department +'</option>'
+      			}
+      			
+      			$("#department").html(strDept);
       			
       		},"json")
           })
+          
+          $("#department").change(function(){
+        	  var id = $(this).val();
+        	  if(id != '') {
+        		  var prof = $("#profess");  
+        		  var strProf = '<option value="">-- 请选择 --</option>';
+        		  var professes = allData[id];
+        		  for(var i in professes.profess) {
+        			  strProf += '<option value="' + i + '">'+ professes.profess[i] +'</option>'
+        			}
+        		  prof.html(strProf);
+        	  }
+        	  
+          });
         
    </script>     
         </body>

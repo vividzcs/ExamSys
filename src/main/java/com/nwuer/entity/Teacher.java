@@ -26,12 +26,7 @@ public class Teacher {
 	private String t_name;  //姓名
 	@Column(columnDefinition="tinyint not null default 1")
 	private byte t_sex;
-	public byte getT_sex() {
-		return t_sex;
-	}
-	public void setT_sex(byte t_sex) {
-		this.t_sex = t_sex;
-	}
+	
 	private long create_time;  //创建时间
 	@Column(nullable=true)
 	private Long last_login;  //上次登录时间
@@ -88,5 +83,11 @@ public class Teacher {
 	}
 	public void setStatus(byte status) {
 		this.status = status;
+	}
+	public byte getT_sex() {
+		return t_sex;
+	}
+	public void setT_sex(byte t_sex) {
+		this.t_sex = t_sex;
 	}
 }

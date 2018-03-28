@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nwuer.daoimpl.PaperRuleDaoImpl;
 import com.nwuer.entity.PaperRule;
 
+@Service
 public class PaperRuleService implements BaseService<PaperRule>{
 	@Autowired
 	private PaperRuleDaoImpl paperRuleDaoImpl;

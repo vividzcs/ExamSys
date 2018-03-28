@@ -30,11 +30,11 @@ public class Academy {
 	@Column(length=4)
 	private String a_number; //ÔºÏµ±àºÅ
 	
-	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@OneToMany(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="academy_teacher")
 	private Set<Teacher> t_set = new HashSet<Teacher>();
 	
-	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@OneToMany(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="academy_major")
 	private Set<Major> m_set = new HashSet<Major>();
 

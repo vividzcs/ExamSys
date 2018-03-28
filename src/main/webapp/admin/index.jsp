@@ -54,9 +54,9 @@
                     <li>
                         <a href="index.html#"><i class="fa fa-edit"></i> <span class="nav-label">试卷维护</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a class="J_menuItem" href="paperRule.html">试卷生成规则</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/paperRule.jsp">试卷生成规则</a>
                             </li>
-                            <li><a class="J_menuItem" href="lookpaperRule.html">查看试卷规则</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/paperrule_list.action">查看试卷规则</a>
                             </li>
                             <li><a class="J_menuItem" href="createPaper.html">生成考试试卷</a>
                             </li>

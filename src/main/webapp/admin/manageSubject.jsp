@@ -36,7 +36,7 @@
                     <div class="col-lg-12">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <h5>科目管理 <a href="#">   <button class="btn btn-primary addStudet" type="submit"><a href="${pageContext.request.contextPath }/admin/addSubject.jsp" style="color: white;">添加科目</a></button></a></h5>
+                                <h5>科目管理 <a href="#">   <button class="btn btn-primary addStudet" type="submit"><a href="${pageContext.request.contextPath }/admin/subject_showAdd.action" style="color: white;">添加科目</a></button></a></h5>
                                 <div class="ibox-tools">
                                     <a class="collapse-link">
                                         <i class="fa fa-chevron-up"></i>

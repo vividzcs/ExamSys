@@ -20,7 +20,7 @@ public class PaperRule {
 	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
 	@GenericGenerator(name="native",strategy="native")
 	private int p_id;
-	private int p_name; //规则名称
+	private String p_name; //规则名称
 	@Column(columnDefinition="tinyint not null default 0")
 	private byte degree; //难度
 	@Column(columnDefinition="int not null default 100")
@@ -65,10 +65,10 @@ public class PaperRule {
 	public void setP_id(int p_id) {
 		this.p_id = p_id;
 	}
-	public int getP_name() {
+	public String getP_name() {
 		return p_name;
 	}
-	public void setP_name(int p_name) {
+	public void setP_name(String p_name) {
 		this.p_name = p_name;
 	}
 	public byte getDegree() {

@@ -31,33 +31,28 @@
                                 </div>
                             </div>
                             <div class="ibox-content">
-                                <form class="form-horizontal m-t" id="addProfessForm">
-                                   <div class="form-group">
-                                        <label class="col-sm-3 control-label">院系</label>
-                                        <div class="col-sm-8">
-                                            <select class="form-control m-b"  ng-model="selected" ng-options="m.department for m in departments" ng-change="changeClassification(selected)">
-                                                 <option value="">-- 请选择 --</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                <form class="form-horizontal m-t" id="addProfessForm" action="${pageContext.request.contextPath }/admin/subject_add.action" method="post">
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">专业</label>
                                         <div class="col-sm-8">
-                                             <select class="form-control m-b" ng-model="selected2" ng-options="m for m in profess" >
+                                             <select id="profess" name="major.m_id" class="form-control m-b" ng-model="selected2" ng-options="m for m in profess" >
                                              	  <option value="">-- 请选择 --</option>
+                                             	  <c:forEach items="${list }" var="major">
+                                             	  	<option value="${major.m_id }">${major.m_name }</option>
+                                             	  </c:forEach>
                                             </select>
                                         </div>
                                     </div>
                                        <div class="form-group">
                                         <label class="col-sm-3 control-label">科目编号</label>
                                         <div class="col-sm-8">
-                                            <input id="professCnumber" name="professCnumber" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error sname">
+                                            <input id="professCnumber" name="sub_number" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error sname">
                                         </div>
                                     </div>
                                       <div class="form-group">
                                         <label class="col-sm-3 control-label">科目名称</label>
                                         <div class="col-sm-8">
-                                            <input id="professCname" name="professCname" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error sname">
+                                            <input id="professCname" name="sub_name" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error sname">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -89,10 +84,10 @@
 
     <!-- iCheck -->
     <script src="../style/js/plugins/iCheck/icheck.min.js"></script>
-        <script src="../style/js/anjularJS/bower_components/angular/angular.min.js"></script>
+       <!--  <script src="../style/js/anjularJS/bower_components/angular/angular.min.js"></script>
   <script src=" ../style/js/anjularJS/bower_components/angular-route/angular-route.js"></script>
    <script src= "../style/js/anjularJS/anjularjs/app.js"></script>
-   <script src= "../style/js/anjularJS/anjularjs/control.js"></script>
+   <script src= "../style/js/anjularJS/anjularjs/control.js"></script> -->
   
     <script>
       $.validator.setDefaults({
@@ -130,6 +125,7 @@
             });
         
         });
+         
         </script>
 	</body>
 </html>

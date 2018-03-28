@@ -1,14 +1,10 @@
 package com.nwuer.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -27,9 +23,9 @@ public class Admin {
 	@Column(nullable=true)
 	private Long last_login;
 	
-	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-	@JoinColumn(name="academy_admin")
-	private Academy academy;
+	public void setLast_login(Long last_login) {
+		this.last_login = last_login;
+	}
 
 	public int getAd_id() {
 		return ad_id;
@@ -69,13 +65,5 @@ public class Admin {
 
 	public void setLast_login(long last_login) {
 		this.last_login = last_login;
-	}
-
-	public Academy getAcademy() {
-		return academy;
-	}
-
-	public void setAcademy(Academy academy) {
-		this.academy = academy;
 	}
 }

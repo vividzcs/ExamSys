@@ -168,7 +168,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	 * 返回院系和专业的联动数据
 	 * @return
 	 */
-	public String mes() {
+	public String mesDF() {
 		List<Academy> academys = this.academyService.getAll();
 		
 		/*{
@@ -178,16 +178,50 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		Set<Major> majors = null;
 		for(int i=0; i<academys.size(); i++) {
 			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("department", academys.get(i).getA_name());
-			List<String> profess = new ArrayList<String>();
-			majors = academys.get(i).getM_set();
+			Academy aca = academys.get(i);
+			map.put("department", aca.getA_name());
+			Map<Integer,String> profess = new HashMap<Integer,String>();
+			majors = aca.getM_set();
+			Major maj = null;
 			Iterator<Major> it = majors.iterator();
 			while (it.hasNext()) {
-				profess.add(it.next().getM_name());
+				maj = it.next();
+				profess.put(maj.getM_id(), maj.getM_name());
 			}
 			//
 			map.put("profess", profess);
-			this.result.put(i, map);
+			this.result.put(aca.getA_id(), map);
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * 返回专业和科目的联动数据
+	 * @return
+	 */
+	public String mesFS() {
+		List<Major> majors = this.majorService.getAll();
+		
+		/*{
+	      	department:'信息科学与技术学院',
+	      	profess:['软件工程','计算机科学与技术','电子信息','通信工程']
+	      },*/
+		Set<Subject> subs = null;
+		for(int i=0; i<majors.size(); i++) {
+			Map<String,Object> map = new HashMap<String,Object>(); //存放专业和科目的地址
+			Major maj = majors.get(i); //得到专业
+			map.put("profess", maj.getM_name()); //第一个元素值放专业
+			Map<Integer,String> sub = new HashMap<Integer,String>();  //存放科目数据
+			subs = maj.getS_set();  //得到专业
+			Subject s = null;
+			Iterator<Subject> it = subs.iterator();
+			while (it.hasNext()) {
+				s = it.next();
+				sub.put(s.getSub_id(), s.getSub_name());
+			}
+			//
+			map.put("subject", sub);
+			this.result.put(maj.getM_id(), map);
 		}
 		return SUCCESS;
 	}

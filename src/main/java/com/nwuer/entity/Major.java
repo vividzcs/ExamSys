@@ -1,5 +1,8 @@
 package com.nwuer.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -30,6 +34,17 @@ public class Major {
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)
 	@JoinColumn(name="academy_major")
 	private Academy academy = new Academy();
+	
+	@OneToMany(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
+	@JoinColumn(name="major_sub")
+	private Set<Subject> s_set = new HashSet<Subject>();
+	
+	public Set<Subject> getS_set() {
+		return s_set;
+	}
+	public void setS_set(Set<Subject> s_set) {
+		this.s_set = s_set;
+	}
 	public int getM_id() {
 		return m_id;
 	}

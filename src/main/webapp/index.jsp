@@ -176,8 +176,8 @@
 </div>
 
     <!-- Mainly scripts -->
-    <script src="./style/js/jquery-2.1.1.min.js"></script>
-    <script src="./style/js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="${pageContext.request.contextPath }/style/js/jquery-2.1.1.min.js"></script>
+    <script src="${pageContext.request.contextPath }/style/js/bootstrap.min.js?v=3.4.0"></script>
     <script>
 	
 	$("#t_login").click(function() {

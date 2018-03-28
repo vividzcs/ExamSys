@@ -5,7 +5,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		 <link href=" ../style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+		 <link href=" ${pageContext.request.contextPath }/style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
 	
 		<style>
 		.information{
