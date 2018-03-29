@@ -30,8 +30,6 @@ public class Subject {
 		this.create_time = create_time;
 	}
 	private String sub_number; //科目编号
-	@Column(columnDefinition="text")
-	private String sub_desc;
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="major_sub")
 	private Major major; //专业
@@ -59,11 +57,5 @@ public class Subject {
 	}
 	public void setSub_number(String sub_number) {
 		this.sub_number = sub_number;
-	}
-	public String getSub_desc() {
-		return sub_desc;
-	}
-	public void setSub_desc(String sub_desc) {
-		this.sub_desc = sub_desc;
 	}
 }

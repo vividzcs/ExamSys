@@ -58,4 +58,27 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 		return SUCCESS;
 	}
 	
+	/**
+	 * 显示修改院系
+	 * @return
+	 */
+	public String edit() {
+		Academy a = this.academyService.getById(this.academy.getA_id());
+		ServletActionContext.getRequest().setAttribute("academy", a);
+		return "edit";
+	}
+	/**
+	 * 修改院系
+	 * @return
+	 */
+	public String update() {
+		//验证
+		
+		Academy a = this.academyService.getById(this.academy.getA_id());
+		a.setA_name(academy.getA_name());
+		a.setA_number(academy.getA_number());
+		this.academyService.update(a);
+		return SUCCESS;
+	}
+	
 }

@@ -55,7 +55,7 @@
 											 </th>
 											 <th>${stu.academy.a_name }</th>
 											 <th>${stu.major.m_name}</th>
-                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/student_delete.action?s_id=${stu.s_id}" class="delete">删除</a>&nbsp;<a href="${pageContext.request.contextPath }/admin/student_edit.action?s_id=${stu.s_id}" class="edit">修改</a></td>
+                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/student_delete.action?s_id=${stu.s_id}" class="delete">删除</a>&nbsp;<a href="${pageContext.request.contextPath }/admin/student_editA.action?s_id=${stu.s_id}" class="edit">修改</a></td>
                                         </tr>
                                         </c:forEach>
                                     </tbody>

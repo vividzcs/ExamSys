@@ -68,6 +68,7 @@ public class StudentService implements BaseService<Student> {
 	@Override
 	@Transactional
 	public void update(Student t) {
+		//
 		t.setS_pass(crpty.encrypt(t.getS_pass()));
 		
 		this.StudentDaoImpl.update(t);

@@ -33,7 +33,7 @@ public class MajorService implements BaseService<Major> {
 
 	@Override
 	public Major getById(int id) {
-		return this.getById(id);
+		return this.majorDaoImpl.getById(id);
 	}
 
 	@Override

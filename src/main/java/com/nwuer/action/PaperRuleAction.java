@@ -49,4 +49,16 @@ public class PaperRuleAction extends ActionSupport implements ModelDriven<PaperR
 		this.paperRuleService.delete(this.paperRule.getP_id());
 		return SUCCESS;
 	}
+	
+	public String edit() {
+		PaperRule pr = this.paperRuleService.getById(paperRule.getP_id());
+		
+		ServletActionContext.getRequest().setAttribute("rule", pr);
+		return "edit";
+	}
+	
+	public String update() {
+		
+		return SUCCESS;
+	}
 }

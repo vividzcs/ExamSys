@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -66,6 +68,28 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 		//验证数据
 		
 		this.majorService.delete(this.major.getM_id());
+		return SUCCESS;
+	}
+	
+	public String edit() {
+		Major m = this.majorService.getById(this.major.getM_id());
+		List<Academy> list = this.academyService.getAll();
+		
+		HttpServletRequest req = ServletActionContext.getRequest();
+		req.setAttribute("major", m);
+		req.setAttribute("list", list);
+		return "edit";
+	}
+	
+	public String update() {
+		//验证信息
+		
+		Major m = this.majorService.getById(this.major.getM_id());
+		
+		major.setCreate_time(m.getCreate_time());
+		major.setM_num(m.getM_num());
+		
+		this.majorService.update(major);
 		return SUCCESS;
 	}
 

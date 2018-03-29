@@ -119,11 +119,38 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 			return ERROR;
 		}
 	}
-	
+	/**
+	 * 删除
+	 * @return
+	 */
 	public String delete() {
 		//验证id信息
 		
 		this.studentService.delete(this.student.getS_id());
+		return SUCCESS;
+	}
+	
+	/**
+	 * 管理员修改
+	 * @return
+	 */
+	public String editA() {
+		Student stu = this.studentService.getById(this.student.getS_id());
+		ServletActionContext.getRequest().setAttribute("stu", stu);
+		return "edit";
+	}
+	/**
+	 * 管理员修改
+	 * @return
+	 */
+	public String updateA() {
+		//验证
+		
+		Student stu = this.studentService.getById(student.getS_id());
+		student.setCreate_time(stu.getCreate_time());
+		student.setLast_login(stu.getLast_login());
+		student.setStatus(stu.getStatus());
+		this.studentService.update(student);
 		return SUCCESS;
 	}
 	

@@ -2,6 +2,8 @@ package com.nwuer.action;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -58,6 +60,24 @@ public class SubjectAction extends ActionSupport implements ModelDriven<Subject>
 			//ÃÌº” ß∞‹
 			return ERROR;
 		}
+	}
+	
+	public String edit() {
+		Subject s = this.subjectService.getById(this.subject.getSub_id());
+		List<Major> list = this.majorService.getAll();
+		
+		HttpServletRequest req = ServletActionContext.getRequest();
+		req.setAttribute("subject", s);
+		req.setAttribute("list", list);
+		return "edit";
+	}
+	
+	public String update() {
+		Subject s = this.subjectService.getById(subject.getSub_id());
+		subject.setCreate_time(s.getCreate_time());
+		
+		this.subjectService.update(subject);
+		return SUCCESS;
 	}
 }
 

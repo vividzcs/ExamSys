@@ -75,28 +75,33 @@
 			</action>
 			
 			<action name="teacher_*" class="teacherAction" method="{1}">
+				<result name="edit">editTeacher.jsp</result>
 				<result name="list">manageTeacher.jsp</result>
 				<result name="success" type="redirectAction">teacher_list</result>
 			</action>
 			
 			<action name="department_*" class="academyAction" method="{1}" >
+				<result name="edit">editDepartment.jsp</result>
 				<result name="showAdd">addDepartment.jsp</result>
 				<result name="list">manageDepartment.jsp</result>
 				<result name="success" type="redirectAction">department_list</result>
 			</action>
 			<action name="profess_*" class="majorAction" method="{1}" >
+				<result name="edit">editProfess.jsp</result>
 				<result name="showAdd">addProfess.jsp</result>
 				<result name="list">manageProfess.jsp</result>
 				<result name="success" type="redirectAction">profess_list</result>
 			</action>
 			
 			<action name="subject_*" class="subjectAction" method="{1}" >
+				<result name="edit">editSubject.jsp</result>
 				<result name="showAdd">addSubject.jsp</result>
 				<result name="list">manageSubject.jsp</result>
 				<result name="success" type="redirectAction">subject_list</result>
 			</action>
 			
 			<action name="student_*" class="studentAction" method="{1}">
+				<result name="edit">editStudent.jsp</result>
 				<result name="list">manageStudent.jsp</result>
 				<result name="success" type="redirectAction">student_list</result>
 			</action>
@@ -107,8 +112,8 @@
 			</action>
 			
 			<action name="paperrule_*" class="paperRuleAction" method="{1}" >
+				<result name="edit">editPaperRule.jsp</result>
 				<result name="list">lookPaperRule.jsp</result>
-				<result name="edit">paperRule.jsp</result>
 				<result name="success" type="redirectAction">paperrule_list</result>
 			</action>
 			

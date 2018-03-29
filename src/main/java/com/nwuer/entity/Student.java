@@ -46,6 +46,9 @@ public class Student {
 	@JoinColumn(name="academy_stu")
 	private Academy academy;
 	
+	public Long getLast_login() {
+		return last_login;
+	}
 	public void setLast_login(Long last_login) {
 		this.last_login = last_login;
 	}
@@ -84,12 +87,6 @@ public class Student {
 	}
 	public void setStatus(byte status) {
 		this.status = status;
-	}
-	public long getLast_login() {
-		return last_login;
-	}
-	public void setLast_login(long last_login) {
-		this.last_login = last_login;
 	}
 	public Major getMajor() {
 		return major;

@@ -21,6 +21,8 @@ public class PaperRule {
 	@GenericGenerator(name="native",strategy="native")
 	private int p_id;
 	private String p_name; //规则名称
+	private long create_time; //创建时间
+	
 	@Column(columnDefinition="tinyint not null default 0")
 	private byte degree; //难度
 	@Column(columnDefinition="int not null default 100")
@@ -178,6 +180,12 @@ public class PaperRule {
 	}
 	public void setSubject(Subject subject) {
 		this.subject = subject;
+	}
+	public long getCreate_time() {
+		return create_time;
+	}
+	public void setCreate_time(long create_time) {
+		this.create_time = create_time;
 	}
 	
 }

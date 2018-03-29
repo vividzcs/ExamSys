@@ -78,7 +78,7 @@
 											 </th>
 											 <th>${teacher.t_pass }</th>
 											 <th>${teacher.academy.a_name}</th>
-                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/teacher_delete?t_id=${teacher.t_id}" class="delete">删除</a>&nbsp<a href="${pageContext.request.contextPath }/admin/teacher_edit.action?t_id=${teacher.t_id}" class="edit">修改</a></td>
+                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/teacher_delete?t_id=${teacher.t_id}" class="delete">删除</a>&nbsp<a href="${pageContext.request.contextPath }/admin/teacher_editA.action?t_id=${teacher.t_id}" class="edit">修改</a></td>
                                         </tr>
                                         </c:forEach>
                                     </tbody>

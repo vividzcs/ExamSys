@@ -52,7 +52,7 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
 
 	@Override
 	public void update(T t) {
-		this.getHibernateTemplate().flush();
+		this.getHibernateTemplate().clear();
 		this.getHibernateTemplate().update(t);
 	}
 

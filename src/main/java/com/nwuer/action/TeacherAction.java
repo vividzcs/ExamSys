@@ -119,6 +119,37 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	}
 	
 	/**
+	 * 管理员修改
+	 * @return
+	 */
+	public String editA() {
+		Teacher t = this.teacherService.getById(this.teacher.getT_id());
+		List<Academy> list = this.academyService.getAll();
+		HttpServletRequest req = ServletActionContext.getRequest();
+		
+		req.setAttribute("teacher", t);
+		req.setAttribute("list", list);
+		return "edit";
+	}
+	
+	/**
+	 * 管理员修改
+	 * @return
+	 */
+	public String updateA() {
+		//验证信息
+		
+		Teacher t = this.teacherService.getById(this.teacher.getT_id());
+		teacher.setCreate_time(t.getCreate_time());
+		teacher.setLast_login(t.getLast_login());
+		teacher.setStatus(t.getStatus());
+		
+		this.teacherService.update(teacher);
+		return SUCCESS;
+	}
+	
+	
+	/**
 	 * 显示编辑教师页面
 	 * @return
 	 */
