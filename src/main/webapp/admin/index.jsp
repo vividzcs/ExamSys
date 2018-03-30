@@ -12,7 +12,7 @@
 
                         <div class="dropdown profile-element"> 
                             <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                                <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold"> admin</strong>
+                                <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">${sessionScope.admin.ad_name eq null ? "admin" : sessionScope.admin.ad_name }</strong>
                              </span> <span class="text-muted text-xs block">超级管理员  </span> </span>
                             </a>
                         </div>
@@ -38,6 +38,8 @@
                             <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/student_list.action">管理学生信息</a>
                             </li>
                             <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/teacher_list.action">管理教师信息</a>
+                            </li>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/teacherFind.jsp">查询教师信息</a>
                             </li>
                             <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/manageSelf.jsp">管理个人信息</a>
                             </li>
@@ -93,7 +95,7 @@
                             <span class="m-r-sm text-muted welcome-message"><a href="indexAdmin.html" title="返回首页"><i class="fa fa-home"></i></a>欢迎登录在线考试系统后台管理</span>
                         </li>
                         <li>
-                            <a href="../index.html">
+                            <a href="${pageContext.request.contextPath }/admin/admin_logout.action">
                                 <i class="fa fa-sign-out"></i> 退出
                             </a>
                         </li>

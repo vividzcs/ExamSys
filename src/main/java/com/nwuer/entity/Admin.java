@@ -20,7 +20,7 @@ public class Admin {
 	private String ad_number; //¹¤ºÅ
 	private String ad_pass;
 	private String ad_name;
-	@Column(nullable=true)
+	@Column(columnDefinition="bigint not null default 0")
 	private Long last_login;
 	
 	public void setLast_login(Long last_login) {

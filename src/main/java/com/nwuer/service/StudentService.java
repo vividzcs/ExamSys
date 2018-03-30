@@ -74,7 +74,7 @@ public class StudentService implements BaseService<Student> {
 		this.StudentDaoImpl.update(t);
 	}
 	
-	public Student getByNumber(String number) {
+	public List<Student> getByNumber(String number) {
 		return this.StudentDaoImpl.getByNumber(number);
 	}
 

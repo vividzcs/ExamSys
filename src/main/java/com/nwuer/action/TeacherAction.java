@@ -84,9 +84,14 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		if(s_number == null || s_number.equals("")) {
 			return "find";
 		}
-		Student s = this.studentService.getByNumber(s_number);
-		s.setS_pass(crpty.decrypt(s.getS_pass()));
-		ServletActionContext.getRequest().setAttribute("student", s);
+		List<Student> list = this.studentService.getByNumber(s_number);
+		Student s = null;
+		for(int i=0; i<list.size(); i++) {
+			s = list.get(i);
+			s.setS_pass(crpty.decrypt(s.getS_pass()));
+		}
+		
+		ServletActionContext.getRequest().setAttribute("list", list);
 		return "find";
 	}
 	

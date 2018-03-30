@@ -31,7 +31,7 @@
                         <div class="dropdown profile-element">  
                             <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
                                 <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold"></strong>
-                             </span> <span class="text-muted text-xs block">${sessionScope.teacher.t_name }老师  </span> </span>
+                             </span> <span class="text-muted text-xs block">${sessionScope.teacher.t_name eq null ? "未登录" : sessionScope.teacher.t_name }老师  </span> </span>
                             </a>
                         </div>
                     </li>
@@ -59,7 +59,7 @@
                             <span class="m-r-sm text-muted welcome-message"><a href="indexTeacher.html" title="返回首页"><i class="fa fa-home"></i></a>欢迎登录在线考试系统后台管理</span>
                         </li>
                         <li>
-                            <a href="./index.jsp">
+                            <a href="${pageContext.request.contextPath }/teacher/teacher_logout.action">
                                 <i class="fa fa-sign-out"></i> 退出
                             </a>
                         </li>

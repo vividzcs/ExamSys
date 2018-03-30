@@ -35,7 +35,7 @@ public class Student {
 	private long create_time;
 	@Column(columnDefinition="tinyint default 1")
 	private byte status;
-	@Column(nullable=true)
+	@Column(columnDefinition="bigint not null default 0")
 	private Long last_login;
 	//רҵ
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)

@@ -30,11 +30,11 @@
 <body>
             <div class="ibox-content  rows" style="height: 100%;">
             	<div class="col-lg-12">
-                                <form class="form-horizontal m-t" id="signupForm" action="${pageContext.request.contextPath }/teacher/teacher_findStu.action" method="post">
+                                <form class="form-horizontal m-t" id="signupForm" action="${pageContext.request.contextPath }/admin/admin_findTeacher.action" method="post">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">学号：</label>
+                                        <label class="col-sm-3 control-label">工号：</label>
                                         <div class="col-sm-8">
-                                            <input id="studentID" name="s_number" class="form-control" type="text">
+                                            <input id="studentID" name="t_number" class="form-control" type="text">
                                         </div>
                                     </div>
 									<div class="form-group">
@@ -50,32 +50,28 @@
                                     <thead>
                                         <tr>
                                         	 <th>姓名</th>
-                                            <th>学号</th>
+                                            <th>工号</th>
                                             <th>密码</th>
-                                            <th>性别</th>
                                             <th>创建时间</th>
                                             <th>上次登录时间</th>
                                             <th>院系</th>
-                                            <th>专业</th>
                                             <th>状态</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    	<c:forEach items="${list }" var="student">
+                                    	<c:forEach items="${list }" var="teacher">
                                         <tr class="gradeX">
-                                            <td>${student.s_name }</td>
-                                            <td>${student.s_number }</td>
-                                            <td>${student.s_pass }</td>
-                                            <td>${student.s_sex eq 1 ? "男" : "女" }</td>
+                                            <td>${teacher.t_name }</td>
+                                            <td>${teacher.t_number }</td>
+                                            <td>${teacher.t_pass }</td>
                                             <jsp:useBean id="create_time" class="java.util.Date"></jsp:useBean>
-	                        				<jsp:setProperty property="time" name="create_time" value="${student.create_time }"/>
+	                        				<jsp:setProperty property="time" name="create_time" value="${teacher.create_time }"/>
                                             <td> <fmt:formatDate value="${create_time }" pattern="yyyy-MM-dd"/> </td>
                                             <jsp:useBean id="last_login" class="java.util.Date"></jsp:useBean>
-	                        				<jsp:setProperty property="time" name="last_login" value="${student.last_login }"/>
-                                            <td> <fmt:formatDate value="${last_login }" pattern="yyyy-MM-dd"/> </td>
-                                            <td>${student.academy.a_name }</td>
-                                            <td>${student.major.m_name }</td>
-                                            <td>${student.status }</td>
+                                            <jsp:setProperty property="time" name="last_login" value="${teacher.last_login }"/>
+                                            <td><fmt:formatDate value="${last_login }" pattern="yyyy-MM-dd"/></td>
+                                            <td>${teacher.academy.a_name }</td>
+                                            <td>${teacher.status }</td>
                                         </tr>
                                         </c:forEach>
                                     </tbody>

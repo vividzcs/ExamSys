@@ -65,6 +65,7 @@
 				</interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref> -->
 				<!-- result -->
+				<result name="find">teacherFind.jsp</result>
 				<result name="success" type="json">
 					<param name="root">result</param>
 				</result>

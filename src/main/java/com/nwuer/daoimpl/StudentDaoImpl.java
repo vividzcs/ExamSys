@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Repository;
@@ -48,12 +51,16 @@ public class StudentDaoImpl extends BaseDaoImpl<Student> {
 		return (list!=null && list.size()>0) ? true : false;
 	}
 	
-	public Student getByNumber(String number) {
-		List<Student> list = (List<Student>) this.getHibernateTemplate().find("from Student where s_number=?", number);
+	public	List<Student> getByNumber(String number) {
+		/*List<Student> list = (List<Student>) this.getHibernateTemplate().find("from Student where s_number=?", number);
 		if(list != null && list.size()>0)
 			return list.get(0);
 		else
-			return null;
+			return null;*/
+		DetachedCriteria criteria = DetachedCriteria.forClass(Student.class);
+		criteria.add(Restrictions.like("s_number", "%" + number + "%"));
+		
+		return (List<Student>) this.getHibernateTemplate().findByCriteria(criteria);
 	}
 }
 

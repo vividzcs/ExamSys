@@ -28,7 +28,7 @@ public class Teacher {
 	private byte t_sex;
 	
 	private long create_time;  //创建时间
-	@Column(nullable=true)
+	@Column(columnDefinition="bigint not null default 0")
 	private Long last_login;  //上次登录时间
 	@Column(columnDefinition="TINYINT default 1")
 	private byte status;  //是否能登录, 0不能,1能

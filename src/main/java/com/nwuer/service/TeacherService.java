@@ -67,5 +67,9 @@ public class TeacherService implements BaseService<Teacher> {
 		this.teacherDaoImpl.delete(id);
 	}
 	
+	public List<Teacher> getByNumber(String number) {
+		return this.teacherDaoImpl.getByNumber(number);
+	}
+	
 	
 }

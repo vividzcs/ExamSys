@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nwuer.bean.AcademyBean;
-import com.nwuer.bean.BaseBean;
 import com.nwuer.daoimpl.AcademyDaoImpl;
 import com.nwuer.entity.Academy;
 @Service

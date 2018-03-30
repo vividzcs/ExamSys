@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -29,6 +28,7 @@ import com.nwuer.entity.JudgeQuestion;
 import com.nwuer.entity.Major;
 import com.nwuer.entity.Subject;
 import com.nwuer.entity.SubjectiveQuestion;
+import com.nwuer.entity.Teacher;
 import com.nwuer.service.AcademyService;
 import com.nwuer.service.AdminService;
 import com.nwuer.service.ChoiceQuestionService;
@@ -36,6 +36,7 @@ import com.nwuer.service.JudgeQuestionService;
 import com.nwuer.service.MajorService;
 import com.nwuer.service.SubjectService;
 import com.nwuer.service.SubjectiveQuestionService;
+import com.nwuer.service.TeacherService;
 import com.nwuer.utils.Crpty;
 import com.nwuer.utils.ValidateUtil;
 import com.opensymphony.xwork2.ActionSupport;
@@ -60,6 +61,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	}  //模型驱动获取数据
 	@Autowired
 	private AdminService adminService;
+	@Autowired
+	private TeacherService teacherService;
 	@Autowired
 	private AcademyService academyService;
 	@Autowired
@@ -101,9 +104,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		int ad_id = ((Admin)req.getSession().getAttribute("admin")).getAd_id();
 		Admin newAdmin = this.adminService.getById(ad_id);
 		//修改
-		String pass = crpty.encrypt(admin.getAd_pass());
 		
-		newAdmin.setAd_pass(pass);
 		newAdmin.setAd_name(admin.getAd_name());
 		this.adminService.update(newAdmin);
 		this.result.put("status","1");
@@ -162,6 +163,31 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		}
 			
 		
+	}
+	/**
+	 * 查询教师信息
+	 */
+	private String t_number;
+	public String getT_number() {
+		return t_number;
+	}
+	public void setT_number(String t_number) {
+		this.t_number = t_number;
+	}
+	public String findTeacher() {
+		//检查数据合法性
+		if(t_number == null) {
+			return "find";
+		}
+		List<Teacher> list = this.teacherService.getByNumber(t_number);
+		Teacher t = null;
+		for(int i=0; i<list.size(); i++) {
+			t = list.get(i);
+			t.setT_pass(crpty.decrypt(t.getT_pass()));
+		}
+		
+		ServletActionContext.getRequest().setAttribute("list", list);
+		return "find";
 	}
 	
 	/**
