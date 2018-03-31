@@ -25,10 +25,10 @@ public class Academy {
 	private int a_id;
 	private String a_name;
 	@Column(columnDefinition="int not null default 0")
-	private int a_num;  //רҵ��
+	private int a_num;  //专业数
 	private long create_time;
 	@Column(length=4)
-	private String a_number; //Ժϵ���
+	private String a_number; //院系编号
 	
 	@OneToMany(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="academy_teacher")

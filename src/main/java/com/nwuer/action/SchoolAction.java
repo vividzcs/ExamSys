@@ -15,13 +15,13 @@ public class SchoolAction extends ActionSupport implements ModelDriven<School> {
 	@Override
 	public School getModel() {
 		return school;
-	} //模型驱动获取数据
+	} //妯″瀷椹卞姩鑾峰彇鏁版嵁
 	
 	@Autowired
 	private SchoolService schoolService;
 	
 	/**
-	 * 展示编辑学校信息
+	 * 灞曠ず缂栬緫瀛︽牎淇℃伅
 	 * @return
 	 */
 	public String edit() {
@@ -31,11 +31,11 @@ public class SchoolAction extends ActionSupport implements ModelDriven<School> {
 	}
 	
 	/**
-	 * 更新学校信息
+	 * 鏇存柊瀛︽牎淇℃伅
 	 * @return
 	 */
 	public String update() {
-		//验证信息
+		//楠岃瘉淇℃伅
 		
 		this.schoolService.update(school);
 		return SUCCESS;

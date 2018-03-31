@@ -58,7 +58,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	@Override
 	public Admin getModel() {
 		return admin;
-	}  //Ä£ĞÍÇı¶¯»ñÈ¡Êı¾İ
+	}  //æ¨¡å‹é©±åŠ¨è·å–æ•°æ®
 	@Autowired
 	private AdminService adminService;
 	@Autowired
@@ -86,29 +86,33 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	}
 	public void setResult(Map result) {
 		this.result = result;
-	}  //·µ»ØJSONÊı¾İ
+	}  //è¿”å›JSONæ•°æ®
 	
 	/**
-	 * Î¬»¤¹ÜÀíÔ±ĞÅÏ¢
+	 * ç»´æŠ¤ç®¡ç†å‘˜ä¿¡æ¯
 	 * @return
 	 */
 	public String update() {
 		HttpServletRequest req = ServletActionContext.getRequest();
 		String newPass = req.getParameter("newPass");
-		//ÑéÖ¤ÃÜÂë
+		//éªŒè¯å¯†ç 
 		
-		//ÑéÖ¤¹ÜÀíÔ±ÓÃ»§ĞÅÏ¢
+		//éªŒè¯ç®¡ç†å‘˜ç”¨æˆ·ä¿¡æ¯
 		
 		
-		//²éÑ¯Êı¾İ
+		//æŸ¥è¯¢æ•°æ®
 		int ad_id = ((Admin)req.getSession().getAttribute("admin")).getAd_id();
 		Admin newAdmin = this.adminService.getById(ad_id);
-		//ĞŞ¸Ä
+		//ä¿®æ”¹
 		
 		newAdmin.setAd_name(admin.getAd_name());
+		
 		this.adminService.update(newAdmin);
+		
+		newAdmin.setAd_pass(null);
+		req.getSession().setAttribute("admin", newAdmin);
 		this.result.put("status","1");
-		this.result.put("msg", "ĞŞ¸Ä³É¹¦");
+		this.result.put("msg", "ä¿®æ”¹æˆåŠŸ");
 		return SUCCESS;
 	}
 	
@@ -118,54 +122,54 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	}
 	
 	/**
-	 * µÇÂ¼
+	 * ç™»å½•
 	 * @return
 	 */
 	public String login() {
-		//ÑéÖ¤
+		//éªŒè¯
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
 		
-		//ÑéÖ¤ÑéÖ¤Âë
+		//éªŒè¯éªŒè¯ç 
 		String code = request.getParameter("code");
 		String codeReal = (String)session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
 		if(!codeReal.equalsIgnoreCase(code)) {
 			result.put("status","0");
-			result.put("msg", "ÑéÖ¤Âë´íÎó");
+			result.put("msg", "éªŒè¯ç é”™è¯¯");
 			return ERROR;
 		}
-		//ÑéÖ¤µÇÂ¼ĞÅÏ¢
+		//éªŒè¯ç™»å½•ä¿¡æ¯
 		String msg = this.validateUtil.validateNumber(this.admin.getAd_number(), 10);
 		if(msg!= null) {
 			result.put("status","0");
-			result.put("msg", "ÑéÖ¤Âë´íÎó");
+			result.put("msg", "éªŒè¯ç é”™è¯¯");
 			return ERROR;
 		}
 		msg = this.validateUtil.validateMinLength(this.admin.getAd_pass(), 6);
 		if(msg!= null) {
 			result.put("status","0");
-			result.put("msg", "ÑéÖ¤Âë´íÎó");
+			result.put("msg", "éªŒè¯ç é”™è¯¯");
 			return ERROR;
 		}
 		Admin adminConfirm = this.adminService.getByNumberAndPass(this.admin);
 		if(adminConfirm != null) {
-			//³É¹¦
+			//æˆåŠŸ
 			adminConfirm.setAd_pass(null);
 			this.adminService.updateLastLogin(System.currentTimeMillis(), adminConfirm.getAd_id());
 			session.setAttribute("admin", adminConfirm);
 			this.result.put("status","1");
-			this.result.put("msg", "µÇÂ¼³É¹¦");
+			this.result.put("msg", "ç™»å½•æˆåŠŸ");
 			return SUCCESS;
 		}else {
 			this.result.put("status","0");
-			this.result.put("msg", "ÓÃ»§Ãû»òÃÜÂë´íÎó");
+			this.result.put("msg", "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯");
 			return ERROR;
 		}
 			
 		
 	}
 	/**
-	 * ²éÑ¯½ÌÊ¦ĞÅÏ¢
+	 * æŸ¥è¯¢æ•™å¸ˆä¿¡æ¯
 	 */
 	private String t_number;
 	public String getT_number() {
@@ -175,7 +179,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		this.t_number = t_number;
 	}
 	public String findTeacher() {
-		//¼ì²éÊı¾İºÏ·¨ĞÔ
+		//æ£€æŸ¥æ•°æ®åˆæ³•æ€§
 		if(t_number == null) {
 			return "find";
 		}
@@ -191,15 +195,15 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	}
 	
 	/**
-	 * ·µ»ØÔºÏµºÍ×¨ÒµµÄÁª¶¯Êı¾İ
+	 * è¿”å›é™¢ç³»å’Œä¸“ä¸šçš„è”åŠ¨æ•°æ®
 	 * @return
 	 */
 	public String mesDF() {
 		List<Academy> academys = this.academyService.getAll();
 		
 		/*{
-	      	department:'ĞÅÏ¢¿ÆÑ§Óë¼¼ÊõÑ§Ôº',
-	      	profess:['Èí¼ş¹¤³Ì','¼ÆËã»ú¿ÆÑ§Óë¼¼Êõ','µç×ÓĞÅÏ¢','Í¨ĞÅ¹¤³Ì']
+	      	department:'ä¿¡æ¯ç§‘å­¦ä¸æŠ€æœ¯å­¦é™¢',
+	      	profess:['è½¯ä»¶å·¥ç¨‹','è®¡ç®—æœºç§‘å­¦ä¸æŠ€æœ¯','ç”µå­ä¿¡æ¯','é€šä¿¡å·¥ç¨‹']
 	      },*/
 		Set<Major> majors = null;
 		for(int i=0; i<academys.size(); i++) {
@@ -222,23 +226,23 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	}
 	
 	/**
-	 * ·µ»Ø×¨ÒµºÍ¿ÆÄ¿µÄÁª¶¯Êı¾İ
+	 * è¿”å›ä¸“ä¸šå’Œç§‘ç›®çš„è”åŠ¨æ•°æ®
 	 * @return
 	 */
 	public String mesFS() {
 		List<Major> majors = this.majorService.getAll();
 		
 		/*{
-	      	department:'ĞÅÏ¢¿ÆÑ§Óë¼¼ÊõÑ§Ôº',
-	      	profess:['Èí¼ş¹¤³Ì','¼ÆËã»ú¿ÆÑ§Óë¼¼Êõ','µç×ÓĞÅÏ¢','Í¨ĞÅ¹¤³Ì']
+	      	department:'ä¿¡æ¯ç§‘å­¦ä¸æŠ€æœ¯å­¦é™¢',
+	      	profess:['è½¯ä»¶å·¥ç¨‹','è®¡ç®—æœºç§‘å­¦ä¸æŠ€æœ¯','ç”µå­ä¿¡æ¯','é€šä¿¡å·¥ç¨‹']
 	      },*/
 		Set<Subject> subs = null;
 		for(int i=0; i<majors.size(); i++) {
-			Map<String,Object> map = new HashMap<String,Object>(); //´æ·Å×¨ÒµºÍ¿ÆÄ¿µÄµØÖ·
-			Major maj = majors.get(i); //µÃµ½×¨Òµ
-			map.put("profess", maj.getM_name()); //µÚÒ»¸öÔªËØÖµ·Å×¨Òµ
-			Map<Integer,String> sub = new HashMap<Integer,String>();  //´æ·Å¿ÆÄ¿Êı¾İ
-			subs = maj.getS_set();  //µÃµ½×¨Òµ
+			Map<String,Object> map = new HashMap<String,Object>(); //å­˜æ”¾ä¸“ä¸šå’Œç§‘ç›®çš„åœ°å€
+			Major maj = majors.get(i); //å¾—åˆ°ä¸“ä¸š
+			map.put("profess", maj.getM_name()); //ç¬¬ä¸€ä¸ªå…ƒç´ å€¼æ”¾ä¸“ä¸š
+			Map<Integer,String> sub = new HashMap<Integer,String>();  //å­˜æ”¾ç§‘ç›®æ•°æ®
+			subs = maj.getS_set();  //å¾—åˆ°ä¸“ä¸š
 			Subject s = null;
 			Iterator<Subject> it = subs.iterator();
 			while (it.hasNext()) {
@@ -254,11 +258,11 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	
 	
 	/**
-	 * µ¼ÈëÌâ¿âÏà¹ØÊı¾İ
+	 * å¯¼å…¥é¢˜åº“ç›¸å…³æ•°æ®
 	 */
-	private int kind; //Ìâ¿âÀàĞÍ
-	private File file_upload; //ÉÏ´«µÄÎÄ¼ş,  ÊÇÉÏ´«±íµ¥ÏîµÄnameÖµ
-	private String file_uploadFileName; //ÉÏ´«ÎÄ¼şÃû³Æ,±íµ¥ÉÏ´«ÏîµÄÎÄ¼şÃû+FileName
+	private int kind; //é¢˜åº“ç±»å‹
+	private File file_upload; //ä¸Šä¼ çš„æ–‡ä»¶,  æ˜¯ä¸Šä¼ è¡¨å•é¡¹çš„nameå€¼
+	private String file_uploadFileName; //ä¸Šä¼ æ–‡ä»¶åç§°,è¡¨å•ä¸Šä¼ é¡¹çš„æ–‡ä»¶å+FileName
 	public File getFile_upload() {
 		return file_upload;
 	}
@@ -278,74 +282,74 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		this.kind = kind;
 	}
 	/**
-	 * µ¼ÈëÌâ¿â
+	 * å¯¼å…¥é¢˜åº“
 	 * @return
 	 */
 	public String importQuestionBank() {
-		//¼ì²éÊı¾İ
+		//æ£€æŸ¥æ•°æ®
 		
-		//¿ªÊ¼µ¼Èë
+		//å¼€å§‹å¯¼å…¥
 		String flag = "";
 		switch (kind) {
 		case 0 :
-			//Ñ¡ÔñÌâ
+			//é€‰æ‹©é¢˜
 			flag = importChoiceQuestion();
 			if(flag == null) {
-				//µ¼Èë³É¹¦
+				//å¯¼å…¥æˆåŠŸ
 				return SUCCESS;
 			}
 			break;
 		case 1 :
-			//ÅĞ¶ÏÌâ
+			//åˆ¤æ–­é¢˜
 			flag = importJudgeQuestion();
 			if(flag == null) {
-				//µ¼Èë³É¹¦
+				//å¯¼å…¥æˆåŠŸ
 				return SUCCESS;
 			}
 			break;
 		case 2 :
-			//Ö÷¹ÛÌâ
+			//ä¸»è§‚é¢˜
 			flag = importSubjectiveQuestion();
 			if(flag == null) {
-				//µ¼Èë³É¹¦
+				//å¯¼å…¥æˆåŠŸ
 				return SUCCESS;
 			}
 			break;
 		}
 		
-		//µ½ÕâÀïËµÃ÷µ¼ÈëÊ§°Ü
+		//åˆ°è¿™é‡Œè¯´æ˜å¯¼å…¥å¤±è´¥
 		return ERROR;
 		
 	}
 	
 	/**
-	 * µ¼ÈëÑ¡ÔñÌâ
-	 * @return ³É¹¦·µ»Ønull,·ñÔò·µ»Ø´íÎóĞÅÏ¢
+	 * å¯¼å…¥é€‰æ‹©é¢˜
+	 * @return æˆåŠŸè¿”å›null,å¦åˆ™è¿”å›é”™è¯¯ä¿¡æ¯
 	 */
 	public String importChoiceQuestion() {
-		//Ìí¼ÓÒ²µÃÇå¿Õ
+		//æ·»åŠ ä¹Ÿå¾—æ¸…ç©º
 		String info = "";
-		//ÏÈÇå¿ÕÑ¡ÔñÌâ¿â,ÏÈÅĞ¶ÏÑ¡ÔñÌâ¿âÊÇ·ñÓĞÊı¾İ
+		//å…ˆæ¸…ç©ºé€‰æ‹©é¢˜åº“,å…ˆåˆ¤æ–­é€‰æ‹©é¢˜åº“æ˜¯å¦æœ‰æ•°æ®
 				if(this.choiceQuestionService.hasData()) {
 					this.choiceQuestionService.clear();
 					if(this.choiceQuestionService.hasData()) {
-						//Ã»ÓĞÇå¿Õ±í
-						info = "ÀúÊ·Ñ¡ÔñÌâ¿âÊı¾İÎŞ·¨Çå¿Õ!ÇëÉÔºóÔÙÊÔ" ;
+						//æ²¡æœ‰æ¸…ç©ºè¡¨
+						info = "å†å²é€‰æ‹©é¢˜åº“æ•°æ®æ— æ³•æ¸…ç©º!è¯·ç¨åå†è¯•" ;
 						return info;
 					}
 				}
-		//¿ªÊ¼µ¼Èë
+		//å¼€å§‹å¯¼å…¥
 		FileInputStream excel = null;
 		Workbook wb =  null;
 		HttpServletRequest req = ServletActionContext.getRequest();
 		try {
-			//µÃµ½ExcelÎÄ¼ş
+			//å¾—åˆ°Excelæ–‡ä»¶
 			excel = new FileInputStream(file_upload);
-			//»ñÈ¡¹¤×÷²¾¶ÔÏó
-			wb = Workbook.getWorkbook(excel);//Ö»¶Á
-			//¿ªÊ¼¶ÔexcelÊı¾İ½øĞĞ²Ù×÷(ĞĞ,ÁĞ)
+			//è·å–å·¥ä½œç°¿å¯¹è±¡
+			wb = Workbook.getWorkbook(excel);//åªè¯»
+			//å¼€å§‹å¯¹excelæ•°æ®è¿›è¡Œæ“ä½œ(è¡Œ,åˆ—)
 			Sheet sheet = wb.getSheet(0);
-			//Ê×ÏÈÒªµÃµ½ÓĞ¶àÉÙĞĞ
+			//é¦–å…ˆè¦å¾—åˆ°æœ‰å¤šå°‘è¡Œ
 			int rows = 0;
 			int rowsAll = sheet.getRows();
 			for(int i=0; i<rowsAll; i++) {
@@ -355,84 +359,84 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					break;
 				}
 			}
-			rows = rows == 0 ? rowsAll : rows; //Èç¹ûÓĞ¶àÓà¿ÕĞĞ¾ÍµÈÓÚÊµ¼ÊĞĞ,·ñÔòµÈÓÚ×ÜĞĞ
+			rows = rows == 0 ? rowsAll : rows; //å¦‚æœæœ‰å¤šä½™ç©ºè¡Œå°±ç­‰äºå®é™…è¡Œ,å¦åˆ™ç­‰äºæ€»è¡Œ
 			for(int j=1; j<rows; j++) {
 				ChoiceQuestion choiceQuestion = new ChoiceQuestion();
-				 //´¦ÀíÌâÄ¿
+				 //å¤„ç†é¢˜ç›®
 				Cell questionCell = sheet.getCell(0, j);
 				String question = questionCell.getContents();
 				if(question.trim().equals("")) {
-					//²»¶Ô
-					info =  "µÚ" + j + "ĞĞÌâÄ¿²»ÄÜÎª¿Õ" ;
+					//ä¸å¯¹
+					info =  "ç¬¬" + j + "è¡Œé¢˜ç›®ä¸èƒ½ä¸ºç©º" ;
 					return info;
 				}
 				
-				//´¦ÀíÕıÈ·Ñ¡Ïî
+				//å¤„ç†æ­£ç¡®é€‰é¡¹
 				Cell answerCell = sheet.getCell(1,j);
 				String answer = answerCell.getContents();
 				if(answer.trim().equals("")) {
-					//²»¶Ô
-					info = "µÚ" + j + "ĞĞÕıÈ·Ñ¡Ïî²»ÄÜÎª¿Õ";
+					//ä¸å¯¹
+					info = "ç¬¬" + j + "è¡Œæ­£ç¡®é€‰é¡¹ä¸èƒ½ä¸ºç©º";
 					return info;
 				}
 
-				//´¦ÀíÆäËûÑ¡Ïî1
+				//å¤„ç†å…¶ä»–é€‰é¡¹1
 				Cell other1Cell = sheet.getCell(2,j);
 				String other1 = other1Cell.getContents();
 				if(other1.trim().equals("")) {
-					//²»¶Ô
-					info = "µÚ" + j + "ĞĞÆäËûÑ¡Ïî1²»ÄÜÎª¿Õ";
+					//ä¸å¯¹
+					info = "ç¬¬" + j + "è¡Œå…¶ä»–é€‰é¡¹1ä¸èƒ½ä¸ºç©º";
 					return info;
 				}
 				
-				//´¦ÀíÆäËûÑ¡Ïî2
+				//å¤„ç†å…¶ä»–é€‰é¡¹2
 				Cell other2Cell = sheet.getCell(3,j);
 				String other2 = other2Cell.getContents();
 				if(other2.trim().equals("")) {
-					//²»¶Ô
-					info = "µÚ" + j + "ĞĞÆäËûÑ¡Ïî2ÌîĞ´´íÎó";
+					//ä¸å¯¹
+					info = "ç¬¬" + j + "è¡Œå…¶ä»–é€‰é¡¹2å¡«å†™é”™è¯¯";
 					return info;
 				}
 				
-				//´¦ÀíÆäËûÑ¡Ïî3
+				//å¤„ç†å…¶ä»–é€‰é¡¹3
 				Cell other3Cell = sheet.getCell(4,j);
 				String other3 = other3Cell.getContents();
 				if(other3.trim().equals("")) {
-					info = "µÚ" + j + "ĞĞÆäËûÑ¡Ïî3ÌîĞ´´íÎó";
+					info = "ç¬¬" + j + "è¡Œå…¶ä»–é€‰é¡¹3å¡«å†™é”™è¯¯";
 					return info;
 				}
 				
-				//´¦ÀíÄÑÒ×³Ì¶È
+				//å¤„ç†éš¾æ˜“ç¨‹åº¦
 				Cell degreeCell = sheet.getCell(5,j);
 				String degree = degreeCell.getContents();
 				if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2")) {
-					//²»¶Ô
-					info = "µÚ" + j + "ĞĞÄÑÒ×³Ì¶ÈÌîĞ´´íÎó";
+					//ä¸å¯¹
+					info = "ç¬¬" + j + "è¡Œéš¾æ˜“ç¨‹åº¦å¡«å†™é”™è¯¯";
 					return info;
 				}
 				byte deg = Byte.parseByte(degree);
 				
-				//´¦Àí×¨Òµ
+				//å¤„ç†ä¸“ä¸š
 				Cell majorCell = sheet.getCell(6,j);
 				String major = majorCell.getContents();
 				int m_id = 0;
 				if(major.trim().equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 					
-					info = "µÚ" + j + "ĞĞ×¨ÒµÌîĞ´´íÎó";
+					info = "ç¬¬" + j + "è¡Œä¸“ä¸šå¡«å†™é”™è¯¯";
 					return info;
 				}
 				
-				//´¦Àí¿ÆÄ¿
+				//å¤„ç†ç§‘ç›®
 				Cell subjectCell = sheet.getCell(7,j);
 				String sub = subjectCell.getContents();
 				int sub_id = 0;
 				if(sub.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 					
-					info = "µÚ" + j + "ĞĞ¿ÆÄ¿ÌîĞ´´íÎó";
+					info = "ç¬¬" + j + "è¡Œç§‘ç›®å¡«å†™é”™è¯¯";
 					return info;
 				}
 				
-				//ÑéÖ¤Í¨¹ı
+				//éªŒè¯é€šè¿‡
 				Major m = new Major();
 				m.setM_id(m_id);
 				Subject s = new Subject();
@@ -448,13 +452,13 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				int id = this.choiceQuestionService.add(choiceQuestion);
 				if(id <= 0) {
-					//Ìí¼ÓÊ§°Ü
-					info = "µÚ" + j + "¸öÌâÄ¿Ìí¼ÓÊ§°Ü,ÇëÖØÊÔ";
+					//æ·»åŠ å¤±è´¥
+					info = "ç¬¬" + j + "ä¸ªé¢˜ç›®æ·»åŠ å¤±è´¥,è¯·é‡è¯•";
 					return info;
 				}
 			}
 			
-			//Ìí¼ÓÍê³É
+			//æ·»åŠ å®Œæˆ
 			return null;
 			
 		} catch (FileNotFoundException e) {
@@ -475,38 +479,38 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					e.printStackTrace();
 				}
 		}
-		return "ÏµÍ³´íÎó,ÇëÉÔºóÔÙÊÔ!";
+		return "ç³»ç»Ÿé”™è¯¯,è¯·ç¨åå†è¯•!";
 	}
 	
 	/**
-	 * µ¼ÈëÅĞ¶ÏÌâ
-	 * ÌâÄ¿	´ğ°¸	ÄÑ¶È ×¨Òµ	ËùÊô¿ÆÄ¿
-	 * @return ³É¹¦·µ»Ønull,·ñÔò·µ»Ø´íÎóĞÅÏ¢
+	 * å¯¼å…¥åˆ¤æ–­é¢˜
+	 * é¢˜ç›®	ç­”æ¡ˆ	éš¾åº¦ ä¸“ä¸š	æ‰€å±ç§‘ç›®
+	 * @return æˆåŠŸè¿”å›null,å¦åˆ™è¿”å›é”™è¯¯ä¿¡æ¯
 	 */
 	public String importJudgeQuestion() {
-		//Ìí¼ÓÒ²µÃÇå¿Õ
+		//æ·»åŠ ä¹Ÿå¾—æ¸…ç©º
 				String info = "";
-				//ÏÈÇå¿ÕÅĞ¶ÏÌâ,ÏÈÅĞ¶ÏÅĞ¶ÏÌâÊÇ·ñÓĞÊı¾İ
+				//å…ˆæ¸…ç©ºåˆ¤æ–­é¢˜,å…ˆåˆ¤æ–­åˆ¤æ–­é¢˜æ˜¯å¦æœ‰æ•°æ®
 						if(this.judgeQuestionService.hasData()) {
 							this.judgeQuestionService.clear();
 							if(this.judgeQuestionService.hasData()) {
-								//Ã»ÓĞÇå¿Õ±í
-								info = "ÀúÊ·ÅĞ¶ÏÌâÊı¾İÎŞ·¨Çå¿Õ!ÇëÉÔºóÔÙÊÔ" ;
+								//æ²¡æœ‰æ¸…ç©ºè¡¨
+								info = "å†å²åˆ¤æ–­é¢˜æ•°æ®æ— æ³•æ¸…ç©º!è¯·ç¨åå†è¯•" ;
 								return info;
 							}
 						}
-				//¿ªÊ¼µ¼Èë
+				//å¼€å§‹å¯¼å…¥
 				FileInputStream excel = null;
 				Workbook wb =  null;
 				HttpServletRequest req = ServletActionContext.getRequest();
 				try {
-					//µÃµ½ExcelÎÄ¼ş
+					//å¾—åˆ°Excelæ–‡ä»¶
 					excel = new FileInputStream(file_upload);
-					//»ñÈ¡¹¤×÷²¾¶ÔÏó
-					wb = Workbook.getWorkbook(excel);//Ö»¶Á
-					//¿ªÊ¼¶ÔexcelÊı¾İ½øĞĞ²Ù×÷(ĞĞ,ÁĞ)
+					//è·å–å·¥ä½œç°¿å¯¹è±¡
+					wb = Workbook.getWorkbook(excel);//åªè¯»
+					//å¼€å§‹å¯¹excelæ•°æ®è¿›è¡Œæ“ä½œ(è¡Œ,åˆ—)
 					Sheet sheet = wb.getSheet(0);
-					//Ê×ÏÈÒªµÃµ½ÓĞ¶àÉÙĞĞ
+					//é¦–å…ˆè¦å¾—åˆ°æœ‰å¤šå°‘è¡Œ
 					int rows = 0;
 					int rowsAll = sheet.getRows();
 					for(int i=0; i<rowsAll; i++) {
@@ -516,59 +520,59 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 							break;
 						}
 					}
-					rows = rows == 0 ? rowsAll : rows; //Èç¹ûÓĞ¶àÓà¿ÕĞĞ¾ÍµÈÓÚÊµ¼ÊĞĞ,·ñÔòµÈÓÚ×ÜĞĞ
+					rows = rows == 0 ? rowsAll : rows; //å¦‚æœæœ‰å¤šä½™ç©ºè¡Œå°±ç­‰äºå®é™…è¡Œ,å¦åˆ™ç­‰äºæ€»è¡Œ
 					for(int j=1; j<rows; j++) {
 						JudgeQuestion judgeQuestion = new JudgeQuestion();
-						 //´¦ÀíÌâÄ¿
+						 //å¤„ç†é¢˜ç›®
 						Cell questionCell = sheet.getCell(0, j);
 						String question = questionCell.getContents();
 						if(question.trim().equals("")) {
-							//²»¶Ô
-							info =  "µÚ" + j + "ĞĞÌâÄ¿²»ÄÜÎª¿Õ" ;
+							//ä¸å¯¹
+							info =  "ç¬¬" + j + "è¡Œé¢˜ç›®ä¸èƒ½ä¸ºç©º" ;
 							return info;
 						}
 						
-						//´¦Àí´ğ°¸ 0 , 1
+						//å¤„ç†ç­”æ¡ˆ 0 , 1
 						Cell answerCell = sheet.getCell(1,j);
 						String answer = answerCell.getContents();
 						if(!answer.trim().equals("T") && !answer.trim().equals("F")) {
-							//²»¶Ô
-							info = "µÚ" + j + "ĞĞ´ğ°¸¸ñÊ½´íÎó";
+							//ä¸å¯¹
+							info = "ç¬¬" + j + "è¡Œç­”æ¡ˆæ ¼å¼é”™è¯¯";
 							return info;
 						}
 						byte sub_answer = (byte) (answer.equals("T") ? 1 : 0);
 						
-						//´¦ÀíÄÑÒ×³Ì¶È
+						//å¤„ç†éš¾æ˜“ç¨‹åº¦
 						Cell degreeCell = sheet.getCell(2,j);
 						String degree = degreeCell.getContents();
 						if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2")) {
-							//²»¶Ô
-							info = "µÚ" + j + "ĞĞÄÑÒ×³Ì¶ÈÌîĞ´´íÎó";
+							//ä¸å¯¹
+							info = "ç¬¬" + j + "è¡Œéš¾æ˜“ç¨‹åº¦å¡«å†™é”™è¯¯";
 							return info;
 						}
 						byte deg = Byte.parseByte(degree);
 						
-						//´¦Àí×¨Òµ
+						//å¤„ç†ä¸“ä¸š
 						Cell majorCell = sheet.getCell(3,j);
 						String major = majorCell.getContents();
 						int m_id = 0;
 						if(major.trim().equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 							
-							info = "µÚ" + j + "ĞĞ×¨ÒµÌîĞ´´íÎó";
+							info = "ç¬¬" + j + "è¡Œä¸“ä¸šå¡«å†™é”™è¯¯";
 							return info;
 						}
 						
-						//´¦Àí¿ÆÄ¿
+						//å¤„ç†ç§‘ç›®
 						Cell subjectCell = sheet.getCell(4,j);
 						String sub = subjectCell.getContents();
 						int sub_id = 0;
 						if(sub.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 							
-							info = "µÚ" + j + "ĞĞ¿ÆÄ¿ÌîĞ´´íÎó";
+							info = "ç¬¬" + j + "è¡Œç§‘ç›®å¡«å†™é”™è¯¯";
 							return info;
 						}
 						
-						//ÑéÖ¤Í¨¹ı
+						//éªŒè¯é€šè¿‡
 						Major m = new Major();
 						m.setM_id(m_id);
 						Subject s = new Subject();
@@ -581,13 +585,13 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						
 						int id = this.judgeQuestionService.add(judgeQuestion);
 						if(id <= 0) {
-							//Ìí¼ÓÊ§°Ü
-							info = "µÚ" + j + "¸öÌâÄ¿Ìí¼ÓÊ§°Ü,ÇëÖØÊÔ";
+							//æ·»åŠ å¤±è´¥
+							info = "ç¬¬" + j + "ä¸ªé¢˜ç›®æ·»åŠ å¤±è´¥,è¯·é‡è¯•";
 							return info;
 						}
 					}
 					
-					//Ìí¼ÓÍê³É
+					//æ·»åŠ å®Œæˆ
 					return null;
 					
 				} catch (FileNotFoundException e) {
@@ -608,38 +612,38 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 							e.printStackTrace();
 						}
 				}
-				return "ÏµÍ³´íÎó,ÇëÉÔºóÔÙÊÔ!";
+				return "ç³»ç»Ÿé”™è¯¯,è¯·ç¨åå†è¯•!";
 	}
 	
 	/**
-	 * Ö÷¹ÛÌâµ¼Èë
-	 * ³É¹¦·µ»Ønull,·ñÔò·µ»Ø´íÎóĞÅÏ¢
+	 * ä¸»è§‚é¢˜å¯¼å…¥
+	 * æˆåŠŸè¿”å›null,å¦åˆ™è¿”å›é”™è¯¯ä¿¡æ¯
 	 * @return
 	 */
 	public String importSubjectiveQuestion() {
-		//Ìí¼ÓÒ²µÃÇå¿Õ
+		//æ·»åŠ ä¹Ÿå¾—æ¸…ç©º
 		String info = "";
-		//ÏÈÇå¿ÕÅĞ¶ÏÌâ,ÏÈÅĞ¶ÏÅĞ¶ÏÌâÊÇ·ñÓĞÊı¾İ
+		//å…ˆæ¸…ç©ºåˆ¤æ–­é¢˜,å…ˆåˆ¤æ–­åˆ¤æ–­é¢˜æ˜¯å¦æœ‰æ•°æ®
 				if(this.subjectiveQuestionService.hasData()) {
 					this.subjectiveQuestionService.clear();
 					if(this.subjectiveQuestionService.hasData()) {
-						//Ã»ÓĞÇå¿Õ±í
-						info = "ÀúÊ·Ö÷¹ÛÌâÊı¾İÎŞ·¨Çå¿Õ!ÇëÉÔºóÔÙÊÔ" ;
+						//æ²¡æœ‰æ¸…ç©ºè¡¨
+						info = "å†å²ä¸»è§‚é¢˜æ•°æ®æ— æ³•æ¸…ç©º!è¯·ç¨åå†è¯•" ;
 						return info;
 					}
 				}
-		//¿ªÊ¼µ¼Èë
+		//å¼€å§‹å¯¼å…¥
 		FileInputStream excel = null;
 		Workbook wb =  null;
 		HttpServletRequest req = ServletActionContext.getRequest();
 		try {
-			//µÃµ½ExcelÎÄ¼ş
+			//å¾—åˆ°Excelæ–‡ä»¶
 			excel = new FileInputStream(file_upload);
-			//»ñÈ¡¹¤×÷²¾¶ÔÏó
-			wb = Workbook.getWorkbook(excel);//Ö»¶Á
-			//¿ªÊ¼¶ÔexcelÊı¾İ½øĞĞ²Ù×÷(ĞĞ,ÁĞ)
+			//è·å–å·¥ä½œç°¿å¯¹è±¡
+			wb = Workbook.getWorkbook(excel);//åªè¯»
+			//å¼€å§‹å¯¹excelæ•°æ®è¿›è¡Œæ“ä½œ(è¡Œ,åˆ—)
 			Sheet sheet = wb.getSheet(0);
-			//Ê×ÏÈÒªµÃµ½ÓĞ¶àÉÙĞĞ
+			//é¦–å…ˆè¦å¾—åˆ°æœ‰å¤šå°‘è¡Œ
 			int rows = 0;
 			int rowsAll = sheet.getRows();
 			for(int i=0; i<rowsAll; i++) {
@@ -649,68 +653,68 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					break;
 				}
 			}
-			rows = rows == 0 ? rowsAll : rows; //Èç¹ûÓĞ¶àÓà¿ÕĞĞ¾ÍµÈÓÚÊµ¼ÊĞĞ,·ñÔòµÈÓÚ×ÜĞĞ
+			rows = rows == 0 ? rowsAll : rows; //å¦‚æœæœ‰å¤šä½™ç©ºè¡Œå°±ç­‰äºå®é™…è¡Œ,å¦åˆ™ç­‰äºæ€»è¡Œ
 			for(int j=1; j<rows; j++) {
 				SubjectiveQuestion subjectiveQuestion = new SubjectiveQuestion();
-				 //´¦ÀíÌâÄ¿
+				 //å¤„ç†é¢˜ç›®
 				Cell questionCell = sheet.getCell(0, j);
 				String question = questionCell.getContents();
 				if(question.trim().equals("")) {
-					//²»¶Ô
-					info =  "µÚ" + j + "ĞĞÌâÄ¿²»ÄÜÎª¿Õ" ;
+					//ä¸å¯¹
+					info =  "ç¬¬" + j + "è¡Œé¢˜ç›®ä¸èƒ½ä¸ºç©º" ;
 					return info;
 				}
 				
-				//´¦Àí´ğ°¸
+				//å¤„ç†ç­”æ¡ˆ
 				Cell answerCell = sheet.getCell(1,j);
 				String answer = answerCell.getContents();
 				if(answer.trim().equals("")) {
-					//²»¶Ô
-					info = "µÚ" + j + "ĞĞ´ğ°¸²»ÄÜÎª¿Õ";
+					//ä¸å¯¹
+					info = "ç¬¬" + j + "è¡Œç­”æ¡ˆä¸èƒ½ä¸ºç©º";
 					return info;
 				}
 				
-				//´¦ÀíÄÑÒ×³Ì¶È
+				//å¤„ç†éš¾æ˜“ç¨‹åº¦
 				Cell degreeCell = sheet.getCell(2,j);
 				String degree = degreeCell.getContents();
 				if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2")) {
-					//²»¶Ô
-					info = "µÚ" + j + "ĞĞÄÑÒ×³Ì¶ÈÌîĞ´´íÎó";
+					//ä¸å¯¹
+					info = "ç¬¬" + j + "è¡Œéš¾æ˜“ç¨‹åº¦å¡«å†™é”™è¯¯";
 					return info;
 				}
 				byte deg = Byte.parseByte(degree);
 				
-				//´¦ÀíÀàĞÍ
+				//å¤„ç†ç±»å‹
 				Cell questionKindCell = sheet.getCell(2,j);
 				String qKind = questionKindCell.getContents();
 				if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2") && !degree.trim().equals("3") && !degree.trim().equals("4")) {
-					//²»¶Ô
-					info = "µÚ" + j + "ĞĞÖ÷¹ÛÌâÀàĞÍÌîĞ´´íÎó";
+					//ä¸å¯¹
+					info = "ç¬¬" + j + "è¡Œä¸»è§‚é¢˜ç±»å‹å¡«å†™é”™è¯¯";
 					return info;
 				}
 				byte sq_kind = Byte.parseByte(qKind);
 				
-				//´¦Àí×¨Òµ
+				//å¤„ç†ä¸“ä¸š
 				Cell majorCell = sheet.getCell(4,j);
 				String major = majorCell.getContents();
 				int m_id = 0;
 				if(major.trim().equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 					
-					info = "µÚ" + j + "ĞĞ×¨ÒµÌîĞ´´íÎó";
+					info = "ç¬¬" + j + "è¡Œä¸“ä¸šå¡«å†™é”™è¯¯";
 					return info;
 				}
 				
-				//´¦Àí¿ÆÄ¿
+				//å¤„ç†ç§‘ç›®
 				Cell subjectCell = sheet.getCell(5,j);
 				String sub = subjectCell.getContents();
 				int sub_id = 0;
 				if(sub.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 					
-					info = "µÚ" + j + "ĞĞ¿ÆÄ¿ÌîĞ´´íÎó";
+					info = "ç¬¬" + j + "è¡Œç§‘ç›®å¡«å†™é”™è¯¯";
 					return info;
 				}
 				
-				//ÑéÖ¤Í¨¹ı
+				//éªŒè¯é€šè¿‡
 				subjectiveQuestion.setSq_question(question);
 				subjectiveQuestion.setSq_answer(answer);
 				subjectiveQuestion.setDegree(deg);
@@ -720,13 +724,13 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				int id = this.subjectiveQuestionService.add(subjectiveQuestion);
 				if(id <= 0) {
-					//Ìí¼ÓÊ§°Ü
-					info = "µÚ" + j + "¸öÌâÄ¿Ìí¼ÓÊ§°Ü,ÇëÖØÊÔ";
+					//æ·»åŠ å¤±è´¥
+					info = "ç¬¬" + j + "ä¸ªé¢˜ç›®æ·»åŠ å¤±è´¥,è¯·é‡è¯•";
 					return info;
 				}
 			}
 			
-			//Ìí¼ÓÍê³É
+			//æ·»åŠ å®Œæˆ
 			return null;
 			
 		} catch (FileNotFoundException e) {
@@ -747,37 +751,37 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					e.printStackTrace();
 				}
 		}
-		return "ÏµÍ³´íÎó,ÇëÉÔºóÔÙÊÔ!";
+		return "ç³»ç»Ÿé”™è¯¯,è¯·ç¨åå†è¯•!";
 	}
 	
 	public String downloadQuestionBank() {
-		//¿ªÊ¼µ¼³ö
+		//å¼€å§‹å¯¼å‡º
 		switch (kind) {
 		case 0 :
-			//Ñ¡ÔñÌâ
+			//é€‰æ‹©é¢˜
 			exportChoiceQuestion();
 			break;
 		case 1 :
-			//ÅĞ¶ÏÌâ
+			//åˆ¤æ–­é¢˜
 			exportJudgeQuestion();
 			break;
 		case 2 :
-			//Ö÷¹ÛÌâ
+			//ä¸»è§‚é¢˜
 			exportSubjectiveQuestion();
 			break;
 		}
 		
-		//µ½ÕâÀïËµÃ÷µ¼ÈëÊ§°Ü
+		//åˆ°è¿™é‡Œè¯´æ˜å¯¼å…¥å¤±è´¥
 		return NONE;
 	}
 	
 	public void exportChoiceQuestion() {
-		//¿ªÊ¼Ğ´Èë
+		//å¼€å§‹å†™å…¥
 		ServletOutputStream sos = null;
 		WritableWorkbook wwk = null;
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setContentType("application/octet-stream");
-		String name = "Ñ¡ÔñÌâÌâ¿â.xls";
+		String name = "é€‰æ‹©é¢˜é¢˜åº“.xls";
 		try {
 			name = new String(name.getBytes("UTF-8"),"ISO-8859-1");
 		} catch (UnsupportedEncodingException e1) {
@@ -786,27 +790,27 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		response.setHeader("Content-Disposition","attachment;fileName=" + name);
 		try {
 			sos = response.getOutputStream();
-			//´´½¨Ò»¸ö¿ÉÒÔĞ´µÄ¹¤×÷²¾
+			//åˆ›å»ºä¸€ä¸ªå¯ä»¥å†™çš„å·¥ä½œç°¿
 			wwk = Workbook.createWorkbook(sos);
-			//´´½¨¿ÉĞ´ÈëµÄ¹¤×÷±í
-			WritableSheet sheet = wwk.createSheet("Ñ¡ÔñÌâÌâ¿â", 0);
-			sheet.setColumnView(0, 100);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-			sheet.setColumnView(1, 50);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-			sheet.setColumnView(2, 50);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-			sheet.setColumnView(3, 50);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
+			//åˆ›å»ºå¯å†™å…¥çš„å·¥ä½œè¡¨
+			WritableSheet sheet = wwk.createSheet("é€‰æ‹©é¢˜é¢˜åº“", 0);
+			sheet.setColumnView(0, 100);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+			sheet.setColumnView(1, 50);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+			sheet.setColumnView(2, 50);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+			sheet.setColumnView(3, 50);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
 			sheet.setColumnView(4, 50);
 			sheet.setColumnView(5, 15);
 			sheet.setColumnView(6, 20);
 			sheet.setColumnView(7, 20);
-			//ÏÈ´´½¨±íÍ·    ÁĞ ĞĞ
-			Label lab_00 = new Label(0, 0, "ÌâÄ¿");
-			Label lab_10 = new Label(1, 0, "´ğ°¸Ïî");
-			Label lab_20 = new Label(2, 0, "ÆäËûÑ¡Ïî1");
-			Label lab_30 = new Label(3, 0, "ÆäËûÑ¡Ïî2");
-			Label lab_40 = new Label(4, 0, "ÆäËûÑ¡Ïî3");
-			Label lab_50 = new Label(5, 0, "ÄÑÒ×³Ì¶È");
-			Label lab_60 = new Label(6, 0, "×¨Òµ");
-			Label lab_70 = new Label(7, 0, "¿ÆÄ¿");
+			//å…ˆåˆ›å»ºè¡¨å¤´    åˆ— è¡Œ
+			Label lab_00 = new Label(0, 0, "é¢˜ç›®");
+			Label lab_10 = new Label(1, 0, "ç­”æ¡ˆé¡¹");
+			Label lab_20 = new Label(2, 0, "å…¶ä»–é€‰é¡¹1");
+			Label lab_30 = new Label(3, 0, "å…¶ä»–é€‰é¡¹2");
+			Label lab_40 = new Label(4, 0, "å…¶ä»–é€‰é¡¹3");
+			Label lab_50 = new Label(5, 0, "éš¾æ˜“ç¨‹åº¦");
+			Label lab_60 = new Label(6, 0, "ä¸“ä¸š");
+			Label lab_70 = new Label(7, 0, "ç§‘ç›®");
 			
 			sheet.addCell(lab_00);
 			sheet.addCell(lab_10);
@@ -816,7 +820,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 			sheet.addCell(lab_50);
 			sheet.addCell(lab_60);
 			sheet.addCell(lab_70);
-			//¿ªÊ¼Ğ´Èë±íÄÚÈİ
+			//å¼€å§‹å†™å…¥è¡¨å†…å®¹
 			List<ChoiceQuestion> list = this.choiceQuestionService.getAll();
 			ChoiceQuestion choiceQ = null;
 			for(int i=1; i<=list.size(); i++) {
@@ -841,7 +845,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 			}
 			
-			//Ìí¼ÓÍê³É
+			//æ·»åŠ å®Œæˆ
 			wwk.write();
 			
 		} catch (IOException e) {
@@ -858,7 +862,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					if(wwk != null)
 						wwk.close();
 					if(sos != null) {
-						response.setHeader("Content-Disposition","attachment;fileName=µ¼³öÑ¡ÔñÌâ³ö´í");
+						response.setHeader("Content-Disposition","attachment;fileName=å¯¼å‡ºé€‰æ‹©é¢˜å‡ºé”™");
 						sos.close();
 						sos.flush();
 					}
@@ -875,12 +879,12 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	}
 	
 	public void exportJudgeQuestion() {
-		//¿ªÊ¼Ğ´Èë
+		//å¼€å§‹å†™å…¥
 				ServletOutputStream sos = null;
 				WritableWorkbook wwk = null;
 				HttpServletResponse response = ServletActionContext.getResponse();
 				response.setContentType("application/octet-stream");
-				String name = "ÅĞ¶ÏÌâÌâ¿â.xls";
+				String name = "åˆ¤æ–­é¢˜é¢˜åº“.xls";
 				try {
 					name = new String(name.getBytes("UTF-8"),"ISO-8859-1");
 				} catch (UnsupportedEncodingException e1) {
@@ -889,28 +893,28 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				response.setHeader("Content-Disposition","attachment;fileName=" + name);
 				try {
 					sos = response.getOutputStream();
-					//´´½¨Ò»¸ö¿ÉÒÔĞ´µÄ¹¤×÷²¾
+					//åˆ›å»ºä¸€ä¸ªå¯ä»¥å†™çš„å·¥ä½œç°¿
 					wwk = Workbook.createWorkbook(sos);
-					//´´½¨¿ÉĞ´ÈëµÄ¹¤×÷±í
-					WritableSheet sheet = wwk.createSheet("ÅĞ¶ÏÌâÌâ¿â", 0);
-					sheet.setColumnView(0, 100);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-					sheet.setColumnView(1, 15);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-					sheet.setColumnView(2, 15);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-					sheet.setColumnView(3, 20);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
+					//åˆ›å»ºå¯å†™å…¥çš„å·¥ä½œè¡¨
+					WritableSheet sheet = wwk.createSheet("åˆ¤æ–­é¢˜é¢˜åº“", 0);
+					sheet.setColumnView(0, 100);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+					sheet.setColumnView(1, 15);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+					sheet.setColumnView(2, 15);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+					sheet.setColumnView(3, 20);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
 					sheet.setColumnView(4, 20);
-					//ÏÈ´´½¨±íÍ·    ÁĞ ĞĞ
-					Label lab_00 = new Label(0, 0, "ÌâÄ¿");
-					Label lab_10 = new Label(1, 0, "´ğ°¸Ïî");
-					Label lab_20 = new Label(2, 0, "ÄÑÒ×³Ì¶È");
-					Label lab_30 = new Label(3, 0, "×¨Òµ");
-					Label lab_40 = new Label(4, 0, "¿ÆÄ¿");
+					//å…ˆåˆ›å»ºè¡¨å¤´    åˆ— è¡Œ
+					Label lab_00 = new Label(0, 0, "é¢˜ç›®");
+					Label lab_10 = new Label(1, 0, "ç­”æ¡ˆé¡¹");
+					Label lab_20 = new Label(2, 0, "éš¾æ˜“ç¨‹åº¦");
+					Label lab_30 = new Label(3, 0, "ä¸“ä¸š");
+					Label lab_40 = new Label(4, 0, "ç§‘ç›®");
 					
 					sheet.addCell(lab_00);
 					sheet.addCell(lab_10);
 					sheet.addCell(lab_20);
 					sheet.addCell(lab_30);
 					sheet.addCell(lab_40);
-					//¿ªÊ¼Ğ´Èë±íÄÚÈİ
+					//å¼€å§‹å†™å…¥è¡¨å†…å®¹
 					List<JudgeQuestion> list = this.judgeQuestionService.getAll();
 					JudgeQuestion judgeQ = null;
 					for(int i=1; i<=list.size(); i++) {
@@ -929,7 +933,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						
 					}
 					
-					//Ìí¼ÓÍê³É
+					//æ·»åŠ å®Œæˆ
 					wwk.write();
 					
 				} catch (IOException e) {
@@ -946,7 +950,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 							if(wwk != null)
 								wwk.close();
 							if(sos != null) {
-								response.setHeader("Content-Disposition","attachment;fileName=µ¼³öÅĞ¶ÏÌâ³ö´í");
+								response.setHeader("Content-Disposition","attachment;fileName=å¯¼å‡ºåˆ¤æ–­é¢˜å‡ºé”™");
 								sos.close();
 								sos.flush();
 							}
@@ -963,12 +967,12 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	}
 	
 	public void exportSubjectiveQuestion(){
-		//¿ªÊ¼Ğ´Èë
+		//å¼€å§‹å†™å…¥
 		ServletOutputStream sos = null;
 		WritableWorkbook wwk = null;
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setContentType("application/octet-stream");
-		String name = "Ö÷¹ÛÌâÌâ¿â.xls";
+		String name = "ä¸»è§‚é¢˜é¢˜åº“.xls";
 		try {
 			name = new String(name.getBytes("UTF-8"),"ISO-8859-1");
 		} catch (UnsupportedEncodingException e1) {
@@ -977,23 +981,23 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		response.setHeader("Content-Disposition","attachment;fileName=" + name);
 		try {
 			sos = response.getOutputStream();
-			//´´½¨Ò»¸ö¿ÉÒÔĞ´µÄ¹¤×÷²¾
+			//åˆ›å»ºä¸€ä¸ªå¯ä»¥å†™çš„å·¥ä½œç°¿
 			wwk = Workbook.createWorkbook(sos);
-			//´´½¨¿ÉĞ´ÈëµÄ¹¤×÷±í
-			WritableSheet sheet = wwk.createSheet("Ö÷¹ÛÌâÌâ¿â", 0);
-			sheet.setColumnView(0, 100);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-			sheet.setColumnView(1, 100);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-			sheet.setColumnView(2, 15);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-			sheet.setColumnView(3, 15);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
+			//åˆ›å»ºå¯å†™å…¥çš„å·¥ä½œè¡¨
+			WritableSheet sheet = wwk.createSheet("ä¸»è§‚é¢˜é¢˜åº“", 0);
+			sheet.setColumnView(0, 100);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+			sheet.setColumnView(1, 100);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+			sheet.setColumnView(2, 15);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+			sheet.setColumnView(3, 15);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
 			sheet.setColumnView(4, 20);
 			sheet.setColumnView(5, 20);
-			//ÏÈ´´½¨±íÍ·    ÁĞ ĞĞ
-			Label lab_00 = new Label(0, 0, "ÌâÄ¿ÄÚÈİ");
-			Label lab_10 = new Label(1, 0, "²Î¿¼´ğ°¸");
-			Label lab_20 = new Label(2, 0, "ÄÑÒ×³Ì¶È");
-			Label lab_30 = new Label(3, 0, "Ö÷¹ÛÌâÀàĞÍ");
-			Label lab_40 = new Label(4, 0, "×¨Òµ");
-			Label lab_50 = new Label(5, 0, "¿ÆÄ¿");
+			//å…ˆåˆ›å»ºè¡¨å¤´    åˆ— è¡Œ
+			Label lab_00 = new Label(0, 0, "é¢˜ç›®å†…å®¹");
+			Label lab_10 = new Label(1, 0, "å‚è€ƒç­”æ¡ˆ");
+			Label lab_20 = new Label(2, 0, "éš¾æ˜“ç¨‹åº¦");
+			Label lab_30 = new Label(3, 0, "ä¸»è§‚é¢˜ç±»å‹");
+			Label lab_40 = new Label(4, 0, "ä¸“ä¸š");
+			Label lab_50 = new Label(5, 0, "ç§‘ç›®");
 			
 			sheet.addCell(lab_00);
 			sheet.addCell(lab_10);
@@ -1001,7 +1005,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 			sheet.addCell(lab_30);
 			sheet.addCell(lab_40);
 			sheet.addCell(lab_50);
-			//¿ªÊ¼Ğ´Èë±íÄÚÈİ
+			//å¼€å§‹å†™å…¥è¡¨å†…å®¹
 			List<SubjectiveQuestion> list = this.subjectiveQuestionService.getAll();
 			SubjectiveQuestion subjectiveQ = null;
 			for(int i=1; i<=list.size(); i++) {
@@ -1022,7 +1026,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 			}
 			
-			//Ìí¼ÓÍê³É
+			//æ·»åŠ å®Œæˆ
 			wwk.write();
 			
 		} catch (IOException e) {
@@ -1039,7 +1043,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					if(wwk != null)
 						wwk.close();
 					if(sos != null) {
-						response.setHeader("Content-Disposition","attachment;fileName=µ¼ÈëÖ÷¹ÛÌâ³ö´í");
+						response.setHeader("Content-Disposition","attachment;fileName=å¯¼å…¥ä¸»è§‚é¢˜å‡ºé”™");
 						sos.close();
 						sos.flush();
 					}

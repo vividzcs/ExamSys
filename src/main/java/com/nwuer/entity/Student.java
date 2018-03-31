@@ -21,8 +21,8 @@ public class Student {
 	@GenericGenerator(name="native",strategy="native")
 	private int s_id;
 	@Column(length=10)
-	private String s_number;  //学号
-	private String s_pass;  //密码
+	private String s_number;  //瀛﹀彿
+	private String s_pass;  //瀵嗙爜
 	private String s_name;
 	@Column(columnDefinition="tinyint not null default 1")
 	private byte s_sex;
@@ -36,22 +36,16 @@ public class Student {
 	@Column(columnDefinition="tinyint default 1")
 	private byte status;
 	@Column(columnDefinition="bigint not null default 0")
-	private Long last_login;
-	//专业
+	private long last_login;
+	//涓撲笟
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="major_stu")
 	private Major major;
-	//院系
+	//闄㈢郴
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="academy_stu")
 	private Academy academy;
 	
-	public Long getLast_login() {
-		return last_login;
-	}
-	public void setLast_login(Long last_login) {
-		this.last_login = last_login;
-	}
 	public int getS_id() {
 		return s_id;
 	}
@@ -99,6 +93,12 @@ public class Student {
 	}
 	public void setAcademy(Academy academy) {
 		this.academy = academy;
+	}
+	public long getLast_login() {
+		return last_login;
+	}
+	public void setLast_login(long last_login) {
+		this.last_login = last_login;
 	}
 	
 }

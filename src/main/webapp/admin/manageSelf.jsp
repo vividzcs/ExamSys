@@ -60,7 +60,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">确认密码：</label>
                                         <div class="col-sm-8">
-                                            <input id="confirm_password" name="password" class="form-control" type="password">
+                                            <input id="confirm_password" name="newPass" class="form-control" type="password">
                                         </div>
                                     </div>
                                     <div class="form-group">

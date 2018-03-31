@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
- * ע�ῼ�Ա�
+ * 注册考试表
  * @author vividzc
  *
  */
@@ -25,7 +25,7 @@ public class ExamRegister {
 	@GenericGenerator(name="native",strategy="native")
 	private int r_id;
 	private long create_time;
-	private byte status;  //�Ƿ�μӿ���
+	private byte status;  //是否参加考试
 	
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="stu_register")

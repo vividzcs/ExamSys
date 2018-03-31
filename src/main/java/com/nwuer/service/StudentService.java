@@ -28,7 +28,7 @@ public class StudentService implements BaseService<Student> {
 	@Override
 	@Transactional
 	public int add(Student t) {
-		//处理数据
+		//澶勭悊鏁版嵁
 		t.setCreate_time(System.currentTimeMillis());
 		t.setS_pass(crpty.encrypt(t.getS_pass()));
 		return this.StudentDaoImpl.add(t);

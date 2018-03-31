@@ -44,7 +44,7 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	@Override
 	public Student getModel() {
 		return student;
-	}  //Ä£ĞÍÇı¶¯»ñÈ¡Êı¾İ
+	}  //æ¨¡å‹é©±åŠ¨è·å–æ•°æ®
 	
 	private Map result = new HashMap();
 	public Map getResult() {
@@ -52,7 +52,7 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	}
 	public void setResult(Map result) {
 		this.result = result;
-	} //´«»ØÇ°¶ËµÃJsonÊı¾İ
+	} //ä¼ å›å‰ç«¯å¾—Jsonæ•°æ®
 	@Autowired
 	private StudentService studentService;
 	@Autowired
@@ -64,31 +64,31 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	
 
 	/**
-	 * µÇÂ¼
+	 * ç™»å½•
 	 * @return
 	 */
 	public String login() {
-		//ÑéÖ¤
+		//éªŒè¯
 		
 		
 		Student studentConfirm = this.studentService.getByNumberAndPass(student);
 		if(studentConfirm != null) {
-			//µÇÂ¼³É¹¦
+			//ç™»å½•æˆåŠŸ
 			studentConfirm.setS_pass(null);
 			ServletActionContext.getRequest().getSession().setAttribute("student", studentConfirm);
 			
 			this.result.put("status", "1");
-			this.result.put("msg", "µÇÂ¼³É¹¦");
+			this.result.put("msg", "ç™»å½•æˆåŠŸ");
 			return SUCCESS;
 		}else {
 			this.result.put("status", "0");
-			this.result.put("msg", "ÓÃ»§Ãû»òÃÜÂë´íÎó");
+			this.result.put("msg", "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯");
 			return ERROR;
 		}
 		
 	}
 	/**
-	 * ÍË³ö
+	 * é€€å‡º
 	 * @return
 	 */
 	public String logout() {
@@ -104,34 +104,34 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	}
 	
 	/**
-	 * Ìí¼ÓÑ§Éú
+	 * æ·»åŠ å­¦ç”Ÿ
 	 * @return
 	 */
 	public String add() {
-		//ÑéÖ¤
+		//éªŒè¯
 		
 		int id = (int) this.studentService.add(student);
 		if(id > 0) {
-			//Ìí¼Ó³É¹¦
+			//æ·»åŠ æˆåŠŸ
 			return SUCCESS;
 		} else {
-			//Ìí¼ÓÊ§°Ü
+			//æ·»åŠ å¤±è´¥
 			return ERROR;
 		}
 	}
 	/**
-	 * É¾³ı
+	 * åˆ é™¤
 	 * @return
 	 */
 	public String delete() {
-		//ÑéÖ¤idĞÅÏ¢
+		//éªŒè¯idä¿¡æ¯
 		
 		this.studentService.delete(this.student.getS_id());
 		return SUCCESS;
 	}
 	
 	/**
-	 * ¹ÜÀíÔ±ĞŞ¸Ä
+	 * ç®¡ç†å‘˜ä¿®æ”¹
 	 * @return
 	 */
 	public String editA() {
@@ -140,27 +140,30 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		return "edit";
 	}
 	/**
-	 * ¹ÜÀíÔ±ĞŞ¸Ä
+	 * ç®¡ç†å‘˜ä¿®æ”¹
 	 * @return
 	 */
 	public String updateA() {
-		//ÑéÖ¤
+		//éªŒè¯
 		
 		Student stu = this.studentService.getById(student.getS_id());
 		student.setCreate_time(stu.getCreate_time());
 		student.setLast_login(stu.getLast_login());
 		student.setStatus(stu.getStatus());
 		this.studentService.update(student);
+		
+		student.setS_pass(null);
+		ServletActionContext.getRequest().getSession().setAttribute("student", student);;
 		return SUCCESS;
 	}
 	
 	public String exportStudent() {
-		//¿ªÊ¼Ğ´Èë
+		//å¼€å§‹å†™å…¥
 		ServletOutputStream sos = null;
 		WritableWorkbook wwk = null;
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setContentType("application/octet-stream");
-		String a_name = "È«²¿Ñ§ÉúÃûµ¥.xls";
+		String a_name = "å…¨éƒ¨å­¦ç”Ÿåå•.xls";
 		try {
 			a_name = new String(a_name.getBytes("UTF-8"),"ISO-8859-1");
 		} catch (UnsupportedEncodingException e1) {
@@ -169,27 +172,27 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		response.setHeader("Content-Disposition","attachment;fileName=" + a_name);
 		try {
 			sos = response.getOutputStream();
-			//´´½¨Ò»¸ö¿ÉÒÔĞ´µÄ¹¤×÷²¾
+			//åˆ›å»ºä¸€ä¸ªå¯ä»¥å†™çš„å·¥ä½œç°¿
 			wwk = Workbook.createWorkbook(sos);
-			//´´½¨¿ÉĞ´ÈëµÄ¹¤×÷±í
-			WritableSheet sheet = wwk.createSheet("È«²¿Ñ§ÉúĞÅÏ¢", 0);
+			//åˆ›å»ºå¯å†™å…¥çš„å·¥ä½œè¡¨
+			WritableSheet sheet = wwk.createSheet("å…¨éƒ¨å­¦ç”Ÿä¿¡æ¯", 0);
 			
-			sheet.setColumnView(0, 25);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-			sheet.setColumnView(1, 25);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-			sheet.setColumnView(2, 20);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
+			sheet.setColumnView(0, 25);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+			sheet.setColumnView(1, 25);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+			sheet.setColumnView(2, 20);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
 			sheet.setColumnView(3, 12);
 			sheet.setColumnView(4, 20);
 			sheet.setColumnView(5, 20);
 			sheet.setColumnView(6, 10);
 			
-			//ÏÈ´´½¨±íÍ·    ÁĞ ĞĞ
-			Label lab_00 = new Label(0, 0, "Ñ§ºÅ");
-			Label lab_10 = new Label(1, 0, "ÃÜÂë");
-			Label lab_20 = new Label(2, 0, "ĞÕÃû");
-			Label lab_30 = new Label(3, 0, "ĞÔ±ğ");
-			Label lab_40 = new Label(4, 0, "ÔºÏµ");
-			Label lab_50 = new Label(5, 0, "×¨Òµ");
-			Label lab_60 = new Label(6, 0, "×´Ì¬");
+			//å…ˆåˆ›å»ºè¡¨å¤´    åˆ— è¡Œ
+			Label lab_00 = new Label(0, 0, "å­¦å·");
+			Label lab_10 = new Label(1, 0, "å¯†ç ");
+			Label lab_20 = new Label(2, 0, "å§“å");
+			Label lab_30 = new Label(3, 0, "æ€§åˆ«");
+			Label lab_40 = new Label(4, 0, "é™¢ç³»");
+			Label lab_50 = new Label(5, 0, "ä¸“ä¸š");
+			Label lab_60 = new Label(6, 0, "çŠ¶æ€");
 			sheet.addCell(lab_00);
 			sheet.addCell(lab_10);
 			sheet.addCell(lab_20);
@@ -198,14 +201,14 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 			sheet.addCell(lab_50);
 			sheet.addCell(lab_60);
 			
-			//¿ªÊ¼Ğ´Èë±íÄÚÈİ
+			//å¼€å§‹å†™å…¥è¡¨å†…å®¹
 			List<Student> list = this.studentService.getAll();
 			for(int i=1; i<=list.size(); i++) {
 				Student stu = list.get(i-1);
 				Label lab_0 = new Label(0, i, stu.getS_number());
 				Label lab_1 = new Label(1, i, crpty.decrypt(stu.getS_pass()));
 				Label lab_2 = new Label(2, i, stu.getS_name());
-				String sex = stu.getS_sex() == 1 ? "ÄĞ" : "Å®";
+				String sex = stu.getS_sex() == 1 ? "ç”·" : "å¥³";
 				Label lab_3 = new Label(3, i, sex);
 				Label lab_4 = new Label(4, i, stu.getAcademy().getA_name());
 				Label lab_5 = new Label(5, i, stu.getMajor().getM_name());
@@ -221,7 +224,7 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 				
 			}
 			
-			//Ìí¼ÓÍê³É
+			//æ·»åŠ å®Œæˆ
 			wwk.write();
 			
 		} catch (IOException e) {
@@ -240,7 +243,7 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 					if(sos != null) {
 						sos.close();
 						sos.flush();
-						response.setHeader("Content-Disposition","attachment;fileName=µ¼³ö½ÌÊ¦³ö´í");
+						response.setHeader("Content-Disposition","attachment;fileName=å¯¼å‡ºæ•™å¸ˆå‡ºé”™");
 					}
 						
 					
@@ -257,10 +260,10 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	}
 	
 	/**
-	 * µ¼ÈëÑ§Éú
+	 * å¯¼å…¥å­¦ç”Ÿ
 	 */
-	private File file_upload; //ÉÏ´«µÄÎÄ¼ş,  ÊÇÉÏ´«±íµ¥ÏîµÄnameÖµ
-	private String file_uploadFileName; //ÉÏ´«ÎÄ¼şÃû³Æ,±íµ¥ÉÏ´«ÏîµÄÎÄ¼şÃû+FileName
+	private File file_upload; //ä¸Šä¼ çš„æ–‡ä»¶,  æ˜¯ä¸Šä¼ è¡¨å•é¡¹çš„nameå€¼
+	private String file_uploadFileName; //ä¸Šä¼ æ–‡ä»¶åç§°,è¡¨å•ä¸Šä¼ é¡¹çš„æ–‡ä»¶å+FileName
 	public File getFile_upload() {
 		return file_upload;
 	}
@@ -272,16 +275,16 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	}
 	public void setFile_uploadFileName(String file_uploadFileName) {
 		this.file_uploadFileName = file_uploadFileName;
-	} //ÉÏ´«ÎÄ¼şÏà¹Ø
+	} //ä¸Šä¼ æ–‡ä»¶ç›¸å…³
 	
 	public String importStudent() {
-		//ÏÈÇå¿ÕStudent±í,ÏÈÅĞ¶ÏÑ§Éú±íÊÇ·ñÓĞÊı¾İ
+		//å…ˆæ¸…ç©ºStudentè¡¨,å…ˆåˆ¤æ–­å­¦ç”Ÿè¡¨æ˜¯å¦æœ‰æ•°æ®
 		if(this.studentService.hasData()) {
 			this.studentService.clear();
 			if(this.studentService.hasData()) {
-				//Ã»ÓĞÇå¿Õ±í
+				//æ²¡æœ‰æ¸…ç©ºè¡¨
 				result.put("status", "0");
-				result.put("msg", "ÀúÊ·Ñ§ÉúÊı¾İÎŞ·¨Çå¿Õ!ÇëÉÔºóÔÙÊÔ" );
+				result.put("msg", "å†å²å­¦ç”Ÿæ•°æ®æ— æ³•æ¸…ç©º!è¯·ç¨åå†è¯•" );
 				return ERROR;
 			}
 		}
@@ -289,15 +292,15 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		FileInputStream excel = null;
 		Workbook wb =  null;
 		try {
-			//ÊÂÎñ¿ªÊ¼
-			//µÃµ½ExcelÎÄ¼ş
+			//äº‹åŠ¡å¼€å§‹
+			//å¾—åˆ°Excelæ–‡ä»¶
 			excel = new FileInputStream(file_upload);
-			//»ñÈ¡¹¤×÷²¾¶ÔÏó
-			wb = Workbook.getWorkbook(excel);//Ö»¶Á
-			//¿ªÊ¼¶ÔexcelÊı¾İ½øĞĞ²Ù×÷(ĞĞ,ÁĞ)
-			//Ñ§ºÅ	ÃÜÂë	ĞÕÃû	ĞÔ±ğ	ÔºÏµ	×¨Òµ	ÊÇ·ñÄÜµÇÂ¼(0:²»ÄÜ,1:ÄÜ)
+			//è·å–å·¥ä½œç°¿å¯¹è±¡
+			wb = Workbook.getWorkbook(excel);//åªè¯»
+			//å¼€å§‹å¯¹excelæ•°æ®è¿›è¡Œæ“ä½œ(è¡Œ,åˆ—)
+			//å­¦å·	å¯†ç 	å§“å	æ€§åˆ«	é™¢ç³»	ä¸“ä¸š	æ˜¯å¦èƒ½ç™»å½•(0:ä¸èƒ½,1:èƒ½)
 			Sheet sheet = wb.getSheet(0);
-			//Ê×ÏÈÒªµÃµ½ÓĞ¶àÉÙĞĞ
+			//é¦–å…ˆè¦å¾—åˆ°æœ‰å¤šå°‘è¡Œ
 			int rows = 0;
 			int rowsAll = sheet.getRows();
 			for(int i=0; i<rowsAll; i++) {
@@ -307,82 +310,82 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 					break;
 				}
 			}
-			rows = rows == 0 ? rowsAll : rows; //Èç¹ûÓĞ¶àÓà¿ÕĞĞ¾ÍµÈÓÚÊµ¼ÊĞĞ,·ñÔòµÈÓÚ×ÜĞĞ
+			rows = rows == 0 ? rowsAll : rows; //å¦‚æœæœ‰å¤šä½™ç©ºè¡Œå°±ç­‰äºå®é™…è¡Œ,å¦åˆ™ç­‰äºæ€»è¡Œ
 			for(int j=1; j<rows; j++) {
 				Student student = new Student();
-				 //´¦ÀíÑ§ºÅ
+				 //å¤„ç†å­¦å·
 				Cell numCell = sheet.getCell(0, j);
 				String number = numCell.getContents();
 				if(number.trim().length() != 10) {
-					//²»¶Ô
+					//ä¸å¯¹
 					result.put("status", "0");
-					result.put("msg", "µÚ" + j + "ĞĞÑ§ºÅÓĞÎó" );
+					result.put("msg", "ç¬¬" + j + "è¡Œå­¦å·æœ‰è¯¯" );
 					return ERROR;
 				}
-				//´¦ÀíÃÜÂë
+				//å¤„ç†å¯†ç 
 				Cell passCell = sheet.getCell(1,j);
 				String pass = passCell.getContents();
 				if(pass.trim().equals("")) {
-					//²»¶Ô
+					//ä¸å¯¹
 					result.put("status", "0");
-					result.put("msg", "µÚ" + j + "ĞĞÃÜÂë²»ÄÜÎª¿Õ" );
+					result.put("msg", "ç¬¬" + j + "è¡Œå¯†ç ä¸èƒ½ä¸ºç©º" );
 					return ERROR;
 				}
 				
-				//´¦ÀíĞÕÃû
+				//å¤„ç†å§“å
 				Cell nameCell = sheet.getCell(2,j);
 				String name = nameCell.getContents();
 				if(name.trim().equals("")) {
-					//²»¶Ô
+					//ä¸å¯¹
 					result.put("status", "0");
-					result.put("msg", "µÚ" + j + "ĞĞĞÕÃû²»ÄÜÎª¿Õ" );
+					result.put("msg", "ç¬¬" + j + "è¡Œå§“åä¸èƒ½ä¸ºç©º" );
 					return ERROR;
 				}
 				
-				//´¦ÀíĞÔ±ğ
+				//å¤„ç†æ€§åˆ«
 				Cell sexCell = sheet.getCell(3,j);
 				String sex = sexCell.getContents();
-				if(!sex.trim().equals("ÄĞ") && !sex.trim().equals("Å®")) {
-					//²»¶Ô
+				if(!sex.trim().equals("ç”·") && !sex.trim().equals("å¥³")) {
+					//ä¸å¯¹
 					result.put("status", "0");
-					result.put("msg", "µÚ" + j + "ĞĞĞÔ±ğÌîĞ´´íÎó" );
+					result.put("msg", "ç¬¬" + j + "è¡Œæ€§åˆ«å¡«å†™é”™è¯¯" );
 					return ERROR;
 				}
-				byte s_sex = (byte) (sex.trim().equals("ÄĞ") ? 1 : 0);
+				byte s_sex = (byte) (sex.trim().equals("ç”·") ? 1 : 0);
 				
-				//´¦ÀíÔºÏµ
+				//å¤„ç†é™¢ç³»
 				Cell academyCell = sheet.getCell(4,j);
 				String academy = academyCell.getContents();
 				int a_id = 0;
 				if(academy.trim().equals("") || (a_id = this.academyService.getIdByName(academy)) ==0 ) {
 					result.put("status", "0");
-					result.put("msg", "µÚ" + j + "ĞĞÔºÏµÌîĞ´´íÎó" );
+					result.put("msg", "ç¬¬" + j + "è¡Œé™¢ç³»å¡«å†™é”™è¯¯" );
 					return ERROR;
 				}
 				
-				//´¦Àí×¨Òµ
+				//å¤„ç†ä¸“ä¸š
 				Cell majorCell = sheet.getCell(5,j);
 				String major = majorCell.getContents();
 				int m_id = 0;
 				if(major.trim().equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 					
 					result.put("status", "0");
-					result.put("msg", "µÚ" + j + "ĞĞ×¨ÒµÌîĞ´´íÎó" );
+					result.put("msg", "ç¬¬" + j + "è¡Œä¸“ä¸šå¡«å†™é”™è¯¯" );
 					return ERROR;
 				}
 				
-				//´¦ÀíÊÇ·ñÄÜµÇÂ¼
+				//å¤„ç†æ˜¯å¦èƒ½ç™»å½•
 				Cell loginCell = sheet.getCell(6,j);
 				String login = loginCell.getContents();
 				if(!login.trim().equals("0") && !login.trim().equals("1")) {
-					//²»¶Ô
+					//ä¸å¯¹
 					result.put("status", "0");
-					result.put("msg", "µÚ" + j + "ĞĞµÇÂ¼×´Ì¬ÌîĞ´´íÎó" );
+					result.put("msg", "ç¬¬" + j + "è¡Œç™»å½•çŠ¶æ€å¡«å†™é”™è¯¯" );
 					return ERROR;
 				}
 				byte status = Byte.parseByte(login);
 				
-				//ÑéÖ¤Í¨¹ı
+				//éªŒè¯é€šè¿‡
 				Academy s_academy = new Academy();
 				s_academy.setA_id(a_id);
 				Major s_major = new Major();
@@ -397,16 +400,16 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 				student.setMajor(s_major);
 				int id = this.studentService.add(student);
 				if(id <= 0) {
-					//Ìí¼ÓÊ§°Ü
+					//æ·»åŠ å¤±è´¥
 					result.put("status", "0");
-					result.put("msg", "µÚ" + j + "¸öÑ§ÉúÌí¼ÓÊ§°Ü,ÇëÖØÊÔ" );
+					result.put("msg", "ç¬¬" + j + "ä¸ªå­¦ç”Ÿæ·»åŠ å¤±è´¥,è¯·é‡è¯•" );
 					return ERROR;
 				}
 			}
 			
-			//Ìí¼ÓÍê³É
+			//æ·»åŠ å®Œæˆ
 			result.put("status", "1");
-			result.put("msg", "Ìí¼ÓÍê³É" );
+			result.put("msg", "æ·»åŠ å®Œæˆ" );
 			return SUCCESS;
 			
 		} catch (FileNotFoundException e) {

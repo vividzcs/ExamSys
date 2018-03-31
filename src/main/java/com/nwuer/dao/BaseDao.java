@@ -5,44 +5,44 @@ import java.util.List;
 
 public interface BaseDao<T> {
 	/**
-	 * ¸ù¾İid½øĞĞ²éÑ¯
+	 * æ ¹æ®idè¿›è¡ŒæŸ¥è¯¢
 	 * @param id
 	 * @return
 	 */
 	public T getById(Serializable id);
 	
 	/**
-	 * Ìí¼Ó
+	 * æ·»åŠ 
 	 * @param t
 	 */
 	public int add(T t);
 	
 	/**
-	 * É¾³ı
+	 * åˆ é™¤
 	 * @param t
 	 */
 	public void delete(Serializable id);
 	
 	/**
-	 * ĞŞ¸Ä
+	 * ä¿®æ”¹
 	 * @param t
 	 */
 	public void update(T t); 
 	
 	/**
-	 * ²éÑ¯ËùÓĞĞÅÏ¢
+	 * æŸ¥è¯¢æ‰€æœ‰ä¿¡æ¯
 	 * @return
 	 */
 	public List<T> getAll();
 	
 	/**
-	 * °´ÕÕÊ±¼äµ¹Ğò²éÑ¯ËùÓĞÊı¾İ
+	 * æŒ‰ç…§æ—¶é—´å€’åºæŸ¥è¯¢æ‰€æœ‰æ•°æ®
 	 * @return
 	 */
 	public List<T> getAllByTimeDesc();
 	
 	/**
-	 * ²éÑ¯×Ü¼ÇÂ¼Êı
+	 * æŸ¥è¯¢æ€»è®°å½•æ•°
 	 */
 	public int count();
 }

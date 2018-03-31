@@ -27,12 +27,12 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 	}
 	public void setResult(Map<String, String> result) {
 		this.result = result;
-	}  //·µ»ØJSONÊı¾İ
+	}  //è¿”å›JSONæ•°æ®
 	private Major major = new Major();
 	@Override
 	public Major getModel() {
 		return major;
-	} //Ä£ĞÍÇı¶¯»ñÈ¡Êı¾İ
+	} //æ¨¡å‹é©±åŠ¨è·å–æ•°æ®
 	
 	@Autowired
 	private MajorService majorService;
@@ -52,9 +52,9 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 	}
 	
 	public String add() {
-		//¼ìÑéÊı¾İ
+		//æ£€éªŒæ•°æ®
 		
-		//Ìí¼Ó
+		//æ·»åŠ 
 		int id = this.majorService.add(major);
 		if(id>0) {
 			return SUCCESS;
@@ -65,7 +65,7 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 	}
 	
 	public String delete() {
-		//ÑéÖ¤Êı¾İ
+		//éªŒè¯æ•°æ®
 		
 		this.majorService.delete(this.major.getM_id());
 		return SUCCESS;
@@ -82,7 +82,7 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 	}
 	
 	public String update() {
-		//ÑéÖ¤ĞÅÏ¢
+		//éªŒè¯ä¿¡æ¯
 		
 		Major m = this.majorService.getById(this.major.getM_id());
 		

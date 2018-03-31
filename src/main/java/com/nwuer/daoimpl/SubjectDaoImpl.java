@@ -17,7 +17,7 @@ public class SubjectDaoImpl extends BaseDaoImpl<Subject> {
 	}
 	
 	/**
-	 * 根据科目名查询id
+	 * 鏍规嵁绉戠洰鍚嶆煡璇d
 	 * @param name
 	 * @return
 	 */

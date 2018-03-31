@@ -16,15 +16,15 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
 	
 	private Class<T> classType;
 	public BaseDaoImpl() {
-		//得到当前运行类的Class
+		//寰楀埌褰撳墠杩愯绫荤殑Class
 		Class clazz = this.getClass();
-		//得到父类的参数化类型,  直接在泛型类里面是获取不到的,必须在子类中进行获取
+		//寰楀埌鐖剁被鐨勫弬鏁板寲绫诲瀷,  鐩存帴鍦ㄦ硾鍨嬬被閲岄潰鏄幏鍙栦笉鍒扮殑,蹇呴』鍦ㄥ瓙绫讳腑杩涜鑾峰彇
 		Type type  = clazz.getGenericSuperclass();  //BaseDaoImpl<com.nwuer.entity.Teacher>
-		//将参数化类型转化成参数化类型
+		//灏嗗弬鏁板寲绫诲瀷杞寲鎴愬弬鏁板寲绫诲瀷
 		ParameterizedType ptype = (ParameterizedType)type;  //BaseDaoImpl<com.nwuer.entity.Teacher>
-		//得到实际类型参数
+		//寰楀埌瀹為檯绫诲瀷鍙傛暟
 		Type[] types = ptype.getActualTypeArguments();  //[Ljava.lang.reflect.Type;@6ae40994
-		//将实际类型参数转化为Class
+		//灏嗗疄闄呯被鍨嬪弬鏁拌浆鍖栦负Class
 		Class classParameter = (Class)types[0];  //class com.nwuer.entity.Teacher
 		
 		this.classType = classParameter;

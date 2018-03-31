@@ -15,7 +15,7 @@ public class SubjectiveQuestionDaoImpl extends BaseDaoImpl<SubjectiveQuestion> {
 		super.setSessionFactory(sessionFactory);
 	}
 	/**
-	 * 检测题库是否有数据
+	 * 妫�娴嬮搴撴槸鍚︽湁鏁版嵁
 	 * @return
 	 */
 	public boolean hasData() {

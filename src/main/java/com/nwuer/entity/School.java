@@ -1,18 +1,18 @@
 package com.nwuer.entity;
 
 /**
- * Ñ§Ğ£µÄĞÅÏ¢»á´æµ½config.propertiesÎÄ¼şÖĞ
+ * å­¦æ ¡çš„ä¿¡æ¯ä¼šå­˜åˆ°config.propertiesæ–‡ä»¶ä¸­
  * @author vividzc
  *
  */
 public class School {
-	private String sch_number; //Ñ§Ğ£±àºÅ  5Î»
-	private String sch_name; //Ãû³Æ
+	private String sch_number; //å­¦æ ¡ç¼–å·  5ä½
+	private String sch_name; //åç§°
 	private String sch_address;
 	private String sch_website;
-	private String sch_desc; //¼ò½é
-	private int sch_aca_count;  //ÔºÏµÊı
-	private int sch_major_count; //×¨ÒµÊı
+	private String sch_desc; //ç®€ä»‹
+	private int sch_aca_count;  //é™¢ç³»æ•°
+	private int sch_major_count; //ä¸“ä¸šæ•°
 	public String getSch_name() {
 		return sch_name;
 	}

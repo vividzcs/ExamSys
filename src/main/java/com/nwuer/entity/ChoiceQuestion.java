@@ -21,14 +21,14 @@ public class ChoiceQuestion {
 	@GenericGenerator(name="native",strategy="native")
 	private int cho_id; 
 	@Column(length=500)
-	private String cho_question; //ÌâÄ¿
-	private String cho_answer; //ÕıÈ·´ğ°¸
+	private String cho_question; //é¢˜ç›®
+	private String cho_answer; //æ­£ç¡®ç­”æ¡ˆ
 	private String cho_choice_1;
 	private String cho_choice_2;
 	private String cho_choice_3;
 	@Column(columnDefinition="tinyint not null default 0")
-	private byte degree; //ÄÑ¶È  0:¼òµ¥  1:½Ï¼òµ¥  2:ÖĞµÈ  3 ½ÏÄÑ  4:½ÏÄÑ
-	private long create_time;  //´´½¨Ê±¼ä
+	private byte degree; //éš¾åº¦  0:ç®€å•  1:è¾ƒç®€å•  2:ä¸­ç­‰  3 è¾ƒéš¾  4:è¾ƒéš¾
+	private long create_time;  //åˆ›å»ºæ—¶é—´
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="sub_choice")
 	private Subject subject = new Subject();

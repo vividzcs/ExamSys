@@ -24,8 +24,8 @@ public class JudgeQuestion {
 	private String jud_question;
 	private byte jud_answer; //0:F , 1:T
 	@Column(columnDefinition="tinyint not null default 0")
-	private byte degree; //难度
-	private long create_time;  //创建时间
+	private byte degree; //闅惧害
+	private long create_time;  //鍒涘缓鏃堕棿
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="major_judge")
 	private Major major = new Major();

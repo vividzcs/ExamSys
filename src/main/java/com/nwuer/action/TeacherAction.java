@@ -50,7 +50,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	@Override
 	public Teacher getModel() {
 		return teacher;
-	}  //ÓÃÄ£ĞÍÇı¶¯»ñÈ¡Ç°¶ËÊı¾İ
+	}  //ç”¨æ¨¡å‹é©±åŠ¨è·å–å‰ç«¯æ•°æ®
 	
 	private Map<String,String> result = new HashMap<String,String>();
 	public Map<String,String> getResult() {
@@ -58,7 +58,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	}
 	public void setResult(Map<String,String> result) {
 		this.result = result;
-	} //´«»ØÇ°¶ËµÄÊı¾İ
+	} //ä¼ å›å‰ç«¯çš„æ•°æ®
 	
 	@Autowired
 	private TeacherService teacherService;
@@ -70,7 +70,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	private Crpty crpty;
 	
 	/**
-	 * ²éÕÒÑ§ÉúĞÅÏ¢
+	 * æŸ¥æ‰¾å­¦ç”Ÿä¿¡æ¯
 	 */
 	private String s_number;
 	public String getS_number() {
@@ -80,7 +80,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		this.s_number = s_number;
 	}
 	public String findStu() {
-		//¼ì²éÊı¾İºÏ·¨ĞÔ
+		//æ£€æŸ¥æ•°æ®åˆæ³•æ€§
 		if(s_number == null || s_number.equals("")) {
 			return "find";
 		}
@@ -97,15 +97,15 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	
 	
 	/**
-	 * ¸üĞÂ½ÌÊ¦ĞÅÏ¢
+	 * æ›´æ–°æ•™å¸ˆä¿¡æ¯
 	 * @return
 	 */
 	public String update() {
-		//ÑéÖ¤ĞÅÏ¢
+		//éªŒè¯ä¿¡æ¯
 		
 		Teacher tSelf = (Teacher) ServletActionContext.getRequest().getSession().getAttribute("teacher");
 		Teacher t = this.teacherService.getByIdEager(tSelf.getT_id());
-		//ĞÕÃû ÃÜÂë ÔºÏµ
+		//å§“å å¯†ç  é™¢ç³»
 		t.setT_name(teacher.getT_name());
 		t.setT_pass(teacher.getT_pass());
 		Academy a = new Academy();
@@ -113,18 +113,20 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		t.setAcademy(a);
 		this.teacherService.update(t);
 		
+		t.setT_pass(null);
+		ServletActionContext.getRequest().getSession().setAttribute("teacher", t);
 		return SUCCESS;
 	}
 	
 	public String delete() {
-		//ÑéÖ¤
+		//éªŒè¯
 		
 		this.teacherService.delete(this.teacher.getT_id());
 		return SUCCESS;
 	}
 	
 	/**
-	 * ¹ÜÀíÔ±ĞŞ¸Ä
+	 * ç®¡ç†å‘˜ä¿®æ”¹
 	 * @return
 	 */
 	public String editA() {
@@ -138,11 +140,11 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	}
 	
 	/**
-	 * ¹ÜÀíÔ±ĞŞ¸Ä
+	 * ç®¡ç†å‘˜ä¿®æ”¹
 	 * @return
 	 */
 	public String updateA() {
-		//ÑéÖ¤ĞÅÏ¢
+		//éªŒè¯ä¿¡æ¯
 		
 		Teacher t = this.teacherService.getById(this.teacher.getT_id());
 		teacher.setCreate_time(t.getCreate_time());
@@ -155,13 +157,13 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	
 	
 	/**
-	 * ÏÔÊ¾±à¼­½ÌÊ¦Ò³Ãæ
+	 * æ˜¾ç¤ºç¼–è¾‘æ•™å¸ˆé¡µé¢
 	 * @return
 	 */
 	public String edit() {
 		Teacher tSelf = (Teacher) ServletActionContext.getRequest().getSession().getAttribute("teacher");
-		Teacher t = this.teacherService.getByIdEager(tSelf.getT_id());  //µÃµ½ÀÏÊ¦ĞÅÏ¢
-		List<Academy> list = this.academyService.getAll();//µÃµ½Ñ§ÔºĞÅÏ¢
+		Teacher t = this.teacherService.getByIdEager(tSelf.getT_id());  //å¾—åˆ°è€å¸ˆä¿¡æ¯
+		List<Academy> list = this.academyService.getAll();//å¾—åˆ°å­¦é™¢ä¿¡æ¯
 		HttpServletRequest req = ServletActionContext.getRequest();
 		req.setAttribute("teacher", t);
 		req.setAttribute("list", list);
@@ -175,56 +177,56 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	}
 	
 	/**
-	 * µÇÂ¼
+	 * ç™»å½•
 	 * @return
 	 */
 	public String login() {
-		//ÑéÖ¤
+		//éªŒè¯
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
-		//ÑéÖ¤ÑéÖ¤Âë
+		//éªŒè¯éªŒè¯ç 
 		String code = request.getParameter("code");
 		String codeReal = (String)session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
 		if(!codeReal.equalsIgnoreCase(code)) {
 			result = new HashMap<String,String>();
 			result.put("status","0");
-			result.put("msg", "ÑéÖ¤Âë´íÎó");
+			result.put("msg", "éªŒè¯ç é”™è¯¯");
 			return ERROR;
 		}
 		
 		Teacher confirmTeacher = this.teacherService.getByNumberAndPass(teacher);
 		if(confirmTeacher != null) {
-			//µÇÂ¼³É¹¦
+			//ç™»å½•æˆåŠŸ
 			this.teacher.setT_pass(null);
 			this.teacherService.updateLastLogin(System.currentTimeMillis(),confirmTeacher.getT_id());
 			session.setAttribute("teacher", confirmTeacher);
 			result.put("status","1");
-			result.put("msg", "µÇÂ¼³É¹¦");
+			result.put("msg", "ç™»å½•æˆåŠŸ");
 			return SUCCESS;
 		}else {
 			result = new HashMap<String,String>();
 			result.put("status","0");
-			result.put("msg", "ÓÃ»§Ãû»òÃÜÂë´íÎó");
+			result.put("msg", "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯");
 			return ERROR;
 		}
 		
 	}
-	private int a_id;  //»áÉÏ´«ÔºÏµid¸ù¾İÔºÏµidµ¼Èë½ÌÊ¦Ãûµ¥
+	private int a_id;  //ä¼šä¸Šä¼ é™¢ç³»idæ ¹æ®é™¢ç³»idå¯¼å…¥æ•™å¸ˆåå•
 	public int getA_id() {
 		return a_id;
 	}
 	public void setA_id(int a_id) {
 		this.a_id = a_id;
-	}//µ¼Èë½ÌÊ¦Ãûµ¥
+	}//å¯¼å…¥æ•™å¸ˆåå•
 	public String downloadTeacher() {
 		Academy academy = academyService.getById(a_id);
 		Set<Teacher> set = academy.getT_set();
-		//¿ªÊ¼Ğ´Èë
+		//å¼€å§‹å†™å…¥
 		ServletOutputStream sos = null;
 		WritableWorkbook wwk = null;
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setContentType("application/octet-stream");
-		String a_name = academy.getA_name() + "½ÌÊ¦Ãûµ¥.xls";
+		String a_name = academy.getA_name() + "æ•™å¸ˆåå•.xls";
 		try {
 			a_name = new String(a_name.getBytes("UTF-8"),"ISO-8859-1");
 		} catch (UnsupportedEncodingException e1) {
@@ -233,29 +235,29 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		response.setHeader("Content-Disposition","attachment;fileName=" + a_name);
 		try {
 			sos = response.getOutputStream();
-			//´´½¨Ò»¸ö¿ÉÒÔĞ´µÄ¹¤×÷²¾
+			//åˆ›å»ºä¸€ä¸ªå¯ä»¥å†™çš„å·¥ä½œç°¿
 			wwk = Workbook.createWorkbook(sos);
-			//´´½¨¿ÉĞ´ÈëµÄ¹¤×÷±í
-			WritableSheet sheet = wwk.createSheet("½ÌÊ¦ĞÅÏ¢", 0);
+			//åˆ›å»ºå¯å†™å…¥çš„å·¥ä½œè¡¨
+			WritableSheet sheet = wwk.createSheet("æ•™å¸ˆä¿¡æ¯", 0);
 			
-			sheet.setColumnView(0, 15);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-			sheet.setColumnView(1, 30);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-			sheet.setColumnView(2, 12);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-			sheet.setColumnView(4, 15);//¸ù¾İÄÚÈİ×Ô¶¯ÉèÖÃÁĞ¿í
-			//ÏÈ´´½¨±íÍ·    ÁĞ ĞĞ
-			Label lab_00 = new Label(0, 0, "¹¤ºÅ");
-			Label lab_10 = new Label(1, 0, "ÃÜÂë");
-			Label lab_20 = new Label(2, 0, "ĞÕÃû");
-			Label lab_30 = new Label(3, 0, "ĞÔ±ğ");
-			Label lab_40 = new Label(4, 0, "ÔºÏµ");
-			Label lab_50 = new Label(5, 0, "×´Ì¬");
+			sheet.setColumnView(0, 15);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+			sheet.setColumnView(1, 30);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+			sheet.setColumnView(2, 12);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+			sheet.setColumnView(4, 15);//æ ¹æ®å†…å®¹è‡ªåŠ¨è®¾ç½®åˆ—å®½
+			//å…ˆåˆ›å»ºè¡¨å¤´    åˆ— è¡Œ
+			Label lab_00 = new Label(0, 0, "å·¥å·");
+			Label lab_10 = new Label(1, 0, "å¯†ç ");
+			Label lab_20 = new Label(2, 0, "å§“å");
+			Label lab_30 = new Label(3, 0, "æ€§åˆ«");
+			Label lab_40 = new Label(4, 0, "é™¢ç³»");
+			Label lab_50 = new Label(5, 0, "çŠ¶æ€");
 			sheet.addCell(lab_00);
 			sheet.addCell(lab_10);
 			sheet.addCell(lab_20);
 			sheet.addCell(lab_30);
 			sheet.addCell(lab_40);
 			sheet.addCell(lab_50);
-			//¿ªÊ¼Ğ´Èë±íÄÚÈİ
+			//å¼€å§‹å†™å…¥è¡¨å†…å®¹
 			Iterator<Teacher> iterator = set.iterator();
 			int i=1;
 			Teacher teacher = null;
@@ -264,7 +266,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				Label lab_0 = new Label(0, i, teacher.getT_number());
 				Label lab_1 = new Label(1, i, crpty.decrypt(teacher.getT_pass()));
 				Label lab_2 = new Label(2, i, teacher.getT_name());
-				String sex = teacher.getT_sex() == 1 ? "ÄĞ" : "Å®";
+				String sex = teacher.getT_sex() == 1 ? "ç”·" : "å¥³";
 				Label lab_3 = new Label(3, i, sex);
 				Label lab_4 = new Label(4, i, teacher.getAcademy().getA_name());
 				Label lab_5 = new Label(5, i, Byte.toString(teacher.getStatus()));
@@ -279,7 +281,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				i++;
 			}
 			
-			//Ìí¼ÓÍê³É
+			//æ·»åŠ å®Œæˆ
 			wwk.write();
 			
 		} catch (IOException e) {
@@ -298,7 +300,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 					if(sos != null) {
 						sos.close();
 						sos.flush();
-						response.setHeader("Content-Disposition","attachment;fileName=µ¼³ö½ÌÊ¦³ö´í");
+						response.setHeader("Content-Disposition","attachment;fileName=å¯¼å‡ºæ•™å¸ˆå‡ºé”™");
 					}
 						
 					
@@ -316,9 +318,9 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	
 	public String list() {
 		HttpServletRequest request = ServletActionContext.getRequest();
-		//²éÑ¯ËùÓĞÔºÏµ
+		//æŸ¥è¯¢æ‰€æœ‰é™¢ç³»
 		List<Academy> aca_list = this.academyService.getAll();
-		//²éÑ¯ÀÏÊ¦Ãûµ¥
+		//æŸ¥è¯¢è€å¸ˆåå•
 		List<Teacher> tea_list = this.teacherService.getAllByTimeDesc();
 		
 		
@@ -335,8 +337,8 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 			return ERROR;
 	}
 	
-	private File file_upload; //ÉÏ´«µÄÎÄ¼ş,  ÊÇÉÏ´«±íµ¥ÏîµÄnameÖµ
-	private String file_uploadFileName; //ÉÏ´«ÎÄ¼şÃû³Æ,±íµ¥ÉÏ´«ÏîµÄÎÄ¼şÃû+FileName
+	private File file_upload; //ä¸Šä¼ çš„æ–‡ä»¶,  æ˜¯ä¸Šä¼ è¡¨å•é¡¹çš„nameå€¼
+	private String file_uploadFileName; //ä¸Šä¼ æ–‡ä»¶åç§°,è¡¨å•ä¸Šä¼ é¡¹çš„æ–‡ä»¶å+FileName
 	public File getFile_upload() {
 		return file_upload;
 	}
@@ -348,30 +350,30 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	}
 	public void setFile_uploadFileName(String file_uploadFileName) {
 		this.file_uploadFileName = file_uploadFileName;
-	} //ÉÏ´«ÎÄ¼şÏà¹Ø
+	} //ä¸Šä¼ æ–‡ä»¶ç›¸å…³
 	/**
 	 * 
 	 * @return
 	 */
 	public String importTeacher() {
-		//¼ì²éÊı¾İ
+		//æ£€æŸ¥æ•°æ®
 		
-		//¿ªÊ¼µ¼Èë
+		//å¼€å§‹å¯¼å…¥
 		FileInputStream excel = null;
 		Workbook wb =  null;
 		String info = "";
 		HttpServletRequest req = ServletActionContext.getRequest();
 		try {
 			ApplicationContext application = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-			//ÊÂÎñ¿ªÊ¼
-			//µÃµ½ExcelÎÄ¼ş
+			//äº‹åŠ¡å¼€å§‹
+			//å¾—åˆ°Excelæ–‡ä»¶
 			excel = new FileInputStream(file_upload);
-			//»ñÈ¡¹¤×÷²¾¶ÔÏó
-			wb = Workbook.getWorkbook(excel);//Ö»¶Á
-			//¿ªÊ¼¶ÔexcelÊı¾İ½øĞĞ²Ù×÷(ĞĞ,ÁĞ)
-			//Ñ§ºÅ	ÃÜÂë	ĞÕÃû	ĞÔ±ğ	ÔºÏµ	×¨Òµ	ÊÇ·ñÄÜµÇÂ¼(0:²»ÄÜ,1:ÄÜ)
+			//è·å–å·¥ä½œç°¿å¯¹è±¡
+			wb = Workbook.getWorkbook(excel);//åªè¯»
+			//å¼€å§‹å¯¹excelæ•°æ®è¿›è¡Œæ“ä½œ(è¡Œ,åˆ—)
+			//å­¦å·	å¯†ç 	å§“å	æ€§åˆ«	é™¢ç³»	ä¸“ä¸š	æ˜¯å¦èƒ½ç™»å½•(0:ä¸èƒ½,1:èƒ½)
 			Sheet sheet = wb.getSheet(0);
-			//Ê×ÏÈÒªµÃµ½ÓĞ¶àÉÙĞĞ
+			//é¦–å…ˆè¦å¾—åˆ°æœ‰å¤šå°‘è¡Œ
 			int rows = 0;
 			int rowsAll = sheet.getRows();
 			for(int i=0; i<rowsAll; i++) {
@@ -381,74 +383,74 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 					break;
 				}
 			}
-			rows = rows == 0 ? rowsAll : rows; //Èç¹ûÓĞ¶àÓà¿ÕĞĞ¾ÍµÈÓÚÊµ¼ÊĞĞ,·ñÔòµÈÓÚ×ÜĞĞ
+			rows = rows == 0 ? rowsAll : rows; //å¦‚æœæœ‰å¤šä½™ç©ºè¡Œå°±ç­‰äºå®é™…è¡Œ,å¦åˆ™ç­‰äºæ€»è¡Œ
 			for(int j=1; j<rows; j++) {
 				Teacher teacher = new Teacher();
-				 //´¦ÀíÑ§ºÅ
+				 //å¤„ç†å­¦å·
 				Cell numCell = sheet.getCell(0, j);
 				String number = numCell.getContents();
 				if(number.trim().length() != 10) {
-					//²»¶Ô
-					info =  "µÚ" + j + "ĞĞ¹¤ºÅÓĞÎó" ;
+					//ä¸å¯¹
+					info =  "ç¬¬" + j + "è¡Œå·¥å·æœ‰è¯¯" ;
 					req.setAttribute("info", info);
 					return ERROR;
 				}
-				//¹¤ºÅ²»ÄÜÖØ¸´
+				//å·¥å·ä¸èƒ½é‡å¤
 				
 				
-				//´¦ÀíÃÜÂë
+				//å¤„ç†å¯†ç 
 				Cell passCell = sheet.getCell(1,j);
 				String pass = passCell.getContents();
 				if(pass.trim().equals("")) {
-					//²»¶Ô
-					info = "µÚ" + j + "ĞĞÃÜÂë²»ÄÜÎª¿Õ";
+					//ä¸å¯¹
+					info = "ç¬¬" + j + "è¡Œå¯†ç ä¸èƒ½ä¸ºç©º";
 					req.setAttribute("info", info);
 					return ERROR;
 				}
 
-				//´¦ÀíĞÕÃû
+				//å¤„ç†å§“å
 				Cell nameCell = sheet.getCell(2,j);
 				String name = nameCell.getContents();
 				if(name.trim().equals("")) {
-					//²»¶Ô
-					info = "µÚ" + j + "ĞĞĞÕÃû²»ÄÜÎª¿Õ";
+					//ä¸å¯¹
+					info = "ç¬¬" + j + "è¡Œå§“åä¸èƒ½ä¸ºç©º";
 					req.setAttribute("info", info);
 					return ERROR;
 				}
 				
-				//´¦ÀíĞÔ±ğ
+				//å¤„ç†æ€§åˆ«
 				Cell sexCell = sheet.getCell(3,j);
 				String sex = sexCell.getContents();
-				if(!sex.trim().equals("ÄĞ") && !sex.trim().equals("Å®")) {
-					//²»¶Ô
-					info = "µÚ" + j + "ĞĞĞÔ±ğÌîĞ´´íÎó";
+				if(!sex.trim().equals("ç”·") && !sex.trim().equals("å¥³")) {
+					//ä¸å¯¹
+					info = "ç¬¬" + j + "è¡Œæ€§åˆ«å¡«å†™é”™è¯¯";
 					req.setAttribute("info", info);
 					return ERROR;
 				}
-				byte s_sex = (byte) (sex.trim().equals("ÄĞ") ? 1 : 0);
+				byte s_sex = (byte) (sex.trim().equals("ç”·") ? 1 : 0);
 				
-				//´¦ÀíÔºÏµ
+				//å¤„ç†é™¢ç³»
 				Cell academyCell = sheet.getCell(4,j);
 				String academy = academyCell.getContents();
 				int a_id = 0;
 				if(academy.trim().equals("") || (a_id = this.academyService.getIdByName(academy)) ==0 ) {
-					info = "µÚ" + j + "ĞĞÔºÏµÌîĞ´´íÎó";
+					info = "ç¬¬" + j + "è¡Œé™¢ç³»å¡«å†™é”™è¯¯";
 					req.setAttribute("info", info);
 					return ERROR;
 				}
 				
-				//´¦ÀíÊÇ·ñÄÜµÇÂ¼
+				//å¤„ç†æ˜¯å¦èƒ½ç™»å½•
 				Cell loginCell = sheet.getCell(5,j);
 				String login = loginCell.getContents();
 				if(!login.trim().equals("0") && !login.trim().equals("1")) {
-					//²»¶Ô
-					info = "µÚ" + j + "ĞĞµÇÂ¼×´Ì¬ÌîĞ´´íÎó";
+					//ä¸å¯¹
+					info = "ç¬¬" + j + "è¡Œç™»å½•çŠ¶æ€å¡«å†™é”™è¯¯";
 					req.setAttribute("info", info);
 					return ERROR;
 				}
 				byte status = Byte.parseByte(login);
 				
-				//ÑéÖ¤Í¨¹ı
+				//éªŒè¯é€šè¿‡
 				Academy s_academy = new Academy();
 				s_academy.setA_id(a_id);
 				
@@ -460,14 +462,14 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				teacher.setAcademy(s_academy);
 				int id = this.teacherService.add(teacher);
 				if(id <= 0) {
-					//Ìí¼ÓÊ§°Ü
-					info = "µÚ" + j + "¸öÑ§ÉúÌí¼ÓÊ§°Ü,ÇëÖØÊÔ";
+					//æ·»åŠ å¤±è´¥
+					info = "ç¬¬" + j + "ä¸ªå­¦ç”Ÿæ·»åŠ å¤±è´¥,è¯·é‡è¯•";
 					req.setAttribute("info", info);
 					return ERROR;
 				}
 			}
 			
-			//Ìí¼ÓÍê³É
+			//æ·»åŠ å®Œæˆ
 			return SUCCESS;
 			
 		} catch (FileNotFoundException e) {

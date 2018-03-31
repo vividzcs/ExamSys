@@ -17,11 +17,11 @@ public class Admin {
 	@GenericGenerator(name="native",strategy="native")
 	private int ad_id;
 	@Column(length=10)
-	private String ad_number; //π§∫≈
+	private String ad_number; //Â∑•Âè∑
 	private String ad_pass;
 	private String ad_name;
 	@Column(columnDefinition="bigint not null default 0")
-	private Long last_login;
+	private long last_login;
 	
 	public void setLast_login(Long last_login) {
 		this.last_login = last_login;
@@ -66,4 +66,5 @@ public class Admin {
 	public void setLast_login(long last_login) {
 		this.last_login = last_login;
 	}
+
 }

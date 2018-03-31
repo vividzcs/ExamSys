@@ -21,7 +21,7 @@ public class PropertyUtil {
 	private Properties prop = new Properties();
 	
 	/**
-	 * ĞŞ¸ÄĞÅÏ¢
+	 * ä¿®æ”¹ä¿¡æ¯
 	 * @throws UnsupportedEncodingException 
 	 */
 	public void update(School school){

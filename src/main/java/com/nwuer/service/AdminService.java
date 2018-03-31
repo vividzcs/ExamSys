@@ -43,8 +43,9 @@ public class AdminService implements BaseService<Admin> {
 
 	@Override
 	public Admin getById(int id) {
-		
-		return this.adminDaoImpl.getById(id);
+		Admin admin = this.adminDaoImpl.getById(id);
+		admin.setAd_pass(crpty.decrypt(admin.getAd_pass()));
+		return admin;
 	}
 
 	@Override

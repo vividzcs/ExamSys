@@ -20,41 +20,41 @@ public class PaperRule {
 	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
 	@GenericGenerator(name="native",strategy="native")
 	private int p_id;
-	private String p_name; //¹æÔòÃû³Æ
-	private long create_time; //´´½¨Ê±¼ä
+	private String p_name; //è§„åˆ™åç§°
+	private long create_time; //åˆ›å»ºæ—¶é—´
 	
 	@Column(columnDefinition="tinyint not null default 0")
-	private byte degree; //ÄÑ¶È
+	private byte degree; //éš¾åº¦
 	@Column(columnDefinition="int not null default 100")
-	private int full_score; //×Ü·Ö
+	private int full_score; //æ€»åˆ†
 	@Column(columnDefinition="tinyint not null default 0")
-	private int single_choice_num; //µ¥Ñ¡¸öÊı
+	private int single_choice_num; //å•é€‰ä¸ªæ•°
 	@Column(columnDefinition="tinyint not null default 0")
-	private int single_choice_score;//µ¥Ñ¡·ÖÊı
+	private int single_choice_score;//å•é€‰åˆ†æ•°
 	@Column(columnDefinition="tinyint not null default 0")
-	private int judge_num; //ÅĞ¶ÏÌâ¸öÊı
+	private int judge_num; //åˆ¤æ–­é¢˜ä¸ªæ•°
 	@Column(columnDefinition="tinyint not null default 0")
-	private int judge_score; //ÅĞ¶ÏÌâ·ÖÊı
+	private int judge_score; //åˆ¤æ–­é¢˜åˆ†æ•°
 	@Column(columnDefinition="tinyint not null default 0")
-	private int blank_num;  //Ìî¿ÕÌâ¸öÊı
+	private int blank_num;  //å¡«ç©ºé¢˜ä¸ªæ•°
 	@Column(columnDefinition="tinyint not null default 0")
-	private int blank_score; //Ìî¿ÕÌâ·ÖÊı
+	private int blank_score; //å¡«ç©ºé¢˜åˆ†æ•°
 	@Column(columnDefinition="tinyint not null default 0")
-	private int translate_num; //Ãû´Ê½âÊÍÌâ¸öÊı
+	private int translate_num; //åè¯è§£é‡Šé¢˜ä¸ªæ•°
 	@Column(columnDefinition="tinyint not null default 0")
-	private int translate_score;  //Ãû´Ê½âÊÍÌâ·ÖÊı
+	private int translate_score;  //åè¯è§£é‡Šé¢˜åˆ†æ•°
 	@Column(columnDefinition="tinyint not null default 0")
-	private int simple_question_num; //¼ò´ğÌâ¸öÊı
+	private int simple_question_num; //ç®€ç­”é¢˜ä¸ªæ•°
 	@Column(columnDefinition="tinyint not null default 0")
-	private int simple_question_score; //¼ò´ğÌâ·ÖÊı
+	private int simple_question_score; //ç®€ç­”é¢˜åˆ†æ•°
 	@Column(columnDefinition="tinyint not null default 0")
-	private int compute_num; //¼ÆËãÌâ¸öÊı
+	private int compute_num; //è®¡ç®—é¢˜ä¸ªæ•°
 	@Column(columnDefinition="tinyint not null default 0")
-	private int compute_score; //¼ÆËãÌâ·ÖÊı
+	private int compute_score; //è®¡ç®—é¢˜åˆ†æ•°
 	@Column(columnDefinition="tinyint not null default 0")
-	private int mix_num; //×ÛºÏÌâ¸öÊı
+	private int mix_num; //ç»¼åˆé¢˜ä¸ªæ•°
 	@Column(columnDefinition="tinyint not null default 0")
-	private int mix_score;//×ÛºÏÌå·ÖÊı
+	private int mix_score;//ç»¼åˆä½“åˆ†æ•°
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="major_paper")
 	private Major major;

@@ -26,8 +26,8 @@ public class SubjectiveQuestion {
 	private String sq_answer;
 	@Column(columnDefinition="tinyint not null default 0")
 	private byte degree;
-	private long create_time;  //´´½¨Ê±¼ä
-	private byte sq_kind; // 0:Ãû´Ê½âÊÍ,1:Ìî¿Õ,2:¼ò´ğ,3:¼ÆËã,4:×ÛºÏ
+	private long create_time;  //åˆ›å»ºæ—¶é—´
+	private byte sq_kind; // 0:åè¯è§£é‡Š,1:å¡«ç©º,2:ç®€ç­”,3:è®¡ç®—,4:ç»¼åˆ
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="major_subj")
 	private Major major = new Major();

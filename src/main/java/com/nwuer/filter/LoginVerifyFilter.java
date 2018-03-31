@@ -30,25 +30,25 @@ public class LoginVerifyFilter implements Filter {
 
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
-	 * ÀÏÊ¦Ã»µÇÂ½Ö»ÄÜ¿´µ½µÇÂ¼Ò³Ãæ,µÇÂ¼ºóÒ²Ö»ÄÜ¿´µ½/teacher/*ÏÂµÄÄÚÈİ
+	 * è€å¸ˆæ²¡ç™»é™†åªèƒ½çœ‹åˆ°ç™»å½•é¡µé¢,ç™»å½•åä¹Ÿåªèƒ½çœ‹åˆ°/teacher/*ä¸‹çš„å†…å®¹
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-		//´ÓurlÀïÃæ½Ø³öcheckSessionKey
+		//ä»urlé‡Œé¢æˆªå‡ºcheckSessionKey
 		String url = req.getServletPath(); 
 		String checkSessionKey = url.split("/")[1];
 		
-		//·ñÔò¾Í¼ì²éSessionÀïÃæÓĞÃ»ÓĞÒª¼ì²éµÄkey,Èç¹ûÃ»ÓĞ¾ÍÀ¹½Ø
+		//å¦åˆ™å°±æ£€æŸ¥Sessioné‡Œé¢æœ‰æ²¡æœ‰è¦æ£€æŸ¥çš„key,å¦‚æœæ²¡æœ‰å°±æ‹¦æˆª
 		Object key = req.getSession().getAttribute(checkSessionKey);
 		
-		//Ñ§ÉúÒ³Ãæµ¥¶À¿¼ÂÇ
-		if(url.startsWith("/student/")) { //ËµÃ÷ÇëÇóµÄÊÇÑ§ÉúÒ³Ãæ
-			if(url.indexOf("/more/") == -1) { //ËµÃ÷ÇëÇóµÄÊÇ²»ĞèÒªµÇÂ¼µÄÒ³Ãæ
+		//å­¦ç”Ÿé¡µé¢å•ç‹¬è€ƒè™‘
+		if(url.startsWith("/student/")) { //è¯´æ˜è¯·æ±‚çš„æ˜¯å­¦ç”Ÿé¡µé¢
+			if(url.indexOf("/more/") == -1) { //è¯´æ˜è¯·æ±‚çš„æ˜¯ä¸éœ€è¦ç™»å½•çš„é¡µé¢
 				chain.doFilter(request, response);
 				return;
-			}else { //ÇëÇóµÄÊÇÒªµÇÂ¼µÄÒ³Ãæ
-				if(key == null) { //Ã»ÓĞµÇÂ¼
+			}else { //è¯·æ±‚çš„æ˜¯è¦ç™»å½•çš„é¡µé¢
+				if(key == null) { //æ²¡æœ‰ç™»å½•
 					res.sendRedirect(req.getContextPath() + "/index.jsp");
 				}else{
 					chain.doFilter(request, response);
@@ -59,24 +59,24 @@ public class LoginVerifyFilter implements Filter {
 		
 		
 		if(key != null) {
-			//ËµÃ÷ÒÑ¾­µÇÂ¼,ÔÚ·ÖÎöËûÏë½øµÄÒ³Ãæ
+			//è¯´æ˜å·²ç»ç™»å½•,åœ¨åˆ†æä»–æƒ³è¿›çš„é¡µé¢
 			
-			if(checkSessionKey.equals("teacher")) { //ËµÃ÷ÊÇÀÏÊ¦
-				if(url.startsWith("/teacher/")) { //ËµÃ÷ÇëÇóµÄÊÇÀÏÊ¦½çÃæ
+			if(checkSessionKey.equals("teacher")) { //è¯´æ˜æ˜¯è€å¸ˆ
+				if(url.startsWith("/teacher/")) { //è¯´æ˜è¯·æ±‚çš„æ˜¯è€å¸ˆç•Œé¢
 					chain.doFilter(request, response);
 					return;
 				}
 			}
 			
-			if(checkSessionKey.equals("admin")) { //ËµÃ÷ÊÇ¹ÜÀíÔ±
-				if(url.startsWith("/admin/")) { //ËµÃ÷ÇëÇóµÄÊÇ¹ÜÀíÔ±½çÃæ
+			if(checkSessionKey.equals("admin")) { //è¯´æ˜æ˜¯ç®¡ç†å‘˜
+				if(url.startsWith("/admin/")) { //è¯´æ˜è¯·æ±‚çš„æ˜¯ç®¡ç†å‘˜ç•Œé¢
 					chain.doFilter(request, response);
 					return;
 				}
 			}
 			
-			//µÇÂ¼µÄºÍÓÃ»§ºÍÏë½øµÄÒ³Ãæ²»·û
-			//¸ù¾İµÇÂ¼ÓÃ»§½øĞĞÌø×ª
+			//ç™»å½•çš„å’Œç”¨æˆ·å’Œæƒ³è¿›çš„é¡µé¢ä¸ç¬¦
+			//æ ¹æ®ç™»å½•ç”¨æˆ·è¿›è¡Œè·³è½¬
 			if(checkSessionKey.equals("student"))
 				res.sendRedirect(req.getContextPath() + "/student/");
 			else if(checkSessionKey.equals("teacher"))
@@ -87,7 +87,7 @@ public class LoginVerifyFilter implements Filter {
 				res.sendRedirect(req.getContextPath() + "/");
 			
 		}else {
-			//Ã»ÓĞµÇÂ¼
+			//æ²¡æœ‰ç™»å½•
 			res.sendRedirect(req.getContextPath() + "/index.jsp");
 		}
 		
@@ -98,12 +98,12 @@ public class LoginVerifyFilter implements Filter {
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO ³õÊ¼»¯
+		// TODO åˆå§‹åŒ–
 		this.filterConfig = fConfig;
 		this.redirectUrl = fConfig.getInitParameter("redirectUrl");
 		String notCheckUrlStr = fConfig.getInitParameter("notCheckUrlList");
 		if(notCheckUrlStr != null && !notCheckUrlStr.equals("")) {
-			//ÓÖ²»ĞèÒª¹ıÂËµÄurl
+			//åˆä¸éœ€è¦è¿‡æ»¤çš„url
 			String[] urls = notCheckUrlStr.split(",");
 			for(String url : urls)
 				this.notCheckUrlList.add(url);

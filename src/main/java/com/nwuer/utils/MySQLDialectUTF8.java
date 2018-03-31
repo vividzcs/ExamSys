@@ -6,7 +6,7 @@ public class MySQLDialectUTF8 extends MySQLDialect {
 
 	@Override
 	public String getTableTypeString() {
-		// TODO ¸Ä±äÊı¾İ¿â½¨±íµÄ×Ö·û¼¯
+		// TODO æ”¹å˜æ•°æ®åº“å»ºè¡¨çš„å­—ç¬¦é›†
 		return "Engine=InnoDB default charset=utf8";
 	}
 	

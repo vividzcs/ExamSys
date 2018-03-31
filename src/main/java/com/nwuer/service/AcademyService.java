@@ -23,7 +23,7 @@ public class AcademyService implements BaseService<Academy>{
 	}
 	
 	/**
-	 * 根据院系名查询ID
+	 * 鏍规嵁闄㈢郴鍚嶆煡璇D
 	 * @param name
 	 * @return
 	 */

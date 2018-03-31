@@ -22,17 +22,17 @@ public class Subject {
 	private int sub_id;
 	private String sub_name;
 	@Column(length=8)
-	private long create_time;  //创建时间
+	private long create_time;  //鍒涘缓鏃堕棿
 	public long getCreate_time() {
 		return create_time;
 	}
 	public void setCreate_time(long create_time) {
 		this.create_time = create_time;
 	}
-	private String sub_number; //科目编号
+	private String sub_number; //绉戠洰缂栧彿
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="major_sub")
-	private Major major; //专业
+	private Major major; //涓撲笟
 	
 	public Major getMajor() {
 		return major;

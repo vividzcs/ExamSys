@@ -19,13 +19,13 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 	@Override
 	public Academy getModel() {
 		return academy;
-	} //Ä£ĞÍÇı¶¯»ñÈ¡Êı¾İ
+	} //æ¨¡å‹é©±åŠ¨è·å–æ•°æ®
 	
 	@Autowired
 	private AcademyService academyService;
 	
 	/**
-	 * Õ¹Ê¾Ìí¼ÓÔºÏµ
+	 * å±•ç¤ºæ·»åŠ é™¢ç³»
 	 * @return
 	 */
 	
@@ -36,15 +36,15 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 	}
 	
 	/**
-	 * Ìí¼ÓÔºÏµ
+	 * æ·»åŠ é™¢ç³»
 	 * @return
 	 */
 	public String add() {
-		//ÑéÖ¤
+		//éªŒè¯
 		try {
 			this.academyService.add(academy);
 		}catch(Exception e) {
-			String info = "´ËÔºÏµÏÂ»¹ÓĞÆäËû×¨Òµ,ÇëÏÈÇåÀí´ËÔºÏµÏÂµÄ×¨Òµ";
+			String info = "æ­¤é™¢ç³»ä¸‹è¿˜æœ‰å…¶ä»–ä¸“ä¸š,è¯·å…ˆæ¸…ç†æ­¤é™¢ç³»ä¸‹çš„ä¸“ä¸š";
 			
 		}
 		
@@ -52,14 +52,14 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 	}
 	
 	public String delete() {
-		//ÑéÖ¤
+		//éªŒè¯
 		
 		this.academyService.delete(this.academy.getA_id());
 		return SUCCESS;
 	}
 	
 	/**
-	 * ÏÔÊ¾ĞŞ¸ÄÔºÏµ
+	 * æ˜¾ç¤ºä¿®æ”¹é™¢ç³»
 	 * @return
 	 */
 	public String edit() {
@@ -68,11 +68,11 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 		return "edit";
 	}
 	/**
-	 * ĞŞ¸ÄÔºÏµ
+	 * ä¿®æ”¹é™¢ç³»
 	 * @return
 	 */
 	public String update() {
-		//ÑéÖ¤
+		//éªŒè¯
 		
 		Academy a = this.academyService.getById(this.academy.getA_id());
 		a.setA_name(academy.getA_name());

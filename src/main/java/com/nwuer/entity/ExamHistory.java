@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
- * 此表记录学生的考试情况
+ * 姝よ〃璁板綍瀛︾敓鐨勮�冭瘯鎯呭喌
  * @author vividzc
  *
  */
@@ -27,7 +27,7 @@ public class ExamHistory {
 	private int h_id;
 	@Column(columnDefinition="float not null default 0.0")
 	private double grade;
-	private long putin_time; //交卷时间
+	private long putin_time; //浜ゅ嵎鏃堕棿
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="stu_history")
 	private Student student;

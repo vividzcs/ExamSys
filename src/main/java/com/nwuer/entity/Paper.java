@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
- * ÊÔ¾í±í
+ * è¯•å·è¡¨
  * @author vividzc
  *
  */
@@ -25,16 +25,16 @@ public class Paper {
 	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
 	@GenericGenerator(name="native",strategy="native")
 	private int pap_id;
-	private String pap_url; //Éú³ÉµÄÊÔ¾í´æ·ÅÎ»ÖÃ
+	private String pap_url; //ç”Ÿæˆçš„è¯•å·å­˜æ”¾ä½ç½®
 	@Column(columnDefinition="tinyint not null default 0")
-	private byte pap_kind; //ÊÔ¾íÀàĞÍ, 0:¿¼ÊÔ, 1:Á·Ï°
+	private byte pap_kind; //è¯•å·ç±»å‹, 0:è€ƒè¯•, 1:ç»ƒä¹ 
 	private long start_time;
 	private long end_time;
 	private long create_time;
 	@Column(columnDefinition="text")
 	private String pap_desc;
 	
-	private String pap_answer_url;  //Ö±½Ó´æÒ»¶ÎÎÄ±¾ĞÅÏ¢
+	private String pap_answer_url;  //ç›´æ¥å­˜ä¸€æ®µæ–‡æœ¬ä¿¡æ¯
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="sub_paper")
 	private Subject subject;

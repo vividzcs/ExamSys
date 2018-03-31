@@ -18,21 +18,21 @@ public class PaperRuleAction extends ActionSupport implements ModelDriven<PaperR
 	@Override
 	public PaperRule getModel() {
 		return paperRule;
-	} //模型驱动获取数据
+	} //妯″瀷椹卞姩鑾峰彇鏁版嵁
 	
 	@Autowired
 	private PaperRuleService paperRuleService;
 	
 	
 	public String add() {
-		//验证信息
+		//楠岃瘉淇℃伅
 		
 		int id = this.paperRuleService.add(paperRule);
 		if(id > 0) {
-			//添加成功
+			//娣诲姞鎴愬姛
 			return SUCCESS;
 		} else {
-			//添加失败
+			//娣诲姞澶辫触
 			return ERROR;
 		}
 	}
@@ -44,7 +44,7 @@ public class PaperRuleAction extends ActionSupport implements ModelDriven<PaperR
 	}
 	
 	public String delete() {
-		//验证id信息
+		//楠岃瘉id淇℃伅
 		
 		this.paperRuleService.delete(this.paperRule.getP_id());
 		return SUCCESS;

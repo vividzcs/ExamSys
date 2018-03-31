@@ -14,27 +14,27 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name="t_teacher")  //EntityÃ»×¢Ã÷Ó³Éä±íµÄÃû³ÆÊ±Ä¬ÈÏºÍnameºÍtableÊÇÍ¬Ò»Öµ
+@Table(name="t_teacher")  //Entityæ²¡æ³¨æ˜æ˜ å°„è¡¨çš„åç§°æ—¶é»˜è®¤å’Œnameå’Œtableæ˜¯åŒä¸€å€¼
 public class Teacher {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
 	@GenericGenerator(name="native",strategy="native")
 	private int t_id;
 	@Column(length=10)
-	private String t_number;  //¹¤ºÅ 
-	private String t_pass;  //ÃÜÂë
-	private String t_name;  //ĞÕÃû
+	private String t_number;  //å·¥å· 
+	private String t_pass;  //å¯†ç 
+	private String t_name;  //å§“å
 	@Column(columnDefinition="tinyint not null default 1")
 	private byte t_sex;
 	
-	private long create_time;  //´´½¨Ê±¼ä
+	private long create_time;  //åˆ›å»ºæ—¶é—´
 	@Column(columnDefinition="bigint not null default 0")
-	private Long last_login;  //ÉÏ´ÎµÇÂ¼Ê±¼ä
+	private long last_login;  //ä¸Šæ¬¡ç™»å½•æ—¶é—´
 	@Column(columnDefinition="TINYINT default 1")
-	private byte status;  //ÊÇ·ñÄÜµÇÂ¼, 0²»ÄÜ,1ÄÜ
+	private byte status;  //æ˜¯å¦èƒ½ç™»å½•, 0ä¸èƒ½,1èƒ½
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="academy_teacher")
-	private Academy academy;  //Ò»¸öÀÏÊ¦¶ÔÓ¦Ò»¸öÔºÏµ
+	private Academy academy;  //ä¸€ä¸ªè€å¸ˆå¯¹åº”ä¸€ä¸ªé™¢ç³»
 	
 	public Academy getAcademy() {
 		return academy;
@@ -72,10 +72,10 @@ public class Teacher {
 	public void setCreate_time(long create_time) {
 		this.create_time = create_time;
 	}
-	public Long getLast_login() {
+	public long getLast_login() {
 		return last_login;
 	}
-	public void setLast_login(Long last_login) {
+	public void setLast_login(long last_login) {
 		this.last_login = last_login;
 	}
 	public byte getStatus() {

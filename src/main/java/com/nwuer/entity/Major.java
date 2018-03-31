@@ -26,10 +26,10 @@ public class Major {
 	private int m_id;
 	private String m_name;
 	@Column(columnDefinition="int not null default 0")
-	private int m_num; //专业人数
+	private int m_num; //涓撲笟浜烘暟
 	@Column(length=5)
-	private String m_number; //院系编号
-	private long create_time;  //创建时间
+	private String m_number; //闄㈢郴缂栧彿
+	private long create_time;  //鍒涘缓鏃堕棿
 	
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)
 	@JoinColumn(name="academy_major")

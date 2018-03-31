@@ -22,7 +22,7 @@ public class SubjectAction extends ActionSupport implements ModelDriven<Subject>
 	@Override
 	public Subject getModel() {
 		return subject;
-	}//模型驱动获取数据
+	}//妯″瀷椹卞姩鑾峰彇鏁版嵁
 	
 	@Autowired
 	private SubjectService subjectService;
@@ -30,7 +30,7 @@ public class SubjectAction extends ActionSupport implements ModelDriven<Subject>
 	private MajorService majorService;
 	
 	public String delete() {
-		//验证
+		//楠岃瘉
 		
 		this.subjectService.delete(this.subject.getSub_id());
 		return SUCCESS;
@@ -50,14 +50,14 @@ public class SubjectAction extends ActionSupport implements ModelDriven<Subject>
 	}
 	
 	public String add() {
-		//验证
+		//楠岃瘉
 		
 		int id = this.subjectService.add(subject);
 		if(id > 0) {
-			//添加成功
+			//娣诲姞鎴愬姛
 			return SUCCESS;
 		} else {
-			//添加失败
+			//娣诲姞澶辫触
 			return ERROR;
 		}
 	}

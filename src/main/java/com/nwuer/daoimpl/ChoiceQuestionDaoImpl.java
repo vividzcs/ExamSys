@@ -15,7 +15,7 @@ public class ChoiceQuestionDaoImpl extends BaseDaoImpl<ChoiceQuestion> {
 		super.setSessionFactory(sessionFactory);
 	}
 	/**
-	 * ¼ì²âÑ¡ÔñÌâ¿âÊÇ·ñÓĞÊı¾İ
+	 * æ£€æµ‹é€‰æ‹©é¢˜åº“æ˜¯å¦æœ‰æ•°æ®
 	 * @return
 	 */
 	public boolean hasData() {

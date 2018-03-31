@@ -3,46 +3,46 @@ package com.nwuer.utils;
 import org.springframework.stereotype.Component;
 
 /**
- * ÑéÖ¤¹¤¾ßÀà
+ * éªŒè¯å·¥å…·ç±»
  * @author vividzc
- * ÑéÖ¤Í¨¹ı·µ»Ønull,·ñÔò·µ»Ø´íÎóĞÅÏ¢
+ * éªŒè¯é€šè¿‡è¿”å›null,å¦åˆ™è¿”å›é”™è¯¯ä¿¡æ¯
  */
 @Component
 public class ValidateUtil {
 	
 	/**
-	 * ÊÇ·ñÎª¿Õ
+	 * æ˜¯å¦ä¸ºç©º
 	 * @param str
 	 * @return
 	 */
 	public String validateEmpty(String str) {
-		return "".equals(str) ? "×Ö¶Î²»ÄÜÎª¿Õ" : null;
+		return "".equals(str) ? "å­—æ®µä¸èƒ½ä¸ºç©º" : null;
 	}
 	
 	/**
-	 * ÑéÖ¤³¤¶ÈÊÇ·ñÕıÈ·
+	 * éªŒè¯é•¿åº¦æ˜¯å¦æ­£ç¡®
 	 * @param str
 	 * @return
 	 */
 	public String validateLength(String str, int len) {
 		if(str == null)
-			return "×Ö¶Î¸ñÊ½´íÎó";
-		return str.length() == len ? null : "×Ö¶Î³¤¶È´íÎó";
+			return "å­—æ®µæ ¼å¼é”™è¯¯";
+		return str.length() == len ? null : "å­—æ®µé•¿åº¦é”™è¯¯";
 	}
 	
 	public String validateMinLength(String str, int len) {
 		if(str == null)
-			return "×Ö¶Î¸ñÊ½´íÎó";
-		return str.length() >= len ? null : "×Ö¶Î³¤¶È´íÎó";
+			return "å­—æ®µæ ¼å¼é”™è¯¯";
+		return str.length() >= len ? null : "å­—æ®µé•¿åº¦é”™è¯¯";
 	}
 	/**
-	 * ÑéÖ¤×Ö·û´®ÎªÊı×Ö×Ö·û´®,²¢ÇÒ³¤¶ÈÈ·¶¨
+	 * éªŒè¯å­—ç¬¦ä¸²ä¸ºæ•°å­—å­—ç¬¦ä¸²,å¹¶ä¸”é•¿åº¦ç¡®å®š
 	 * @param number
 	 * @return
 	 */
 	public String validateNumber(String number,int len) {
 		if(!number.matches("[0-9]{10}")) {
-			return "×Ö¶Î¸ñÊ½´íÎó";
+			return "å­—æ®µæ ¼å¼é”™è¯¯";
 		}else
 			return null;
 	}

@@ -6,31 +6,31 @@ import java.util.List;
 public interface BaseService<T> {
 	
 	/**
-	 * Ôö¼Ó
+	 * å¢åŠ 
 	 * @return
 	 */
 	public int add(T t);
 	
 	/**
-	 * ²éÑ¯ËùÓĞ
+	 * æŸ¥è¯¢æ‰€æœ‰
 	 * @return
 	 */
 	public List<T> getAll();
 	
 	/**
-	 * µÃµ½·ÖÒ³Bean
+	 * å¾—åˆ°åˆ†é¡µBean
 	 */
 	//public BaseBean list(int nowPage,int size);
 	
 	/**
-	 * ¸ù¾İid½øĞĞ²éÑ¯
+	 * æ ¹æ®idè¿›è¡ŒæŸ¥è¯¢
 	 * @param id
 	 * @return
 	 */
 	public T getById(int id);
 	
 	/**
-	 * ¸ù¾İÊ±¼äµ¹Ğğ²éÑ¯ËùÓĞÊı¾İ
+	 * æ ¹æ®æ—¶é—´å€’å™æŸ¥è¯¢æ‰€æœ‰æ•°æ®
 	 * @return
 	 */
 	public List<T> getAllByTimeDesc();
@@ -38,13 +38,13 @@ public interface BaseService<T> {
 	public T getByIdEager(Serializable id);
 	
 	/**
-	 * ¸üĞÂ
+	 * æ›´æ–°
 	 * @param t
 	 */
 	public void update(T t);
 	
 	/**
-	 * É¾³ı
+	 * åˆ é™¤
 	 * @param id
 	 */
 	public void delete(int id);

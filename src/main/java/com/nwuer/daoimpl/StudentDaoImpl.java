@@ -33,14 +33,14 @@ public class StudentDaoImpl extends BaseDaoImpl<Student> {
 	}
 	
 	/**
-	 * Çå¿ÕÑ§Éú±íµÄÊı¾İ
+	 * æ¸…ç©ºå­¦ç”Ÿè¡¨çš„æ•°æ®
 	 */
 	public void clear() {
 		this.getSessionFactory().getCurrentSession().createNativeQuery("truncate table t_student").executeUpdate();
 	}
 	
 	/**
-	 * ¼ì²âÑ§Éú±íÊÇ·ñÓĞÊı¾İ
+	 * æ£€æµ‹å­¦ç”Ÿè¡¨æ˜¯å¦æœ‰æ•°æ®
 	 * @return
 	 */
 	public boolean hasData() {
