@@ -23,12 +23,7 @@ public class Subject {
 	private String sub_name;
 	@Column(length=8)
 	private long create_time;  //创建时间
-	public long getCreate_time() {
-		return create_time;
-	}
-	public void setCreate_time(long create_time) {
-		this.create_time = create_time;
-	}
+	
 	private String sub_number; //科目编号
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="major_sub")
@@ -57,5 +52,11 @@ public class Subject {
 	}
 	public void setSub_number(String sub_number) {
 		this.sub_number = sub_number;
+	}
+	public long getCreate_time() {
+		return create_time;
+	}
+	public void setCreate_time(long create_time) {
+		this.create_time = create_time;
 	}
 }

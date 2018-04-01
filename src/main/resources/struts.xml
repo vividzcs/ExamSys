@@ -73,6 +73,7 @@
 					<param name="root">result</param>
 				</result>
 				<result name="logout">/index.jsp</result>
+				<result name="erroro">/opationError.jsp</result>
 			</action>
 			
 			<action name="teacher_*" class="teacherAction" method="{1}">
@@ -125,6 +126,14 @@
 			<action name="teacher_*" class="teacherAction" method="{1}">
 				<result name="find">passwordFind.jsp</result>
 				<result name="edit">teacherInformationChange.jsp</result>
+				<result name="success">hello.html</result>
+				<result name="logout">/index.jsp</result>
+			</action>
+		</package>
+		
+		<package name="student" extends="struts-default,json-default" namespace="/student/more" >
+			<global-allowed-methods>regex:.*</global-allowed-methods>
+			<action name="student_*" class="studentAction" method="{1}">
 				<result name="success">hello.html</result>
 				<result name="logout">/index.jsp</result>
 			</action>

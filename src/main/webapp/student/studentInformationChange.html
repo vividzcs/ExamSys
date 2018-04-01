@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+   
+    <link href="../style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../style/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+
+    <!-- Morris -->
+    <link href="../style/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="../style/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <link href="../style/css/animate.css" rel="stylesheet">
+    <link href="../style/css/style.css?v=2.2.0" rel="stylesheet">
+		<script>
+			function form_check(obj){
+						//验证密码一致
+						
+						var passworda =obj.passwordFirst.value;
+						var passwordb =obj.passwordConfirm.value;
+						
+						if(passworda!=passwordb)
+						{
+							alert("密码两次不一致");
+						}
+						
+						
+						//验证姓名
+						var id= /[u4e00-u9fa5]/;//纯汉字的正则表达式
+						var sid=obj.studentName.value;
+						if(id.test(sid)){					
+							alert("姓名输入格式不正确");		
+					}	
+			}
+
+		</script>
+</head>
+
+<body>
+    	 <div class="row  border-bottom white-bg dashboard-header" style="height: 100%;">
+	<div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+           <h3>修改前请先进行登录</h3>
+
+            <form class="m-t" role="form" action="studentInformationChangeNext.html">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="学号" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="密码" required="">
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b">登 录</button>
+
+            </form>
+        </div>
+    </div>
+        </div>   
+       </div>
+        
+
+    <!-- Mainly scripts -->
+    <script src="../style/js/jquery-2.1.1.min.js"></script>
+    <script src="../style/js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="../style/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../style/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="../style/js/hplus.js?v=2.2.0"></script>
+    <script src="../style/js/plugins/pace/pace.min.js"></script>
+
+
+</body>
+
+</html>

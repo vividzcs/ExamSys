@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -22,15 +23,15 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name="t_paper")
 public class Paper {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
-	@GenericGenerator(name="native",strategy="native")
+	@GeneratedValue(strategy=GenerationType.AUTO,generator="uuid")
+	@GenericGenerator(name="uuid",strategy="uuid")
 	private int pap_id;
 	private String pap_url; //生成的试卷存放位置
 	@Column(columnDefinition="tinyint not null default 0")
 	private byte pap_kind; //试卷类型, 0:考试, 1:练习
-	private long start_time;
-	private long end_time;
+	
 	private long create_time;
+	
 	@Column(columnDefinition="text")
 	private String pap_desc;
 	
@@ -41,8 +42,63 @@ public class Paper {
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="rule_paper")
 	private PaperRule paperRule;
-	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
+	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="reg_paper")
-	private ExamRegister examRegister;
+	private StudentRegister studentRegister;
+	public int getPap_id() {
+		return pap_id;
+	}
+	public void setPap_id(int pap_id) {
+		this.pap_id = pap_id;
+	}
+	public String getPap_url() {
+		return pap_url;
+	}
+	public void setPap_url(String pap_url) {
+		this.pap_url = pap_url;
+	}
+	public byte getPap_kind() {
+		return pap_kind;
+	}
+	public void setPap_kind(byte pap_kind) {
+		this.pap_kind = pap_kind;
+	}
+	public long getCreate_time() {
+		return create_time;
+	}
+	public void setCreate_time(long create_time) {
+		this.create_time = create_time;
+	}
+	public String getPap_desc() {
+		return pap_desc;
+	}
+	public void setPap_desc(String pap_desc) {
+		this.pap_desc = pap_desc;
+	}
+	public String getPap_answer_url() {
+		return pap_answer_url;
+	}
+	public void setPap_answer_url(String pap_answer_url) {
+		this.pap_answer_url = pap_answer_url;
+	}
+	public Subject getSubject() {
+		return subject;
+	}
+	public void setSubject(Subject subject) {
+		this.subject = subject;
+	}
+	public PaperRule getPaperRule() {
+		return paperRule;
+	}
+	public void setPaperRule(PaperRule paperRule) {
+		this.paperRule = paperRule;
+	}
+	public StudentRegister getStudentRegister() {
+		return studentRegister;
+	}
+	public void setStudentRegister(StudentRegister studentRegister) {
+		this.studentRegister = studentRegister;
+	}
+	
 	
 }

@@ -37,7 +37,7 @@ public class SubjectService implements BaseService<Subject> {
 
 	@Override
 	public Subject getByIdEager(Serializable id) {
-		return this.getByIdEager(id);
+		return this.subjectDaoImpl.getByIdEager(id);
 	}
 
 	@Override

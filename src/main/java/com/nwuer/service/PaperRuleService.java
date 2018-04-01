@@ -37,7 +37,7 @@ public class PaperRuleService implements BaseService<PaperRule>{
 
 	@Override
 	public PaperRule getByIdEager(Serializable id) {
-		return this.getByIdEager(id);
+		return this.paperRuleDaoImpl.getByIdEager(id);
 	}
 
 	@Override

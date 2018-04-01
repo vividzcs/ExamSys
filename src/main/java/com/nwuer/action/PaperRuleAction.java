@@ -33,6 +33,7 @@ public class PaperRuleAction extends ActionSupport implements ModelDriven<PaperR
 			return SUCCESS;
 		} else {
 			//添加失败
+			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
 			return ERROR;
 		}
 	}
@@ -45,20 +46,26 @@ public class PaperRuleAction extends ActionSupport implements ModelDriven<PaperR
 	
 	public String delete() {
 		//验证id信息
-		
+		PaperRule p = this.paperRuleService.getByIdEager(paperRule.getP_id());
+		if(p == null) {
+			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
+			return ERROR;
+		}
 		this.paperRuleService.delete(this.paperRule.getP_id());
 		return SUCCESS;
 	}
 	
 	public String edit() {
 		PaperRule pr = this.paperRuleService.getById(paperRule.getP_id());
-		
+		if(pr == null) {
+			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
+			return ERROR;
+		}
 		ServletActionContext.getRequest().setAttribute("rule", pr);
 		return "edit";
 	}
 	
 	public String update() {
-		
 		return SUCCESS;
 	}
 }

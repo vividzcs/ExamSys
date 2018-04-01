@@ -27,7 +27,7 @@ public class Academy {
 	@Column(columnDefinition="int not null default 0")
 	private int a_num;  //专业数
 	private long create_time;
-	@Column(length=4)
+	@Column(length=4,unique=true)
 	private String a_number; //院系编号
 	
 	@OneToMany(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)

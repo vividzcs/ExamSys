@@ -22,7 +22,8 @@ public class PaperRule {
 	private int p_id;
 	private String p_name; //规则名称
 	private long create_time; //创建时间
-	
+	private long start_time;
+	private long end_time;  //考试开始结束时间
 	@Column(columnDefinition="tinyint not null default 0")
 	private byte degree; //难度
 	@Column(columnDefinition="int not null default 100")

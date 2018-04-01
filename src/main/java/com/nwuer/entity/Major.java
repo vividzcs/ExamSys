@@ -27,8 +27,8 @@ public class Major {
 	private String m_name;
 	@Column(columnDefinition="int not null default 0")
 	private int m_num; //专业人数
-	@Column(length=5)
-	private String m_number; //院系编号
+	@Column(length=5,unique=true)
+	private String m_number; //专业编号
 	private long create_time;  //创建时间
 	
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)

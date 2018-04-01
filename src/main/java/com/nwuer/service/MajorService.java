@@ -43,7 +43,7 @@ public class MajorService implements BaseService<Major> {
 
 	@Override
 	public Major getByIdEager(Serializable id) {
-		return this.getByIdEager(id);
+		return this.majorDaoImpl.getByIdEager(id);
 	}
 
 	@Override

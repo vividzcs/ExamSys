@@ -30,6 +30,7 @@ import com.nwuer.service.AcademyService;
 import com.nwuer.service.StudentService;
 import com.nwuer.service.TeacherService;
 import com.nwuer.utils.Crpty;
+import com.nwuer.utils.ValidateUtil;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -51,6 +52,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	public Teacher getModel() {
 		return teacher;
 	}  //用模型驱动获取前端数据
+	String info;
 	
 	private Map<String,String> result = new HashMap<String,String>();
 	public Map<String,String> getResult() {
@@ -68,6 +70,8 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	private StudentService studentService;
 	@Autowired
 	private Crpty crpty;
+	@Autowired
+	private ValidateUtil validateUtil;
 	
 	/**
 	 * 查找学生信息
@@ -81,9 +85,13 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	}
 	public String findStu() {
 		//检查数据合法性
-		if(s_number == null || s_number.equals("")) {
-			return "find";
+		HttpServletRequest req = ServletActionContext.getRequest();
+		info = validateUtil.isNumber(teacher.getT_number());
+		if(info != null) {
+			req.setAttribute("info","编号"+ info);
+			return ERROR;
 		}
+		
 		List<Student> list = this.studentService.getByNumber(s_number);
 		Student s = null;
 		for(int i=0; i<list.size(); i++) {
@@ -91,7 +99,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 			s.setS_pass(crpty.decrypt(s.getS_pass()));
 		}
 		
-		ServletActionContext.getRequest().setAttribute("list", list);
+		req.setAttribute("list", list);
 		return "find";
 	}
 	
@@ -120,6 +128,11 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	
 	public String delete() {
 		//验证
+		Teacher t = this.teacherService.getByIdEager(teacher.getT_id());
+		if(t == null) {
+			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
+			return ERROR;
+		}
 		
 		this.teacherService.delete(this.teacher.getT_id());
 		return SUCCESS;
@@ -145,6 +158,11 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	 */
 	public String updateA() {
 		//验证信息
+		info = validateUtil.validateNumber(teacher.getT_number(), 10);
+		if(info != null) {
+			ServletActionContext.getRequest().setAttribute("info", info);
+			return ERROR;
+		}
 		
 		Teacher t = this.teacherService.getById(this.teacher.getT_id());
 		teacher.setCreate_time(t.getCreate_time());
@@ -191,6 +209,12 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 			result = new HashMap<String,String>();
 			result.put("status","0");
 			result.put("msg", "验证码错误");
+			return ERROR;
+		}
+		
+		info = validateUtil.validateNumber(teacher.getT_number(), 10);
+		if(info != null) {
+			ServletActionContext.getRequest().setAttribute("info", info);
 			return ERROR;
 		}
 		
@@ -330,11 +354,21 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	}
 	
 	public String add() {
+		HttpServletRequest req = ServletActionContext.getRequest();
+		info = validateUtil.validateNumber(teacher.getT_number(), 10);
+		if(info != null) {
+			req.setAttribute("info", info);
+			return ERROR;
+		}
+		
 		int id = this.teacherService.add(teacher);
 		if(id > 0)
 			return SUCCESS;
-		else
+		else {
+			req.setAttribute("info", "添加失败,请重试");
 			return ERROR;
+		}
+			
 	}
 	
 	private File file_upload; //上传的文件,  是上传表单项的name值
@@ -361,7 +395,6 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		//开始导入
 		FileInputStream excel = null;
 		Workbook wb =  null;
-		String info = "";
 		HttpServletRequest req = ServletActionContext.getRequest();
 		try {
 			ApplicationContext application = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
@@ -490,6 +523,8 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 					e.printStackTrace();
 				}
 		}
+		info = "添加失败,请重试";
+		req.setAttribute("info", info);
 		return ERROR;
 	}
 }

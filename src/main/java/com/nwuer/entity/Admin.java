@@ -16,7 +16,7 @@ public class Admin {
 	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
 	@GenericGenerator(name="native",strategy="native")
 	private int ad_id;
-	@Column(length=10)
+	@Column(length=10,unique=true)
 	private String ad_number; //工号
 	private String ad_pass;
 	private String ad_name;

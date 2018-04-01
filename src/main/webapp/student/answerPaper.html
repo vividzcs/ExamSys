@@ -1,0 +1,156 @@
+<!DOCTYPE >
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+    <title>学生考试系统</title>
+    <meta name="keywords" content="学生考试系统，专为学生打造在校考试功能">
+    <meta name="description" content="大学生在线考试系统，学生在网络上在线填写试卷">
+    
+    <link href="../style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../style/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../style/css/animate.css" rel="stylesheet">
+    <link href=".../style/css/plugins/summernote/summernote.css" rel="stylesheet">
+    <link href="../style/css/plugins/summernote/summernote-bs3.css" rel="stylesheet">
+    <link href="../style/css/style.css?v=2.2.0" rel="stylesheet">
+
+    <style>
+    	.problem{
+    		cursor: pointer;
+    		padding: 5px;
+    		font-size: 15px;
+    	}
+    	.problem ul li{
+    		list-style: none;
+    	}
+    	.problem ul li .answer{
+    		padding-left: 10px;
+    	}
+    	.problem .answer input[type='radio']{
+    		width: 10px;
+    		height: 10px;
+    		border-radius: 50%;
+    	}
+    	textarea,.note-toolbar .note-font,.note-toolbar .note-table ,.note-toolbar .note-insert:nth-child(2),.note-toolbar .note-view,.note-help {
+    		display: none;
+    	}
+    	.answerTextarea{
+        background:white;
+        padding: 10px;
+        box-shadow:  2px 3px 32px #eee;  
+        position: relative;
+          	}
+        .click2edit{
+          		min-height: 150px;
+       }
+       .note-editable{
+       	height: 100px;
+       }
+       .note-editable:hover{
+       	border: none;
+       }
+       .upflie{
+       position: absolute;
+       right: 10%;
+       top:6%;
+       background-color: #1ab394;
+       border-color: #1ab394;
+       }
+    </style>
+	</head>
+	<body ng-app="exam">
+  <!--在这个页面中将返回到的题目信息添加到页面上-->
+    <div class="problem white-bg" ng-controller="createTestPaper">
+    	  <div class="qTitle">科目{{selectStyle}}</div>
+    	   <ul class="qList" ng-repeat="(key,data) in datas">
+			 <!--题目列表-->
+			 <!--数据应该有 题的类型-->
+			<li ng-if="data.type == 'sChoice'">
+				<!--这行写题目以及题目的编号-->
+				<!--先要判断提醒-->
+				<div class="eachProblem">
+					<b>{{key+1}}.&nbsp;{{data.content.qTitle}}</b><br /><br />
+							 <span class="answer" ng-repeat="(key,answer) in data.content.answer"><b style="margin-left: 10px;">{{choices[key]}}</b><input type="radio" name="schoice" id="schoice{{key}}" /></span>
+				</div>
+			</li>
+			<li ng-if="data.type == 'explanation'">
+				 <div class="eachProblem">
+				 	<b>{{key+1}}.&nbsp;{{data.content}}</b>
+				 	<!--为每一个主观题添加富文本编辑器-->
+                     <div class="row ">
+                    <div class="col-lg-4 answerTextarea">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>答题区</h5>
+                                <button id="edit{{key+1}}" class="btn btn-primary btn-xs m-l-sm" onclick="edit(this.id)" type="button">编辑</button>
+                                <button id="save{{key+1}}" class="btn btn-primary  btn-xs" onclick="save(this.id)" type="button">保存</button>
+                               <div class="upflie">
+                               <label class="btn btn-primary " for="xFile{{key+1}}">上传文件</label>
+                               <input type="file" id="xFile{{key+1}}"   onchange="accFile(this.id)" style="position:absolute;clip:rect(0 0 0 0);">
+                             </div>
+                               </div>
+                            <div class="ibox-content" id="eg">
+                                <div class="click2edit" id="click2edit{{key+1}}">
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				</div>
+			</li>
+		</ul>
+		<button class="btn btn-primary"  type="submit" >提交答案</button>
+   </div>
+   <!-- Mainly scripts -->
+    <script src="../style/js/jquery-2.1.1.min.js"></script>
+    <script src="../style/js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="../style/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../style/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="../style/js/hplus.js?v=2.2.0"></script>
+    <script src="../style/js/plugins/pace/pace.min.js"></script>
+
+    <!-- SUMMERNOTE -->
+    <script src="../style/js/plugins/summernote/summernote.min.js"></script>
+    <script src="../style/js/plugins/summernote/summernote-zh-CN.js"></script>
+  <script>
+        $(document).ready(function () {
+
+            $('.summernote').summernote({
+                lang: 'zh-CN'
+            });
+
+        });
+          var edit = function (key) {
+          key=key.substring(4);
+            $("#eg").addClass("no-padding");
+           $('#click2edit'+key).summernote({
+                lang: 'zh-CN',
+                focus: true
+            });
+        };
+        var save = function (key) {
+        	key=key.substring(4);
+            $("#eg").removeClass("no-padding");
+            var aHTML =   $('#click2edit'+key).code(); //save HTML If you need(aHTML: array).
+              $('#click2edit'+key).destroy();
+        };
+       var accFile=function(key){
+           key=key.substring(5);
+       	  $('#click2edit'+key)[0].innerHTML+=$("#xFile"+key)[0].value;
+       }
+    </script>
+<!--引入必须的anjular-->
+   <script src="../style/js/anjularJS/bower_components/angular/angular.min.js"></script>
+   <script src="../style/js/anjularJS/bower_components/angular-route/angular-route.js"></script>
+   <script src="../style/js/anjularJS/anjularjs/app.js"></script>
+   <script src="../style/js/anjularJS/anjularjs/control.js"></script>
+   
+
+	</body>	
+   
+</html>

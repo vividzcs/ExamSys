@@ -20,7 +20,7 @@ public class Teacher {
 	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
 	@GenericGenerator(name="native",strategy="native")
 	private int t_id;
-	@Column(length=10)
+	@Column(length=10,unique=true)
 	private String t_number;  //工号 
 	private String t_pass;  //密码
 	private String t_name;  //姓名

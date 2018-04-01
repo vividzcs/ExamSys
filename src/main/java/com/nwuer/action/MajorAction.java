@@ -15,6 +15,7 @@ import com.nwuer.entity.Academy;
 import com.nwuer.entity.Major;
 import com.nwuer.service.AcademyService;
 import com.nwuer.service.MajorService;
+import com.nwuer.utils.ValidateUtil;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -34,10 +35,14 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 		return major;
 	} //模型驱动获取数据
 	
+	String info; 
+	
 	@Autowired
 	private MajorService majorService;
 	@Autowired
 	private AcademyService academyService;
+	@Autowired
+	private ValidateUtil validateUtil;
 	
 	public String showAdd() {
 		List<Academy> list = this.academyService.getAll();
@@ -52,13 +57,20 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 	}
 	
 	public String add() {
-		//检验数据
+		//检验数据  m_number
+		HttpServletRequest req = ServletActionContext.getRequest();
+		info = validateUtil.validateNumber(major.getM_number(), 4);
+		if(info != null) {
+			req.setAttribute("info", info);
+			return ERROR;
+		}
 		
 		//添加
 		int id = this.majorService.add(major);
 		if(id>0) {
 			return SUCCESS;
 		}else {
+			req.setAttribute("info", "系统错误,请稍后重试");
 			return ERROR;
 		}
 		
@@ -66,13 +78,21 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 	
 	public String delete() {
 		//验证数据
-		
+		Major m = this.majorService.getByIdEager(major.getM_id());
+		if(m == null) {
+			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
+			return ERROR;
+		}
 		this.majorService.delete(this.major.getM_id());
 		return SUCCESS;
 	}
 	
 	public String edit() {
 		Major m = this.majorService.getById(this.major.getM_id());
+		if(m == null) {
+			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
+			return ERROR;
+		}
 		List<Academy> list = this.academyService.getAll();
 		
 		HttpServletRequest req = ServletActionContext.getRequest();
@@ -85,6 +105,10 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 		//验证信息
 		
 		Major m = this.majorService.getById(this.major.getM_id());
+		if(m == null) {
+			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
+			return ERROR;
+		}
 		
 		major.setCreate_time(m.getCreate_time());
 		major.setM_num(m.getM_num());

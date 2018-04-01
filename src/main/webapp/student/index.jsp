@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 
@@ -30,8 +32,8 @@
 
                         <div class="dropdown profile-element">  
                             <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                                <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Beaut-zihan</strong>
-                             </span> <span class="text-muted text-xs block">xxx同学  </span> </span>
+                               <span class="clear"> <span class="block m-t-xs">  <!-- <strong class="font-bold">Beaut-zihan</strong> -->
+                             </span> <span class="text-muted text-xs block">${sessionScope.student eq null ? "未登录" : sessionScope.student.s_name+"同学"  }</span> </span>
                             </a>
                         
                         </div>

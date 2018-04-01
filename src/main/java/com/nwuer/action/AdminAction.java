@@ -59,6 +59,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	public Admin getModel() {
 		return admin;
 	}  //模型驱动获取数据
+	String info;
+	
 	@Autowired
 	private AdminService adminService;
 	@Autowired
@@ -96,9 +98,11 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		HttpServletRequest req = ServletActionContext.getRequest();
 		String newPass = req.getParameter("newPass");
 		//验证密码
-		
-		//验证管理员用户信息
-		
+		if(!this.admin.getAd_pass().equals(newPass)) {
+			this.result.put("status","0");
+			this.result.put("msg", "前后输入密码不一致");
+			return ERROR;
+		}
 		
 		//查询数据
 		int ad_id = ((Admin)req.getSession().getAttribute("admin")).getAd_id();
@@ -142,13 +146,13 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		String msg = this.validateUtil.validateNumber(this.admin.getAd_number(), 10);
 		if(msg!= null) {
 			result.put("status","0");
-			result.put("msg", "验证码错误");
+			result.put("msg", "工号错误");
 			return ERROR;
 		}
 		msg = this.validateUtil.validateMinLength(this.admin.getAd_pass(), 6);
 		if(msg!= null) {
 			result.put("status","0");
-			result.put("msg", "验证码错误");
+			result.put("msg", "工号或密码错误");
 			return ERROR;
 		}
 		Admin adminConfirm = this.adminService.getByNumberAndPass(this.admin);
@@ -162,7 +166,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 			return SUCCESS;
 		}else {
 			this.result.put("status","0");
-			this.result.put("msg", "用户名或密码错误");
+			this.result.put("msg", "工号或密码错误");
 			return ERROR;
 		}
 			
@@ -180,8 +184,11 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	}
 	public String findTeacher() {
 		//检查数据合法性
-		if(t_number == null) {
-			return "find";
+		HttpServletRequest req = ServletActionContext.getRequest();
+		info = validateUtil.isNumber(t_number);
+		if(info != null) {
+			req.setAttribute("info","编号"+ info);
+			return "erroro";
 		}
 		List<Teacher> list = this.teacherService.getByNumber(t_number);
 		Teacher t = null;
@@ -190,7 +197,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 			t.setT_pass(crpty.decrypt(t.getT_pass()));
 		}
 		
-		ServletActionContext.getRequest().setAttribute("list", list);
+		req.setAttribute("list", list);
 		return "find";
 	}
 	
@@ -289,28 +296,28 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		//检查数据
 		
 		//开始导入
-		String flag = "";
+		info = "";
 		switch (kind) {
 		case 0 :
 			//选择题
-			flag = importChoiceQuestion();
-			if(flag == null) {
+			info = importChoiceQuestion();
+			if(info == null) {
 				//导入成功
 				return SUCCESS;
 			}
 			break;
 		case 1 :
 			//判断题
-			flag = importJudgeQuestion();
-			if(flag == null) {
+			info = importJudgeQuestion();
+			if(info == null) {
 				//导入成功
 				return SUCCESS;
 			}
 			break;
 		case 2 :
 			//主观题
-			flag = importSubjectiveQuestion();
-			if(flag == null) {
+			info = importSubjectiveQuestion();
+			if(info == null) {
 				//导入成功
 				return SUCCESS;
 			}
@@ -318,7 +325,9 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		}
 		
 		//到这里说明导入失败
-		return ERROR;
+		info = "系统错误,请稍后重试";
+		ServletActionContext.getRequest().setAttribute("info", info);
+		return "erroro";
 		
 	}
 	
@@ -771,7 +780,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 			break;
 		}
 		
-		//到这里说明导入失败
+		//到这里说明导出失败
 		return NONE;
 	}
 	

@@ -41,9 +41,29 @@ public class ValidateUtil {
 	 * @return
 	 */
 	public String validateNumber(String number,int len) {
-		if(!number.matches("[0-9]{10}")) {
+		if(number == null)
+			return "字段格式或长度错误";
+		
+		if(!number.matches("[0-9]{"+len+"}")) {
 			return "字段格式错误";
 		}else
+			return null;
+	}
+	
+	public String isNumber(String number) {
+		if(number == null)
+			return "字段格式或长度错误";
+		
+		if(!number.matches("[0-9]{0,10}")) {
+			return "字段格式或长度错误";
+		}else
+			return null;
+		
+	}
+	public String isSex(byte sex) {
+		if(sex != 0 && sex != 1)
+			return "字段格式错误";
+		else
 			return null;
 	}
 	

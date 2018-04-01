@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
@@ -24,6 +25,7 @@ import com.nwuer.service.AcademyService;
 import com.nwuer.service.MajorService;
 import com.nwuer.service.StudentService;
 import com.nwuer.utils.Crpty;
+import com.nwuer.utils.ValidateUtil;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -45,6 +47,7 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	public Student getModel() {
 		return student;
 	}  //模型驱动获取数据
+	String info;
 	
 	private Map result = new HashMap();
 	public Map getResult() {
@@ -61,7 +64,8 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	private MajorService majorService;
 	@Autowired
 	private Crpty crpty;
-	
+	@Autowired
+	private ValidateUtil validateUtil;
 
 	/**
 	 * 登录
@@ -69,13 +73,18 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	 */
 	public String login() {
 		//验证
-		
+		HttpServletRequest req = ServletActionContext.getRequest();
+		info = this.validateUtil.validateNumber(student.getS_number(), 10);
+		if(info != null) {
+			req.setAttribute("info","编号"+ info);
+			return ERROR;
+		}
 		
 		Student studentConfirm = this.studentService.getByNumberAndPass(student);
 		if(studentConfirm != null) {
 			//登录成功
 			studentConfirm.setS_pass(null);
-			ServletActionContext.getRequest().getSession().setAttribute("student", studentConfirm);
+			req.getSession().setAttribute("student", studentConfirm);
 			
 			this.result.put("status", "1");
 			this.result.put("msg", "登录成功");
@@ -109,6 +118,12 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	 */
 	public String add() {
 		//验证
+		HttpServletRequest req = ServletActionContext.getRequest();
+		info = this.validateUtil.validateNumber(student.getS_number(), 10);
+		if(info != null) {
+			req.setAttribute("info","编号"+ info);
+			return ERROR;
+		}
 		
 		int id = (int) this.studentService.add(student);
 		if(id > 0) {
@@ -116,6 +131,7 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 			return SUCCESS;
 		} else {
 			//添加失败
+			req.setAttribute("info", "系统错误,请重试");
 			return ERROR;
 		}
 	}
@@ -125,7 +141,11 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	 */
 	public String delete() {
 		//验证id信息
-		
+		Student s = this.studentService.getByIdEager(student.getS_id());
+		if(s == null) {
+			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
+			return ERROR;
+		}
 		this.studentService.delete(this.student.getS_id());
 		return SUCCESS;
 	}
@@ -145,6 +165,12 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	 */
 	public String updateA() {
 		//验证
+		HttpServletRequest req = ServletActionContext.getRequest();
+		info = this.validateUtil.validateNumber(student.getS_number(), 10);
+		if(info != null) {
+			req.setAttribute("info","编号"+ info);
+			return ERROR;
+		}
 		
 		Student stu = this.studentService.getById(student.getS_id());
 		student.setCreate_time(stu.getCreate_time());
@@ -153,7 +179,7 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		this.studentService.update(student);
 		
 		student.setS_pass(null);
-		ServletActionContext.getRequest().getSession().setAttribute("student", student);;
+		req.getSession().setAttribute("student", student);;
 		return SUCCESS;
 	}
 	
@@ -279,12 +305,13 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	
 	public String importStudent() {
 		//先清空Student表,先判断学生表是否有数据
+		HttpServletRequest req = ServletActionContext.getRequest();
 		if(this.studentService.hasData()) {
 			this.studentService.clear();
 			if(this.studentService.hasData()) {
 				//没有清空表
-				result.put("status", "0");
-				result.put("msg", "历史学生数据无法清空!请稍后再试" );
+				info = "历史学生数据无法清空!请稍后再试";
+				req.setAttribute("info", info);
 				return ERROR;
 			}
 		}
@@ -318,8 +345,8 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 				String number = numCell.getContents();
 				if(number.trim().length() != 10) {
 					//不对
-					result.put("status", "0");
-					result.put("msg", "第" + j + "行学号有误" );
+					info = "第" + j + "行学号有误";
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 				//处理密码
@@ -327,8 +354,8 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 				String pass = passCell.getContents();
 				if(pass.trim().equals("")) {
 					//不对
-					result.put("status", "0");
-					result.put("msg", "第" + j + "行密码不能为空" );
+					info = "第" + j + "行密码不能为空";
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 				
@@ -337,8 +364,8 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 				String name = nameCell.getContents();
 				if(name.trim().equals("")) {
 					//不对
-					result.put("status", "0");
-					result.put("msg", "第" + j + "行姓名不能为空" );
+					info = "第" + j + "行姓名不能为空";
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 				
@@ -347,8 +374,8 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 				String sex = sexCell.getContents();
 				if(!sex.trim().equals("男") && !sex.trim().equals("女")) {
 					//不对
-					result.put("status", "0");
-					result.put("msg", "第" + j + "行性别填写错误" );
+					info = "第" + j + "行性别填写错误" ;
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 				byte s_sex = (byte) (sex.trim().equals("男") ? 1 : 0);
@@ -358,8 +385,8 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 				String academy = academyCell.getContents();
 				int a_id = 0;
 				if(academy.trim().equals("") || (a_id = this.academyService.getIdByName(academy)) ==0 ) {
-					result.put("status", "0");
-					result.put("msg", "第" + j + "行院系填写错误" );
+					info = "第" + j + "行院系填写错误";
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 				
@@ -369,8 +396,8 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 				int m_id = 0;
 				if(major.trim().equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 					
-					result.put("status", "0");
-					result.put("msg", "第" + j + "行专业填写错误" );
+					info = "第" + j + "行专业填写错误";
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 				
@@ -379,8 +406,8 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 				String login = loginCell.getContents();
 				if(!login.trim().equals("0") && !login.trim().equals("1")) {
 					//不对
-					result.put("status", "0");
-					result.put("msg", "第" + j + "行登录状态填写错误" );
+					info = "第" + j + "行登录状态填写错误";
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 				byte status = Byte.parseByte(login);
@@ -401,15 +428,13 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 				int id = this.studentService.add(student);
 				if(id <= 0) {
 					//添加失败
-					result.put("status", "0");
-					result.put("msg", "第" + j + "个学生添加失败,请重试" );
+					info = "第" + j + "个学生添加失败,请重试";
+					req.setAttribute("info", info);
 					return ERROR;
 				}
 			}
 			
 			//添加完成
-			result.put("status", "1");
-			result.put("msg", "添加完成" );
 			return SUCCESS;
 			
 		} catch (FileNotFoundException e) {
@@ -430,6 +455,8 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 					e.printStackTrace();
 				}
 		}
+		info = "系统错误,请重试";
+		req.setAttribute("info", info);
 		return ERROR;
 	}
 }

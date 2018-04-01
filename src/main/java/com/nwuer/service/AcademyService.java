@@ -48,7 +48,7 @@ public class AcademyService implements BaseService<Academy>{
 
 	@Override
 	public Academy getByIdEager(Serializable id) {
-		return this.getByIdEager(id);
+		return this.academyDaoImpl.getByIdEager(id);
 	}
 
 	@Override
