@@ -48,7 +48,7 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 	 */
 	public String add() {
 		//验证   a_number
-		info = validateUtil.validateNumber(this.academy.getA_number(),10 );
+		info = validateUtil.validateNumber(this.academy.getA_number(),4 );
 		HttpServletRequest req = ServletActionContext.getRequest();
 		if(info != null) {
 			req.setAttribute("info", "编号"+info);

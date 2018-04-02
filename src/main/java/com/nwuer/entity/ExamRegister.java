@@ -37,12 +37,6 @@ public class ExamRegister {
 	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="stu_reg_exam_reg")
 	private StudentRegister studentRegister;  //一对一双向关联
-//	@ManyToOne(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
-//	@JoinColumn(name="paper_register", nullable=true)
-//	private Paper paper;
-//	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-//	@JoinColumn(name="teacher_register")
-//	private Teacher teacher;
 	public int getR_id() {
 		return r_id;
 	}

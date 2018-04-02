@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -14,7 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name="t_teacher")  //Entity没注明映射表的名称时默认和name和table是同一值
+@Table(name="t_teacher",indexes=@Index(name="teacher_index_number",columnList="t_number",unique=true))  //Entity没注明映射表的名称时默认和name和table是同一值
 public class Teacher {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")

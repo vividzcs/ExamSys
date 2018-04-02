@@ -12,19 +12,24 @@
     <title>学生考试系统</title>
     <meta name="keywords" content="学生考试系统，专为学生打造在校考试功能">
     <meta name="description" content="大学生在线考试系统，学生在网络上在线填写试卷">
-
+	
+	
     <link href="../style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../style/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
 
     <!-- Morris -->
+    
     <link href="../style/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
 
     <!-- Gritter -->
+    <!-- <link href="../style/css/plugins/datapicker/bootstrap-datetimepicker.css" rel="stylesheet"  > -->
     <link href="../style/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
 
     <link href="../style/css/animate.css" rel="stylesheet">
     <link href="../style/css/style.css?v=2.2.0" rel="stylesheet">
       <link rel="stylesheet" href="../style/css/self.css" />
+      <link rel="stylesheet" href="../style/css/solvePlay.css" />
+      <link rel="stylesheet" type="text/css" href="../style/css/jquery.datetimepicker.css"/>
       <style>
       select{
       	width: 50%;
@@ -84,6 +89,20 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+						                <label for="dtp_input1" class="col-sm-3 control-label">考试开始时间</label>
+						                 <div class="col-sm-8">
+						                 	<input type="text" name="beginTime" class="beginTime" value="" id="datetimepicker"/><br><br>
+						                 </div>
+										<input type="hidden" id="dtp_input1" value="" /><br/>
+						            </div>
+						             <div class="form-group">
+						                <label for="dtp_input1" class="col-sm-3 control-label">考试结束时间</label>
+						                 <div class="col-sm-8">
+						                 	<input type="text" name="endTime" class="endTime" value="" id="datetimepicker1"/><br><br>
+						                 </div>
+										<input type="hidden" name="dtp_input1" id="dtp_input1" value="" /><br/>
+						            </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">试题难度</label>
                                         <div class="col-sm-8">
@@ -195,6 +214,7 @@
 
     <!-- iCheck -->
     <script src="../style/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="../style/js/jquery.datetimepicker.full.js"></script>
     <script>
       $.validator.setDefaults({
             highlight: function (element) {
@@ -269,6 +289,33 @@
        	  }
        	  
          });
+         
+         $.datetimepicker.setLocale('en');
+
+         $('#datetimepicker_format').datetimepicker({value:'2015/04/15 05:03', format: $("#datetimepicker_format_value").val()});
+         console.log($('#datetimepicker_format').datetimepicker('getValue'));
+
+         $("#datetimepicker_format_change").on("click", function(e){
+         	$("#datetimepicker_format").data('xdsoft_datetimepicker').setOptions({format: $("#datetimepicker_format_value").val()});
+         });
+         $("#datetimepicker_format_locale").on("change", function(e){
+         	$.datetimepicker.setLocale($(e.currentTarget).val());
+         });
+
+         $('#datetimepicker').datetimepicker({
+         dayOfWeekStart : 1,
+         lang:'en',
+         disabledDates:['2015/01/08','2015/01/09','2015/01/10'],
+         startDate:	'2015/01/05'
+         });
+         $('#datetimepicker').datetimepicker({value:'2015/04/15 05:03',step:10});
+         $('#datetimepicker1').datetimepicker({
+         dayOfWeekStart : 1,
+         lang:'en',
+         disabledDates:['2015/01/08','2015/01/09','2015/01/10'],
+         startDate:	'2015/01/05'
+         });
+         $('#datetimepicker1').datetimepicker({value:'2015/04/15 05:03',step:10});
 </script>
 </body>
 

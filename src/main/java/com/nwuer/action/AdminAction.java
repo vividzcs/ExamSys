@@ -1067,6 +1067,25 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				}
 		}
 	}
+
+	private List<File> upload;
+	private List<String> uploadFileName;
+	public List<File> getUpload() {
+		return upload;
+	}
+	public void setUpload(List<File> upload) {
+		this.upload = upload;
+	}
+	public List<String> getUploadFileName() {
+		return uploadFileName;
+	}
+	public void setUploadFileName(List<String> uploadFileName) {
+		this.uploadFileName = uploadFileName;
+	}
+	public String importPeopleRelated() {
+		
+		return SUCCESS;
+	}
 }
 
 

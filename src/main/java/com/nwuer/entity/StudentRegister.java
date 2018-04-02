@@ -30,9 +30,6 @@ public class StudentRegister {
 	private String sr_number;  //学生学号
 	private String sr_name; //学生姓名
 	
-//	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-//	@JoinColumn(name="sub_stu_reg")
-//	private Subject subject; 
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="major_stu_reg")
 	private Major major;

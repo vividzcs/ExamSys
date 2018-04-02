@@ -49,7 +49,11 @@ public class ValidateUtil {
 		}else
 			return null;
 	}
-	
+	/**
+	 * 是否是数字
+	 * @param number
+	 * @return
+	 */
 	public String isNumber(String number) {
 		if(number == null)
 			return "字段格式或长度错误";
@@ -60,6 +64,11 @@ public class ValidateUtil {
 			return null;
 		
 	}
+	/**
+	 * 是否是0或1
+	 * @param sex
+	 * @return
+	 */
 	public String isSex(byte sex) {
 		if(sex != 0 && sex != 1)
 			return "字段格式错误";
@@ -67,5 +76,14 @@ public class ValidateUtil {
 			return null;
 	}
 	
+	public String isDate(String date) {
+		if(date == null)
+			return "字段格式或长度错误";
+		
+		if(!date.matches("[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}:[0-9]{2}")) 
+			return "字段格式或长度错误";
+		else
+			return null;
+	}
 	
 }

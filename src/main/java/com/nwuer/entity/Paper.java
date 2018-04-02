@@ -25,7 +25,7 @@ public class Paper {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO,generator="uuid")
 	@GenericGenerator(name="uuid",strategy="uuid")
-	private int pap_id;
+	private String pap_id;
 	private String pap_url; //生成的试卷存放位置
 	@Column(columnDefinition="tinyint not null default 0")
 	private byte pap_kind; //试卷类型, 0:考试, 1:练习
@@ -45,10 +45,10 @@ public class Paper {
 	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="reg_paper")
 	private StudentRegister studentRegister;
-	public int getPap_id() {
+	public String getPap_id() {
 		return pap_id;
 	}
-	public void setPap_id(int pap_id) {
+	public void setPap_id(String pap_id) {
 		this.pap_id = pap_id;
 	}
 	public String getPap_url() {
