@@ -37,15 +37,25 @@ public class ExamInfo {
 	@Column(columnDefinition="int not null default 0")
 	private int exam_num_reach;
 	
-	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)
-	@JoinColumn(name="guard_info")
-	private GuardianShip guard_ship;
+//	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)
+//	@JoinColumn(name="guard_info")
+//	private GuardianShip guard_ship;
 	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)
 	@JoinColumn(name="rule_info")
 	private PaperRule rule;   //考试状态和试卷生成规则共生,在删除规则时也就没有了这个信息
 	
+	private Integer g_id;
+	
 	public int getE_id() {
 		return e_id;
+	}
+
+	public Integer getG_id() {
+		return g_id;
+	}
+
+	public void setG_id(Integer g_id) {
+		this.g_id = g_id;
 	}
 
 	public void setE_id(int e_id) {
@@ -100,12 +110,5 @@ public class ExamInfo {
 		this.exam_num_reach = exam_num_reach;
 	}
 
-	public GuardianShip getGuard_ship() {
-		return guard_ship;
-	}
-
-	public void setGuard_ship(GuardianShip guard_ship) {
-		this.guard_ship = guard_ship;
-	}  
 	
 }

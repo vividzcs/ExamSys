@@ -61,7 +61,7 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 		HttpServletRequest req = ServletActionContext.getRequest();
 		info = validateUtil.validateNumber(major.getM_number(), 4);
 		if(info != null) {
-			req.setAttribute("info", info);
+			req.setAttribute("info", "专业" +info);
 			return ERROR;
 		}
 		

@@ -34,9 +34,6 @@ public class ExamRegister {
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="sub_register")
 	private Subject subject;
-	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-	@JoinColumn(name="stu_reg_exam_reg")
-	private StudentRegister studentRegister;  //一对一双向关联
 	public int getR_id() {
 		return r_id;
 	}

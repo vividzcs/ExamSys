@@ -36,7 +36,7 @@
                         </div>
                     </li>
 					<li>
-                        <a href="${pageContext.request.contextPath }/teacher/teacher_edit.action"  class="J_menuItem"><i class="fa fa-columns"></i> <span class="nav-label">修改个人信息</span></a>
+                        <a href="${pageContext.request.contextPath }/teacher/teacherInformationChange.jsp"  class="J_menuItem"><i class="fa fa-columns"></i> <span class="nav-label">修改个人信息</span></a>
                     </li>
 					<li>
                         <a href="teacher/paperFind.html"  class="J_menuItem"><i class="fa fa-desktop"></i> <span class="nav-label">查找试卷</span></a>

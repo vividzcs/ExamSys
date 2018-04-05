@@ -18,14 +18,6 @@
 					<param name="root">result</param>
 				</result>
 			</action>
-			<action name="student_*" class="studentAction" method="{1}">
-				<result name="success" type="json">
-					<param name="root">result</param>
-				</result>
-				<result name="error" type="json">
-					<param name="root">result</param>
-				</result>
-			</action>			
 			<action name="admin_*" class="adminAction" method="{1}">
 				<result name="success" type="json">
 					<param name="root">result</param>
@@ -117,25 +109,81 @@
 				<result name="edit">editPaperRule.jsp</result>
 				<result name="list">lookPaperRule.jsp</result>
 				<result name="success" type="redirectAction">paperrule_list</result>
+				<result name="detail">detailPaperRule.jsp</result>
 			</action>
 			
 		</package>
 		
 		<package name="teacher" extends="struts-default,json-default" namespace="/teacher" >
+			<interceptors>
+	            <interceptor name="teacherInterceptor" class="teacherInterceptor"></interceptor>
+	            <interceptor-stack name="defaultInterceptorStack">
+	                <interceptor-ref name="teacherInterceptor">
+	                	<param name="excludeMethods">login</param>
+	                </interceptor-ref>
+	                <interceptor-ref name="defaultStack"></interceptor-ref>
+	            </interceptor-stack>
+        	</interceptors>
+			<!-- 配置默认拦截器，所有该包内的action如果没有单独配置拦截器，则默认执行默认拦截器 -->
+        	<default-interceptor-ref name="defaultInterceptorStack"></default-interceptor-ref>
+        	
+        	<global-results>
+				<result name="login">/index.jsp</result>
+				<result name="error">/opationError.jsp</result>
+			</global-results>
+        	
 			<global-allowed-methods>regex:.*</global-allowed-methods>
+			
+			
 			<action name="teacher_*" class="teacherAction" method="{1}">
 				<result name="find">passwordFind.jsp</result>
 				<result name="edit">teacherInformationChange.jsp</result>
 				<result name="success">hello.html</result>
+				<result name="login">/index.jsp</result>
 				<result name="logout">/index.jsp</result>
 			</action>
 		</package>
 		
 		<package name="student" extends="struts-default,json-default" namespace="/student/more" >
+			<interceptors>
+	            <interceptor name="studentInterceptor" class="studentInterceptor"></interceptor>
+	            <interceptor-stack name="defaultInterceptorStack">
+	                <interceptor-ref name="studentInterceptor">
+	                	<param name="excludeMethods">login</param>
+	                </interceptor-ref>
+	                <interceptor-ref name="defaultStack"></interceptor-ref>
+	            </interceptor-stack>
+        	</interceptors>
+			<!-- 配置默认拦截器，所有该包内的action如果没有单独配置拦截器，则默认执行默认拦截器 -->
+        	<default-interceptor-ref name="defaultInterceptorStack"></default-interceptor-ref>
+        	
+        	<global-results>
+				<result name="error">/opationError.jsp</result>
+			</global-results>
+		
 			<global-allowed-methods>regex:.*</global-allowed-methods>
 			<action name="student_*" class="studentAction" method="{1}">
-				<result name="success">hello.html</result>
+				<result name="success">/hello.html</result>
+				<result name="logout">/index.jsp</result>
+				<result name="login">/student/loginStudent.jsp</result>
+				<result name="edit">studentInformationChange.jsp</result>
+				<result name="error">/opationError.jsp</result>
+			</action>
+		</package>
+		
+		<package name="allPerson" extends="struts-default,json-default" namespace="/student" >
+			<global-allowed-methods>regex:.*</global-allowed-methods>
+			<action name="login" class="studentAction" method="login">
+				<result name="success" type="json">
+					<param name="root">result</param>
+				</result>
+				<result name="error" type="json">
+					<param name="root">result</param>
+				</result>
+			</action>
+			<action name="logout" class="studentAction" method="logout">
 				<result name="logout">/index.jsp</result>
 			</action>
+			
 		</package>
 	</struts>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 
@@ -31,11 +32,18 @@
                     <li class="nav-header">
 
                         <div class="dropdown profile-element">  
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                               <span class="clear"> <span class="block m-t-xs">  <!-- <strong class="font-bold">Beaut-zihan</strong> -->
-                             </span> <span class="text-muted text-xs block">${sessionScope.student eq null ? "未登录" : sessionScope.student.s_name+"同学"  }</span> </span>
-                            </a>
-                        
+                        	<c:if test="${sessionScope.student != null }">
+                        		<a data-toggle="dropdown" class="dropdown-toggle" href="./">
+								<span class="clear"> <span class="block m-t-xs">  <!-- <strong class="font-bold">Beaut-zihan</strong> -->
+								</span> <span class="text-muted text-xs block">你好,${sessionScope.student.s_name }同学</span> </span>
+							</a>
+                        	</c:if>
+                        	<c:if test="${sessionScope.student == null }">
+                            <span data-toggle="dropdown" class="dropdown-toggle">
+                                <span class="clear"> <span class="block m-t-xs"> 
+                             </span><a class="J_menuItem"  href="${pageContext.request.contextPath }/student/loginStudent.jsp">登录</a></span>
+                            </span>
+                        	</c:if>
                         </div>
                        
 					<li class="active">
@@ -50,7 +58,7 @@
                     </li>
                    
 					<li>
-                        <a class="J_menuItem"  href="studentInformationChange.html"><i class="fa fa-columns"></i> <span class="nav-label">修改个人信息</span></a>
+                        <a class="J_menuItem"  href="${pageContext.request.contextPath }/student/more/student_edit.action"><i class="fa fa-columns"></i> <span class="nav-label">修改个人信息</span></a>
                     </li>
 					
 					<li>
@@ -69,7 +77,7 @@
                             <span class="m-r-sm text-muted welcome-message"><a href="indexStudent.html" title="返回首页"><i class="fa fa-home"></i></a>欢迎登录在线考试系统后台管理</span>
                         </li>
                         <li>
-                            <a href="../style/index.html">
+                            <a href="${pageContext.request.contextPath }/student/logout.action">
                                 <i class="fa fa-sign-out"></i> 退出
                             </a>
                         </li>

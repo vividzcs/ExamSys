@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +50,11 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	}  //模型驱动获取数据
 	String info;
 	
-	private Map result = new HashMap();
-	public Map getResult() {
+	private Map<String,String> result = new HashMap<String,String>();
+	public Map<String,String> getResult() {
 		return result;
 	}
-	public void setResult(Map result) {
+	public void setResult(Map<String,String> result) {
 		this.result = result;
 	} //传回前端得Json数据
 	@Autowired
@@ -74,9 +75,20 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	public String login() {
 		//验证
 		HttpServletRequest req = ServletActionContext.getRequest();
+		HttpSession session = req.getSession();
+		//验证验证码
+		String code = req.getParameter("code");
+		String codeReal = (String)session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
+		if(!codeReal.equalsIgnoreCase(code)) {
+			result.put("status","0");
+			result.put("msg", "验证码错误");
+			return ERROR;
+		}
+		
 		info = this.validateUtil.validateNumber(student.getS_number(), 10);
 		if(info != null) {
-			req.setAttribute("info","编号"+ info);
+			result.put("status","0");
+			result.put("msg", "编号"+ info);
 			return ERROR;
 		}
 		
@@ -84,7 +96,7 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		if(studentConfirm != null) {
 			//登录成功
 			studentConfirm.setS_pass(null);
-			req.getSession().setAttribute("student", studentConfirm);
+			session.setAttribute("student", studentConfirm);
 			
 			this.result.put("status", "1");
 			this.result.put("msg", "登录成功");
@@ -148,6 +160,31 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		}
 		this.studentService.delete(this.student.getS_id());
 		return SUCCESS;
+	}
+	
+	public String edit() {
+		return "edit";
+	}
+	
+	public String update() {
+		HttpServletRequest req = ServletActionContext.getRequest();
+		HttpSession session = req.getSession();
+		String passConfirm = req.getParameter("passConfirm");
+		String oldPass = req.getParameter("oldPass");
+		if(passConfirm!=null && oldPass!=null && passConfirm.equals(this.student.getS_pass())) {
+			Student s = this.studentService.getByIdEager(((Student) session.getAttribute("student")).getS_id());
+			if(!s.getS_pass().equals(oldPass)) {
+				req.setAttribute("info", "旧密码错误");
+				return ERROR;
+			}
+			//旧密码正确
+			s.setS_pass(this.student.getS_pass());
+			this.studentService.update(s);
+			
+			return SUCCESS;
+		}
+		req.setAttribute("info", "请认真填写重试");
+		return ERROR;
 	}
 	
 	/**

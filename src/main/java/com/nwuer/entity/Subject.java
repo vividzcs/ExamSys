@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name="t_subject",indexes=@Index(name="subject_index_number",columnList="sub_number",unique=true))
+@Table(name="t_subject",indexes=@Index(name="subject_index_name",columnList="sub_name",unique=true))
 public class Subject {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
@@ -24,7 +24,7 @@ public class Subject {
 	private String sub_name;
 	@Column(length=8)
 	private long create_time;  //创建时间
-	
+	@Column(length=6,unique=true)
 	private String sub_number; //科目编号
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="major_sub")

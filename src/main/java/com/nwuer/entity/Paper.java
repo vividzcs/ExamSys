@@ -31,6 +31,7 @@ public class Paper {
 	private byte pap_kind; //试卷类型, 0:考试, 1:练习
 	
 	private long create_time;
+	private byte status;  //0:刚生成, 1:考试中, 2 已交卷
 	
 	@Column(columnDefinition="text")
 	private String pap_desc;
@@ -42,11 +43,30 @@ public class Paper {
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="rule_paper")
 	private PaperRule paperRule;
-	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-	@JoinColumn(name="reg_paper")
-	private StudentRegister studentRegister;
+//	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
+//	@JoinColumn(name="reg_paper")
+//	private StudentRegister studentRegister;
+//	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
+//	@JoinColumn(name="guard_paper")
+//	private GuardianShip guardianShip;
+	
+	private Integer sr_id;
+	private Integer g_id;
+	
 	public String getPap_id() {
 		return pap_id;
+	}
+	public Integer getG_id() {
+		return g_id;
+	}
+	public void setG_id(Integer g_id) {
+		this.g_id = g_id;
+	}
+	public Integer getSr_id() {
+		return sr_id;
+	}
+	public void setSr_id(Integer sr_id) {
+		this.sr_id = sr_id;
 	}
 	public void setPap_id(String pap_id) {
 		this.pap_id = pap_id;
@@ -62,6 +82,12 @@ public class Paper {
 	}
 	public void setPap_kind(byte pap_kind) {
 		this.pap_kind = pap_kind;
+	}
+	public byte getStatus() {
+		return status;
+	}
+	public void setStatus(byte status) {
+		this.status = status;
 	}
 	public long getCreate_time() {
 		return create_time;
@@ -93,12 +119,5 @@ public class Paper {
 	public void setPaperRule(PaperRule paperRule) {
 		this.paperRule = paperRule;
 	}
-	public StudentRegister getStudentRegister() {
-		return studentRegister;
-	}
-	public void setStudentRegister(StudentRegister studentRegister) {
-		this.studentRegister = studentRegister;
-	}
-	
 	
 }

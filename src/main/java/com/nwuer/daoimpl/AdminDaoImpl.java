@@ -20,9 +20,7 @@ public class AdminDaoImpl extends BaseDaoImpl<Admin> {
 	}
 	
 	public Admin getByNumberAndPass(Admin admin) {
-		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
-		List<Admin> list = (List<Admin>) this.getHibernateTemplate().find("from Admin where ad_number=? and ad_pass=?", admin.getAd_number(),crpty.encrypt(admin.getAd_pass()));
+		List<Admin> list = (List<Admin>) this.getHibernateTemplate().find("from Admin where ad_number=? and ad_pass=?", admin.getAd_number(),admin.getAd_pass());
 		if(list!=null && list.size()>0)
 			return list.get(0);
 		else

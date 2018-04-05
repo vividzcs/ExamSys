@@ -29,26 +29,25 @@ public class StudentRegister {
 	@Column(length=10)
 	private String sr_number;  //学生学号
 	private String sr_name; //学生姓名
+	private long create_time; 
+	
+	private byte status; //0:未注册, 1:已注册, 2:考试中, 3: 已考完
 	
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="major_stu_reg")
 	private Major major;
-	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-	@JoinColumn(name="exam_stu_reg")//学生注册表用来关联 学生,试卷,科目
-	private ExamRegister examregister;
+	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
+	@JoinColumn(name="sub_stu_reg")
+	private Subject subject;
+//	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
+//	@JoinColumn(name="exam_stu_reg")//学生注册表用来关联 学生,试卷,科目
+//	private ExamRegister examRegister;
+	private Integer r_id; //考试注册表
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="examhistory_stu_reg")
 	private ExamHistory examHistory;
-	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-	@JoinColumn(name="paper_stu_reg")
-	private Paper paper;
+	private String paper;  //直接存纸卷的uuid
 	
-	public ExamRegister getExamregister() {
-		return examregister;
-	}
-	public void setExamregister(ExamRegister examregister) {
-		this.examregister = examregister;
-	}
 	public int getSr_id() {
 		return sr_id;
 	}
@@ -63,6 +62,42 @@ public class StudentRegister {
 	}
 	public String getSr_name() {
 		return sr_name;
+	}
+	public byte getStatus() {
+		return status;
+	}
+	public long getCreate_time() {
+		return create_time;
+	}
+	public Integer getR_id() {
+		return r_id;
+	}
+	public void setR_id(Integer r_id) {
+		this.r_id = r_id;
+	}
+	public void setCreate_time(long create_time) {
+		this.create_time = create_time;
+	}
+	public void setStatus(byte status) {
+		this.status = status;
+	}
+	public Subject getSubject() {
+		return subject;
+	}
+	public void setSubject(Subject subject) {
+		this.subject = subject;
+	}
+	public ExamHistory getExamHistory() {
+		return examHistory;
+	}
+	public void setExamHistory(ExamHistory examHistory) {
+		this.examHistory = examHistory;
+	}
+	public String getPaper() {
+		return paper;
+	}
+	public void setPaper(String paper) {
+		this.paper = paper;
 	}
 	public void setSr_name(String sr_name) {
 		this.sr_name = sr_name;

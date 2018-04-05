@@ -86,9 +86,9 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	public String findStu() {
 		//检查数据合法性
 		HttpServletRequest req = ServletActionContext.getRequest();
-		info = validateUtil.isNumber(teacher.getT_number());
+		info = validateUtil.isNumber(s_number);
 		if(info != null) {
-			req.setAttribute("info","编号"+ info);
+			req.setAttribute("info","学号"+ info);
 			return ERROR;
 		}
 		
@@ -110,20 +110,25 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	 */
 	public String update() {
 		//验证信息
+		HttpServletRequest req = ServletActionContext.getRequest();
+		HttpSession session = req.getSession();
+		String passConfirm = req.getParameter("passConfirm");
+		String oldPass = req.getParameter("oldPass");
+		if(passConfirm!=null && oldPass!=null && passConfirm.equals(this.teacher.getT_pass())) {
+			Teacher t = this.teacherService.getByIdEager(((Teacher) session.getAttribute("teacher")).getT_id());
+			if(!t.getT_pass().equals(oldPass)) {
+				req.setAttribute("info", "旧密码错误");
+				return ERROR;
+			}
+			//旧密码正确
+			t.setT_pass(teacher.getT_pass());
+			this.teacherService.update(t);
+			
+			return SUCCESS;
+		}
 		
-		Teacher tSelf = (Teacher) ServletActionContext.getRequest().getSession().getAttribute("teacher");
-		Teacher t = this.teacherService.getByIdEager(tSelf.getT_id());
-		//姓名 密码 院系
-		t.setT_name(teacher.getT_name());
-		t.setT_pass(teacher.getT_pass());
-		Academy a = new Academy();
-		a.setA_id(teacher.getAcademy().getA_id());
-		t.setAcademy(a);
-		this.teacherService.update(t);
-		
-		t.setT_pass(null);
-		ServletActionContext.getRequest().getSession().setAttribute("teacher", t);
-		return SUCCESS;
+		req.setAttribute("info", "请认真填写重试");
+		return ERROR;
 	}
 	
 	public String delete() {
@@ -174,20 +179,6 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	}
 	
 	
-	/**
-	 * 显示编辑教师页面
-	 * @return
-	 */
-	public String edit() {
-		Teacher tSelf = (Teacher) ServletActionContext.getRequest().getSession().getAttribute("teacher");
-		Teacher t = this.teacherService.getByIdEager(tSelf.getT_id());  //得到老师信息
-		List<Academy> list = this.academyService.getAll();//得到学院信息
-		HttpServletRequest req = ServletActionContext.getRequest();
-		req.setAttribute("teacher", t);
-		req.setAttribute("list", list);
-		
-		return "edit";
-	}
 	
 	public String logout() {
 		ServletActionContext.getRequest().getSession().setAttribute("teacher", null);

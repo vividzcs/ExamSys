@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name="t_major",indexes=@Index(name="major_index_number",columnList="m_number",unique=true))
+@Table(name="t_major",indexes=@Index(name="major_index_name",columnList="m_name",unique=true))
 public class Major {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
@@ -28,7 +28,7 @@ public class Major {
 	private String m_name;
 	@Column(columnDefinition="int not null default 0")
 	private int m_num; //专业人数
-	@Column(length=5,unique=true)
+	@Column(length=4,unique=true)
 	private String m_number; //专业编号
 	private long create_time;  //创建时间
 	

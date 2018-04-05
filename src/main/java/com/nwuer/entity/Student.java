@@ -45,9 +45,6 @@ public class Student {
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="academy_stu")
 	private Academy academy;
-	@OneToMany(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
-	@JoinColumn(name="exam_reg_stu")
-	private List<ExamRegister> exam_regs;
 	
 	public byte getS_sex() {
 		return s_sex;
@@ -108,6 +105,12 @@ public class Student {
 	}
 	public void setLast_login(long last_login) {
 		this.last_login = last_login;
+	}
+	public long getStart_school_time() {
+		return start_school_time;
+	}
+	public void setStart_school_time(long start_school_time) {
+		this.start_school_time = start_school_time;
 	}
 	
 }

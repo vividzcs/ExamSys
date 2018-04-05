@@ -22,6 +22,7 @@ public class TeacherService implements BaseService<Teacher> {
 	private Crpty crpty;
 	
 	public Teacher getByNumberAndPass(Teacher teacher) {
+		teacher.setT_pass(crpty.encrypt(teacher.getT_pass()));
 		return this.teacherDaoImpl.getByNumberAndPass(teacher);
 	}
 	@Override
@@ -47,7 +48,9 @@ public class TeacherService implements BaseService<Teacher> {
 	}
 	@Override
 	public Teacher getByIdEager(Serializable id) {
-		return this.teacherDaoImpl.getByIdEager(id);
+		Teacher t = this.teacherDaoImpl.getByIdEager(id);
+		t.setT_pass(this.crpty.decrypt(t.getT_pass()));
+		return t;
 	}
 	@Transactional
 	public void updateLastLogin(long t,int id) {
@@ -69,6 +72,10 @@ public class TeacherService implements BaseService<Teacher> {
 	
 	public List<Teacher> getByNumber(String number) {
 		return this.teacherDaoImpl.getByNumber(number);
+	}
+	
+	public Teacher getByNumberE(String number) {
+		return this.teacherDaoImpl.getByNumberE(number);
 	}
 	
 	

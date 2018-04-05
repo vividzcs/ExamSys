@@ -117,4 +117,14 @@ public class PaperRuleAction extends ActionSupport implements ModelDriven<PaperR
 	public String update() {
 		return SUCCESS;
 	}
+	
+	public String detail() {
+		PaperRule rule = this.paperRuleService.getById(paperRule.getP_id());
+		if(rule == null) {
+			ServletActionContext.getRequest().setAttribute("info", "无此信息,请重试或联系维护人员");
+			return ERROR;
+		}
+		ServletActionContext.getRequest().setAttribute("rule", rule);
+		return "detail";
+	}
 }

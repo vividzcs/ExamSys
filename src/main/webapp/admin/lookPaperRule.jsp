@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 
@@ -47,20 +48,8 @@
                                                <th>科目</th>
 											 <th>难度</th>
 											 <th>总分</th>
-											 <th>单选数目 </th>
-											 <th>单选分数</th>
-											 <th>判断数目 </th>
-											 <th>判断分数</th>
-											 <th>填空数目 </th>
-											 <th>填空分数</th>
-											 <th>名词解释数目 </th>
-											 <th>名词解释分数</th>
-											 <th>简答数目 </th>
-											 <th>简答分数</th>
-											 <th>计算数目 </th>
-											 <th>计算分数</th>
-											 <th>综合数目 </th>
-											 <th>综合分数</th>
+											 <th>开始时间</th>
+											 <th>结束时间</th>
 											  <th>操作</th>
                                         </tr>
                                     </thead>
@@ -76,21 +65,13 @@
 											 	<c:if test="${rule.degree eq 2 }">难</c:if>
 											 </th>
 											 <th>${rule.full_score}</th>
-											 <th>${rule.single_choice_num } </th>
-											 <th>${rule.single_choice_score }</th>
-											 <th>${rule.judge_num }</th>
-											 <th>${rule.judge_score }</th>
-											 <th>${rule.blank_num }</th>
-											 <th>${rule.blank_score }</th>
-											 <th>${rule.translate_num }</th>
-											 <th>${rule.translate_score }</th>
-											 <th>${rule.simple_question_num }</th>
-											 <th>${rule.simple_question_score }</th>
-											 <th>${rule.compute_num }</th>
-											 <th>${rule.compute_score }</th>
-											 <th>${rule.mix_num }</th>
-											 <th>${rule.mix_score }</th>
-                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/paperrule_delete.action?p_id=${rule.p_id}" class="delete">删除</a>&nbsp<a href="${pageContext.request.contextPath }/admin/paperrule_edit.action?p_id=${rule.p_id}" >修改</a></td>
+											 <jsp:useBean id="start" class="java.util.Date"></jsp:useBean>
+											 <jsp:setProperty property="time" name="start" value="${rule.start_time }"/>
+											 <th><fmt:formatDate value="${start }" pattern="yyyy/MM/dd HH:mm"/></th>
+											 <jsp:useBean id="end" class="java.util.Date"></jsp:useBean>
+											 <jsp:setProperty property="time" name="end" value="${rule.end_time }"/>
+											 <th><fmt:formatDate value="${end }" pattern="yyyy/MM/dd HH:mm"/></th>
+                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/paperrule_delete.action?p_id=${rule.p_id}" class="delete">删除</a>&nbsp<a href="${pageContext.request.contextPath }/admin/paperrule_edit.action?p_id=${rule.p_id}" >修改</a>&nbsp<a href="${pageContext.request.contextPath }/admin/paperrule_detail.action?p_id=${rule.p_id}" >详细</a></td>
                                         </tr>
                                         </c:forEach> 
                                     </tbody>

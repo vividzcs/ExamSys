@@ -23,9 +23,7 @@ public class TeacherDaoImpl extends BaseDaoImpl<Teacher> {
 	}
 	
 	public Teacher getByNumberAndPass(Teacher teacher) {
-		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		Crpty crpty = (Crpty) applicationContext.getBean("crpty");
-		List<Teacher> list = (List<Teacher>) this.getHibernateTemplate().find("from Teacher where t_number=? and t_pass=?", teacher.getT_number(),crpty.encrypt(teacher.getT_pass()));
+		List<Teacher> list = (List<Teacher>) this.getHibernateTemplate().find("from Teacher where t_number=? and t_pass=?", teacher.getT_number(),teacher.getT_pass());
 		if(list != null && list.size()>0)
 			return list.get(0);
 		else
@@ -44,5 +42,17 @@ public class TeacherDaoImpl extends BaseDaoImpl<Teacher> {
 		criteria.add(Restrictions.like("t_number", "%" + number + "%"));
 		
 		return (List<Teacher>) this.getHibernateTemplate().findByCriteria(criteria);
+	}
+	/**
+	 * 精确寻找
+	 * @param number
+	 * @return
+	 */
+	public Teacher getByNumberE(String number) {
+		List<Teacher> list =  (List<Teacher>) this.getHibernateTemplate().find("from Teacher where t_number=?", number);
+		if(list != null  && list.size()>0) {
+			return list.get(0);
+		}else
+			return null;
 	}
 }

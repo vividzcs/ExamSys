@@ -23,9 +23,7 @@ public class StudentDaoImpl extends BaseDaoImpl<Student> {
 	}
 	
 	public Student getByNumberAndPass(Student stu) {
-		ApplicationContext applicationContext = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-		Crpty md5 = (Crpty) applicationContext.getBean("mD5Util");
-		List<Student> list = (List<Student>) this.getHibernateTemplate().find("from Student where s_number=? and s_pass=?", stu.getS_number(),md5.encrypt(stu.getS_pass()));
+		List<Student> list = (List<Student>) this.getHibernateTemplate().find("from Student where s_number=? and s_pass=?", stu.getS_number(),stu.getS_pass());
 		if(list != null && list.size()>0)
 			return list.get(0);
 		else
@@ -44,11 +42,11 @@ public class StudentDaoImpl extends BaseDaoImpl<Student> {
 	 * @return
 	 */
 	public boolean hasData() {
-//		Query query =  this.getSessionFactory().getCurrentSession().createQuery("select count(*) from Student");
-//		int rows = ((Number)query.list().get(0)).intValue();
-//		return  rows == 0 ? false : true;
-		List<Student> list = (List<Student>) this.getHibernateTemplate().find("from Student where s_id=1");
-		return (list!=null && list.size()>0) ? true : false;
+		List<Number> list = (List<Number>) this.getHibernateTemplate().find(" select count(*) from Student");
+		if(list != null)
+			return list.get(0).intValue() == 0 ? false : true;
+		else
+			return false;
 	}
 	
 	public	List<Student> getByNumber(String number) {
@@ -61,6 +59,14 @@ public class StudentDaoImpl extends BaseDaoImpl<Student> {
 		criteria.add(Restrictions.like("s_number", "%" + number + "%"));
 		
 		return (List<Student>) this.getHibernateTemplate().findByCriteria(criteria);
+	}
+	
+	public String getNameByNumber(String number) {
+		List<String> list = (List<String>) this.getHibernateTemplate().find("select s_name from Student where s_number=?",number );
+		if(list != null && list.size()>0)
+			return list.get(0);
+		else
+			return null;
 	}
 }
 

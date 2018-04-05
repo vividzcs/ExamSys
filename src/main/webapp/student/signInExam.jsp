@@ -1,0 +1,140 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+
+  
+    <link href="../style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../style/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+
+    <!-- Morris -->
+    <link href="../style/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="../style/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <link href="../style/css/animate.css" rel="stylesheet">
+    <link href="../style/css/style.css?v=2.2.0" rel="stylesheet">
+	<script>
+			function form_check(obj){
+				//验证密码一致
+			
+				var passworda =obj.passwordFirst.value;
+				var passwordb =obj.passwordConfirm.value;
+				
+				if(passworda!=passwordb)
+				{
+					alert("密码两次不一致");
+				}
+				
+				
+				//验证学号
+				var id= /^[0-9]*$/;//纯数字的正则表达式
+				var sid=obj.studentID.value;
+				if(id.test(sid)){					
+					alert("学号输入不正确");		
+			}	
+			}
+
+</script>
+
+</head>
+
+<body>
+ <div class="row  border-bottom white-bg dashboard-header" style="height: 100%; ">
+   <div class="middle-box text-center loginscreen  animated fadeInDown">
+            <h3>欢迎注册考试</h3>
+            <p>创建一个考试新账户</p>
+            <form class="m-t" role="form" action="" onsubmit="return form_check(this)">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="studentID" placeholder="请输入学号" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name=passwordFirst placeholder="请输入密码" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name=passwordConfirm  placeholder="请再次输入密码" required="">
+                </div>
+				<div class="form-group">
+                    <select  class="form-control" > <!--根据数据库中的考试科目内容动态生成-->
+  										  <option value ="00001">00001 c语言程序设计</option>
+											  <option value ="00002">00002 java程序设计</option>
+											  <option value="00003">00003 数据结构</option>
+											  <option value="00004">00004 离散数学</option>
+											</select>
+                </div>
+                <div class="form-group text-left">
+                    <div class="checkbox i-checks">
+                        <label class="no-padding">
+                            <input type="checkbox"><i></i> 我同意注册协议</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary block full-width m-b">注 册</button>
+
+            </form>
+        </div>
+    </div>
+        
+</div>
+  <!-- Mainly scripts -->
+    <script src="../style/js/jquery-2.1.1.min.js"></script>
+    <script src="../style/js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="../style/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../style/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="../style/js/hplus.js?v=2.2.0"></script>
+    <script src="../style/js/plugins/pace/pace.min.js"></script>
+		
+		<!--<script>
+		$.validator.setDefaults({
+            highlight: function (element) {
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            success: function (element) {
+                element.closest('.form-group').removeClass('has-error').addClass('has-success');
+            },
+            errorElement: "span",
+            errorClass: "help-block m-b-none",
+            validClass: "help-block m-b-none"
+
+
+        });
+
+		$().ready(function () {
+					// validate signup form on keyup and submit
+					$("#signInExam").validate({
+						rules: {
+							examPassword: {
+								required: true,
+								minlength: 5
+							},
+							confirmEP: {
+								required: true,
+								minlength: 5,
+								equalTo: "#examPassword"
+							},
+						},
+						messages: {
+							examPassword: {
+								required: "请输入您的密码",
+								minlength: "密码必须5个字符以上"
+							},
+							confirmEP: {
+								required: "请再次输入密码",
+								minlength: "密码必须5个字符以上",
+								equalTo: "两次输入的密码不一致"
+							},
+							
+						}
+					});
+		</script>-->
+</body>
+
+</html>

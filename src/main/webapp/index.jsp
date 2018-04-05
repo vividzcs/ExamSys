@@ -63,7 +63,7 @@
 	<div class="col-lg-3"></div>
  <div class="container  login col-lg-6">
     <div class="list-group role m-t">
-		<div class="col-lg-4"><a class="btn btn-info btn-rounded" href="./student/index.html">学生</a></div>
+		<div class="col-lg-4"><a class="btn btn-info btn-rounded" href="${pageContext.request.contextPath }/student/">学生</a></div>
          <div class="col-lg-4"><a class="btn btn-warning btn-rounded" data-toggle="modal" data-target="#teacherModal" href="#" onclick="changeCode()">教师</a></div>
         <div class="col-lg-4"><a class="btn btn-danger btn-rounded" data-toggle="modal" data-target="#adminModal" href="#" onclick="changeCode()">管理员</a></div>
   	 <!--  <ul> 

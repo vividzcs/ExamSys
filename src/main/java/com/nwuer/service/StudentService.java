@@ -22,6 +22,8 @@ public class StudentService implements BaseService<Student> {
 	private Crpty crpty;
 	
 	public Student getByNumberAndPass(Student stu) {
+		stu.setS_pass(crpty.encrypt(stu.getS_pass()));
+		
 		return this.StudentDaoImpl.getByNumberAndPass(stu);
 	}
 	
@@ -36,7 +38,7 @@ public class StudentService implements BaseService<Student> {
 	
 	@Transactional
 	public void clear() {
-		this.StudentDaoImpl.clear();
+		//this.StudentDaoImpl.clear();
 	}
 	
 	public boolean hasData() {
@@ -62,7 +64,9 @@ public class StudentService implements BaseService<Student> {
 
 	@Override
 	public Student getByIdEager(Serializable id) {
-		return this.StudentDaoImpl.getByIdEager(id);
+		Student s = this.StudentDaoImpl.getByIdEager(id);
+		s.setS_pass(crpty.decrypt(s.getS_pass()));
+		return s;
 	}
 
 	@Override
@@ -82,5 +86,9 @@ public class StudentService implements BaseService<Student> {
 	@Transactional
 	public void delete(int id) {
 		this.StudentDaoImpl.delete(id);
+	}
+	
+	public String getNameByNumner(String number) {
+		return this.StudentDaoImpl.getNameByNumber(number);
 	}
 }

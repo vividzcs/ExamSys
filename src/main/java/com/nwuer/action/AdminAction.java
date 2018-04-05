@@ -24,16 +24,21 @@ import org.springframework.stereotype.Controller;
 import com.nwuer.entity.Academy;
 import com.nwuer.entity.Admin;
 import com.nwuer.entity.ChoiceQuestion;
+import com.nwuer.entity.GuardianShip;
 import com.nwuer.entity.JudgeQuestion;
 import com.nwuer.entity.Major;
+import com.nwuer.entity.StudentRegister;
 import com.nwuer.entity.Subject;
 import com.nwuer.entity.SubjectiveQuestion;
 import com.nwuer.entity.Teacher;
 import com.nwuer.service.AcademyService;
 import com.nwuer.service.AdminService;
 import com.nwuer.service.ChoiceQuestionService;
+import com.nwuer.service.GuardianShipService;
 import com.nwuer.service.JudgeQuestionService;
 import com.nwuer.service.MajorService;
+import com.nwuer.service.StudentRegisterService;
+import com.nwuer.service.StudentService;
 import com.nwuer.service.SubjectService;
 import com.nwuer.service.SubjectiveQuestionService;
 import com.nwuer.service.TeacherService;
@@ -77,6 +82,12 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	private JudgeQuestionService judgeQuestionService;
 	@Autowired
 	private SubjectiveQuestionService subjectiveQuestionService;
+	@Autowired
+	private StudentRegisterService studentRegisterService;
+	@Autowired
+	private GuardianShipService guardianShipService;
+	@Autowired
+	private StudentService studentService;
 	@Autowired
 	private Crpty crpty;
 	@Autowired
@@ -337,16 +348,15 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	 */
 	public String importChoiceQuestion() {
 		//添加也得清空
-		String info = "";
 		//先清空选择题库,先判断选择题库是否有数据
-				if(this.choiceQuestionService.hasData()) {
-					this.choiceQuestionService.clear();
-					if(this.choiceQuestionService.hasData()) {
-						//没有清空表
-						info = "历史选择题库数据无法清空!请稍后再试" ;
-						return info;
-					}
-				}
+		if(this.choiceQuestionService.hasData()) {
+			this.choiceQuestionService.clear();
+			if(this.choiceQuestionService.hasData()) {
+				//没有清空表
+				info = "历史选择题库数据无法清空!请稍后再试" ;
+				return info;
+			}
+		}
 		//开始导入
 		FileInputStream excel = null;
 		Workbook wb =  null;
@@ -1084,7 +1094,274 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	}
 	public String importPeopleRelated() {
 		
+		HttpServletRequest req = ServletActionContext.getRequest();
+		//开始导入 先导入学生
+		info = importStudentReg(); 
+		if(info != null) {
+			req.setAttribute("info", info);
+			return ERROR;
+		}
+		//开始导入监考阅卷人员
+		info = importTeacherGuard();
+		if(info != null) {
+			req.setAttribute("info", info);
+			return ERROR;
+		}
+		
 		return SUCCESS;
+	}
+	
+	public String importStudentReg() {
+		//开始导入 先导入注册学生 先清空注册学生
+				if(this.studentRegisterService.hasData()) {
+					this.studentRegisterService.clear();
+					if(this.studentRegisterService.hasData()) {
+						//没有清空表
+						return "历史学生数据无法清空!请稍后再试";
+					}
+				}
+				
+				FileInputStream excel = null;
+				Workbook wb =  null;
+				try {
+					//得到Excel文件
+					excel = new FileInputStream(upload.get(0));
+					//获取工作簿对象
+					wb = Workbook.getWorkbook(excel);//只读
+					//开始对excel数据进行操作(行,列)
+					Sheet sheet = wb.getSheet(0);
+					//首先要得到有多少行
+					int rows = 0;
+					int rowsAll = sheet.getRows();
+					for(int i=0; i<rowsAll; i++) {
+						Cell cell = sheet.getCell(0,i);
+						if(cell.getContents().trim().equals("")) {
+							rows = i;
+							break;
+						}
+					}
+					rows = rows == 0 ? rowsAll : rows; //如果有多余空行就等于实际行,否则等于总行
+					for(int j=1; j<rows; j++) {
+						StudentRegister sRegister = new StudentRegister();
+						 //处理专业
+						Cell m_nameCell = sheet.getCell(0, j);
+						String m_name = m_nameCell.getContents();
+						int m_id = 0;
+						if(m_name.trim().equals("") || (m_id=this.majorService.getIdByName(m_name))== 0) {
+							//不对
+							return "第" + j + "行专业错误";
+						}
+						
+						//处理科目
+						Cell sub_nameCell = sheet.getCell(1,j);
+						String sub_name  = sub_nameCell.getContents();
+						int sub_id = 0;
+						if(sub_name.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub_name))== 0) {
+							//不对
+							return "第" + j + "行科目错误";
+						}
+
+						//处理学号 
+						Cell s_numberCell = sheet.getCell(2,j);
+						String s_number = s_numberCell.getContents();
+						if(s_number.trim().equals("")) {
+							//不对
+							return "第" + j + "行学号不能为空";
+						}
+						//并且学号不能重复
+						
+						
+						//验证通过
+						
+						Major m = new Major();
+						m.setM_id(m_id);
+						Subject s = new Subject();
+						s.setSub_id(sub_id);
+						sRegister.setSr_number(s_number);
+						String sr_name = this.studentService.getNameByNumner(s_number);
+						sRegister.setSr_name(sr_name);
+						sRegister.setMajor(m);
+						sRegister.setSubject(s);
+						
+						int id = this.studentRegisterService.add(sRegister);
+						if(id <= 0) {
+							//添加失败
+							return "第" + j + "个学生添加失败,请重试";
+						}
+					}
+					
+					
+					
+					
+					//添加完成
+					return null;
+					
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (BiffException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}finally {
+						try {
+							if(excel != null)
+								excel.close();
+							if(wb != null)
+								wb.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+				}
+				
+				return "系统错误,请添加情况后重试";
+	}
+
+	public String importTeacherGuard() {
+		//开始导入 先导入注册学生 先清空注册学生
+		if(this.guardianShipService.hasData()) {
+			this.guardianShipService.clear();
+			if(this.guardianShipService.hasData()) {
+				//没有清空表
+				return "历史监考阅卷人员数据无法清空!请稍后再试";
+			}
+		}
+		
+		FileInputStream excel = null;
+		Workbook wb =  null;
+		File f = upload.get(1);
+		if(f == null) {
+			return "监考信息未上传";
+		}
+		
+		try {
+			//得到Excel文件
+			excel = new FileInputStream(upload.get(1));
+			//获取工作簿对象
+			wb = Workbook.getWorkbook(excel);//只读
+			//开始对excel数据进行操作(行,列)
+			Sheet sheet = wb.getSheet(0);
+			//首先要得到有多少行
+			int rows = 0;
+			int rowsAll = sheet.getRows();
+			for(int i=0; i<rowsAll; i++) {
+				Cell cell = sheet.getCell(0,i);
+				if(cell.getContents().trim().equals("")) {
+					rows = i;
+					break;
+				}
+			}
+			rows = rows == 0 ? rowsAll : rows; //如果有多余空行就等于实际行,否则等于总行
+			for(int j=1; j<rows; j++) {
+				GuardianShip guard = new GuardianShip();
+				 //处理专业
+				Cell m_nameCell = sheet.getCell(0, j);
+				String m_name = m_nameCell.getContents();
+				int m_id = 0;
+				if(m_name.trim().equals("") || (m_id=this.majorService.getIdByName(m_name))== 0) {
+					//不对
+					return "第" + j + "行专业错误";
+				}
+				
+				//处理科目
+				Cell sub_nameCell = sheet.getCell(1,j);
+				String sub_name  = sub_nameCell.getContents();
+				int sub_id = 0;
+				if(sub_name.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub_name))== 0) {
+					//不对
+					return "第" + j + "行科目错误";
+				}
+
+				//处理监考信息
+				Cell number1Cell = sheet.getCell(2,j);
+				String number1 = number1Cell.getContents();
+				Teacher t1 = null;
+				if((info = this.validateUtil.validateNumber(number1, 10))!= null || (t1 = this.teacherService.getByNumberE(number1))==null) {
+					//不对
+					return "第" + j + "行监考1错误";
+				}
+				//并且工号不能重复
+				
+				Cell number2Cell = sheet.getCell(3,j);
+				String number2 = number2Cell.getContents();
+				Teacher t2 = null;
+				if((info = this.validateUtil.validateNumber(number2, 10))!= null || (t2 = this.teacherService.getByNumberE(number2))==null ) {
+					//不对
+					return "第" + j + "行监考2错误";
+				}
+				
+				//处理阅卷信息
+				Cell number3Cell = sheet.getCell(4,j);
+				String number3 = number3Cell.getContents();
+				Teacher t3 = null;
+				if((info = this.validateUtil.validateNumber(number3, 10))!= null || (t3 = this.teacherService.getByNumberE(number3))==null) {
+					//不对
+					return "第" + j + "行阅卷1错误";
+				}
+				//并且工号不能重复
+				Cell number4Cell = sheet.getCell(5,j);
+				String number4 = number4Cell.getContents();
+				Teacher t4 = null;
+				if((info = this.validateUtil.validateNumber(number4, 10))!= null || (t4 = this.teacherService.getByNumberE(number4))==null) {
+					//不对
+					return "第" + j + "行阅卷2错误";
+				}
+				//并且工号不能重复
+				
+				Cell number5Cell = sheet.getCell(6,j);
+				String number5 = number4Cell.getContents();
+				Teacher t5 = null;
+				if((info = this.validateUtil.validateNumber(number5, 10))!= null || (t5 = this.teacherService.getByNumberE(number5))==null) {
+					//不对
+					return "第" + j + "行阅卷3错误";
+				}
+				//并且工号不能重复
+				
+				//验证通过
+				
+				Major m = new Major();
+				m.setM_id(m_id);
+				Subject s = new Subject();
+				s.setSub_id(sub_id);
+				guard.setMajor(m);
+				guard.setSubject(s);
+				guard.setGuard_1(t1);
+				guard.setGuard_2(t2);
+				guard.setRead_1(t3);
+				guard.setRead_2(t4);
+				guard.setRead_3(t5);
+				
+				int id = this.guardianShipService.add(guard);
+				if(id <= 0) {
+					//添加失败
+					return "第" + j + "个监考阅卷信息添加失败,请重试";
+				}
+			}
+			
+			//添加完成
+			return null;
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (BiffException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+				try {
+					if(excel != null)
+						excel.close();
+					if(wb != null)
+						wb.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
+		
+		return "系统错误,请添加情况后重试";
 	}
 }
 

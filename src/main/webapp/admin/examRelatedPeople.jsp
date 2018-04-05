@@ -50,22 +50,6 @@
                                             <input id="Bname" name="Bname" style="width:50%" class="form-control" type="text">
                                         </div>
                                     </div>-->
-                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">专业</label>
-                                        <div class="col-sm-8">
-                                            <select id="profess" class="form-control m-b" style="width: 50%" ng-model="selected" ng-options="m.profess for m in professes" ng-change="changeClassification(selected)">
-                                                 <option value="">-- 请选择 --</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">科目</label>
-                                        <div class="col-sm-8">
-                                             <select id="subject" class="form-control m-b" style="width: 50%" ng-model="selected2" ng-options="m for m in course" >
-                                             	  <option value="">-- 请选择 --</option>
-                                            </select>
-                                        </div>
-                                    </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">上传考试学生名单</label>
                                         <div class="col-sm-8">
@@ -159,38 +143,6 @@
    <script src="../style/js/anjularJS/anjularjs/app.js"></script>
    <script src="../style/js/anjularJS/anjularjs/control.js"></script>
    
-    <script>
-    /**
-     * 专业和科目的联动
-     */
-   var allData;
-     $(function(){
-   	  $.post('${pageContext.request.contextPath }/admin/admin_mesFS.action',{},function(data){
-   		  allData = data;
- 			var strProf = '<option value="">-- 请选择 --</option>';
- 			for(var i in data) {
- 				strProf += '<option value="' + i + '">'+ data[i].profess +'</option>'
- 			}
- 			
- 			$("#profess").html(strProf);
- 			
- 		},"json")
-     })
-     
-     $("#profess").change(function(){
-   	  var id = $(this).val();
-   	  if(id != '') {
-   		  var sub = $("#subject");  
-   		  var strSub = '<option value="">-- 请选择 --</option>';
-   		  var subjects = allData[id];
-   		  for(var i in subjects.subject) {
-   			strSub += '<option value="' + i + '">'+ subjects.subject[i] +'</option>'
-   			}
-   		sub.html(strSub);
-   	  }
-   	  
-     });
-    </script>
 
 
 </body>

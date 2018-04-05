@@ -1,16 +1,10 @@
 package com.nwuer.entity;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -30,12 +24,9 @@ public class ExamHistory {
 	@Column(columnDefinition="float not null default 0.0")
 	private double grade;
 	private long putin_time; //交卷时间
-//	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-//	@JoinColumn(name="stu_history")
-//	private Student student;   //学生是多的一方
-	@OneToMany(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-	@JoinColumn(name="reg_history")
-	private List<StudentRegister> studentRegister;
+	@Column(length=10)
+	private String sr_number;  //学生学号
+	private String sr_name; //学生姓名
 	public int getH_id() {
 		return h_id;
 	}
@@ -54,11 +45,17 @@ public class ExamHistory {
 	public void setPutin_time(long putin_time) {
 		this.putin_time = putin_time;
 	}
-	public List<StudentRegister> getStudentRegister() {
-		return studentRegister;
+	public String getSr_number() {
+		return sr_number;
 	}
-	public void setStudentRegister(List<StudentRegister> studentRegister) {
-		this.studentRegister = studentRegister;
+	public void setSr_number(String sr_number) {
+		this.sr_number = sr_number;
+	}
+	public String getSr_name() {
+		return sr_name;
+	}
+	public void setSr_name(String sr_name) {
+		this.sr_name = sr_name;
 	}
 	
 }

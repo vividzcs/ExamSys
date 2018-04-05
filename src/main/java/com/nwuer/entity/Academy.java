@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name="t_academy",indexes=@Index(name="academy_index_number",columnList="a_number",unique=true))
+@Table(name="t_academy",indexes=@Index(name="academy_index_name",columnList="a_name",unique=true))
 public class Academy {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
