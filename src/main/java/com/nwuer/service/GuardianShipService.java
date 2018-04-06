@@ -62,5 +62,9 @@ public class GuardianShipService implements BaseService<GuardianShip> {
 	public void clear() {
 		this.guardianShipDaoImpl.clear();
 	}
+	
+	public int getByMajorAndSubject(int m_id,int sub_id) {
+		return this.guardianShipDaoImpl.getByMajorAndSubject(m_id, sub_id);
+	}
 
 }

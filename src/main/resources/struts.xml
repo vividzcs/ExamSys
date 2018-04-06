@@ -112,6 +112,12 @@
 				<result name="detail">detailPaperRule.jsp</result>
 			</action>
 			
+			<action name="paper_*" class="paperAction" method="{1}">
+				<result name="showAdd">createPaper.jsp</result>
+				<result name="list">manageStudent.jsp</result>
+				<result name="success" type="redirectAction">paper_list</result>
+			</action>
+			
 		</package>
 		
 		<package name="teacher" extends="struts-default,json-default" namespace="/teacher" >
@@ -168,6 +174,10 @@
 				<result name="login">/student/loginStudent.jsp</result>
 				<result name="edit">studentInformationChange.jsp</result>
 				<result name="error">/opationError.jsp</result>
+				<result name="before">beforeExam.jsp</result>
+				<result name="subs" type="json">
+					<param name="root">result</param>
+				</result>
 			</action>
 		</package>
 		

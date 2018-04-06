@@ -47,7 +47,7 @@
                                       <div class="form-group" >
                                         <label class="col-sm-3 control-label">题库类型</label>
                                         <div class="col-sm-8">
-                                              <select class="form-control m-b"  style="width:50%" ng-model="selectePaper" ng-options="m for m in paperStyle" name="kind">
+                                              <select class="form-control m-b"  style="width:50%" name="kind">
                                                  <option value="0">单选</option>
                                                  <option value="1">判断</option>
                                                  <option value="2">主观题</option>

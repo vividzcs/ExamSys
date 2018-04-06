@@ -88,7 +88,7 @@ public class StudentService implements BaseService<Student> {
 		this.StudentDaoImpl.delete(id);
 	}
 	
-	public String getNameByNumner(String number) {
+	public String getNameByNumber(String number) {
 		return this.StudentDaoImpl.getNameByNumber(number);
 	}
 }

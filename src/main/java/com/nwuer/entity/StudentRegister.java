@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
@@ -20,7 +21,7 @@ import org.hibernate.annotations.GenericGenerator;
  *
  */
 @Entity
-@Table(name="t_student_register")
+@Table(name="t_student_register",indexes=@Index(name="stu_reg_sr_number", columnList="sr_number"))
 public class StudentRegister {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")

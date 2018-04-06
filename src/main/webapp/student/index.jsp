@@ -49,9 +49,9 @@
 					<li class="active">
                         <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">考试</span> <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a class="J_menuItem"  href="signInExam.html">注册考试</a>
+                            <li><a class="J_menuItem"  href="${pageContext.request.contextPath }/student/more/signInExam.jsp">注册考试</a>
                             </li>
-                            <li><a class="J_menuItem"  href="loginExam.html">登录考试</a>
+                            <li><a class="J_menuItem"  href="${pageContext.request.contextPath }/student/more/loginExam.jsp">登录考试</a>
                             </li>
                         </ul>
                     </li>

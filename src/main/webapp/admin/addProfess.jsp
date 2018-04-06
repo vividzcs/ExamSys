@@ -36,7 +36,7 @@
                                         <label class="col-sm-3 control-label">院系</label>
                                         <div class="col-sm-8">
                                             <select class="form-control m-b"  ng-model="selected" ng-options="m.department for m in departments" name="academy.a_id" >
-                                                 <option value="0">-- 请选择 --</option>
+                                                 <option value="">-- 请选择 --</option>
                                                  <c:forEach items="${list }" var="academy">
                                                  <option value="${academy.a_id }">${academy.a_name }</option>
                                                  </c:forEach>

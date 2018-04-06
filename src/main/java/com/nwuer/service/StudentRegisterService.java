@@ -61,4 +61,13 @@ public class StudentRegisterService implements BaseService<StudentRegister> {
 	public void clear() {
 		this.studentRegisterDaoImpl.clear();
 	}
+	
+	public List<StudentRegister> getStudentRegisterByNumber(String number) {
+		return this.studentRegisterDaoImpl.getStudentRegisterByNumber(number);
+	}
+	
+	@Transactional
+	public int updateStatus(String number,int sub_id,byte status) {
+		return this.studentRegisterDaoImpl.updateStatus(number,sub_id,status);
+	}
 }

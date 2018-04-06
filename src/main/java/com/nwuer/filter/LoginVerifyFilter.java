@@ -49,7 +49,8 @@ public class LoginVerifyFilter implements Filter {
 				return;
 			}else { //请求的是要登录的页面
 				if(key == null) { //没有登录
-					res.sendRedirect(req.getContextPath() + "/index.jsp");
+					res.sendRedirect(req.getContextPath() + "/student/loginStudent.jsp");
+					return;
 				}else{
 					chain.doFilter(request, response);
 					return;

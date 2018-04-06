@@ -182,6 +182,12 @@
                                     	</table>
                                     </div>
                                     <div class="form-group">
+                                        <label class="col-sm-3 control-label">备注</label>
+                                        <div class="col-sm-8">
+                                           <input id="other" name="p_desc" style="width: 50%;" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error tname">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <div class="col-sm-8 col-sm-offset-3">
                                             <button class="btn btn-primary addStudet" type="submit" onclick="isnumber()"> 确认创建</button>
                                         </div>

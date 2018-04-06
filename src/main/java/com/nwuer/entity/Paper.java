@@ -33,28 +33,32 @@ public class Paper {
 	private long create_time;
 	private byte status;  //0:刚生成, 1:考试中, 2 已交卷
 	
-	@Column(columnDefinition="text")
-	private String pap_desc;
-	
-	private String pap_answer_url;  //直接存一段文本信息
-	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
+//	private Integer subjective_answer_id;  //关联答案表
+//	private Integer objective_answer_id;  //关联答案表
+	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)
 	@JoinColumn(name="sub_paper")
 	private Subject subject;
-	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
-	@JoinColumn(name="rule_paper")
-	private PaperRule paperRule;
+//	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
+//	@JoinColumn(name="rule_paper")
+//	private PaperRule paperRule;
 //	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 //	@JoinColumn(name="reg_paper")
 //	private StudentRegister studentRegister;
 //	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 //	@JoinColumn(name="guard_paper")
 //	private GuardianShip guardianShip;
-	
-	private Integer sr_id;
-	private Integer g_id;
+	private Integer p_id; //试卷生成规则表的id
+	private Integer sr_id; //学生注册表的id
+	private Integer g_id; //监考人员表的id
 	
 	public String getPap_id() {
 		return pap_id;
+	}
+	public Integer getP_id() {
+		return p_id;
+	}
+	public void setP_id(Integer p_id) {
+		this.p_id = p_id;
 	}
 	public Integer getG_id() {
 		return g_id;
@@ -95,29 +99,11 @@ public class Paper {
 	public void setCreate_time(long create_time) {
 		this.create_time = create_time;
 	}
-	public String getPap_desc() {
-		return pap_desc;
-	}
-	public void setPap_desc(String pap_desc) {
-		this.pap_desc = pap_desc;
-	}
-	public String getPap_answer_url() {
-		return pap_answer_url;
-	}
-	public void setPap_answer_url(String pap_answer_url) {
-		this.pap_answer_url = pap_answer_url;
-	}
 	public Subject getSubject() {
 		return subject;
 	}
 	public void setSubject(Subject subject) {
 		this.subject = subject;
-	}
-	public PaperRule getPaperRule() {
-		return paperRule;
-	}
-	public void setPaperRule(PaperRule paperRule) {
-		this.paperRule = paperRule;
 	}
 	
 }

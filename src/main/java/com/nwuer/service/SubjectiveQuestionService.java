@@ -59,4 +59,8 @@ public class SubjectiveQuestionService implements BaseService<SubjectiveQuestion
 	public void delete(int id) {
 		this.subjectiveQuestionDaoImpl.delete(id);
 	}
+	
+	public List<SubjectiveQuestion> getAllByKind(byte kind){
+		return this.subjectiveQuestionDaoImpl.getAllByKind(kind);
+	}
 }

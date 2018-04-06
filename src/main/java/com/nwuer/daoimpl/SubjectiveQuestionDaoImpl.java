@@ -29,4 +29,8 @@ public class SubjectiveQuestionDaoImpl extends BaseDaoImpl<SubjectiveQuestion> {
 	public void clear() {
 		this.getSessionFactory().getCurrentSession().createNativeQuery("truncate table t_subjective_question").executeUpdate();
 	}
+	
+	public List<SubjectiveQuestion> getAllByKind(byte kind){
+		return (List<SubjectiveQuestion>) this.getHibernateTemplate().find("from SubjectiveQuestion where sq_kind=?",kind );
+	}
 }

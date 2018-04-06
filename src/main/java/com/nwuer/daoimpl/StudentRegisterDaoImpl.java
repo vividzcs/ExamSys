@@ -26,4 +26,17 @@ public class StudentRegisterDaoImpl extends BaseDaoImpl<StudentRegister> {
 	public void clear() {
 		this.getSessionFactory().getCurrentSession().createNativeQuery("truncate table t_student_register").executeUpdate();
 	}
+	
+	/**
+	 * 得到学生注册表中相应学号对应的数据并且是未注册状态,已注册就不用注册了
+	 * @param number
+	 * @return
+	 */
+	public List<StudentRegister> getStudentRegisterByNumber(String number){
+		return (List<StudentRegister>) this.getHibernateTemplate().find("from StudentRegister where sr_number=? and status=0", number);
+	}
+	
+	public int updateStatus(String s_number,int sub_id,byte status) {
+		return this.getSessionFactory().getCurrentSession().createNativeQuery("update t_student_register set status="+status+" where sr_number="+s_number+" and sub_stu_reg="+sub_id ).executeUpdate();
+	}
 }

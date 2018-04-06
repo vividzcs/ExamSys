@@ -1178,7 +1178,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						Subject s = new Subject();
 						s.setSub_id(sub_id);
 						sRegister.setSr_number(s_number);
-						String sr_name = this.studentService.getNameByNumner(s_number);
+						String sr_name = this.studentService.getNameByNumber(s_number);
 						sRegister.setSr_name(sr_name);
 						sRegister.setMajor(m);
 						sRegister.setSubject(s);

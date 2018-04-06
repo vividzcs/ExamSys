@@ -142,6 +142,10 @@
                                     			<td>${rule.mix_num }</td>
                                     		    <td>  ${rule.mix_score }  </td>
                                     		 </tr>
+                                    		 <tr>
+                                    			<td>备注</td>
+                                    			<td colspan="2">${rule.p_desc }</td>
+                                    		 </tr>
                                     		</tbody>
                                     	</table>
                                     </div>

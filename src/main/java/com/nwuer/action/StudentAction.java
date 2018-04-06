@@ -22,8 +22,11 @@ import org.springframework.stereotype.Controller;
 import com.nwuer.entity.Academy;
 import com.nwuer.entity.Major;
 import com.nwuer.entity.Student;
+import com.nwuer.entity.StudentRegister;
+import com.nwuer.entity.Subject;
 import com.nwuer.service.AcademyService;
 import com.nwuer.service.MajorService;
+import com.nwuer.service.StudentRegisterService;
 import com.nwuer.service.StudentService;
 import com.nwuer.utils.Crpty;
 import com.nwuer.utils.ValidateUtil;
@@ -63,6 +66,8 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	private AcademyService academyService; 
 	@Autowired
 	private MajorService majorService;
+	@Autowired
+	private StudentRegisterService studentRegisterService;
 	@Autowired
 	private Crpty crpty;
 	@Autowired
@@ -108,6 +113,75 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		}
 		
 	}
+	
+	/**
+	 * 确认开始考试
+	 * @return
+	 */
+	public String confirm() {
+		//验证
+		HttpServletRequest req = ServletActionContext.getRequest();
+		
+		info = this.validateUtil.validateNumber(this.student.getS_number(), 10);
+		if(info!= null) {
+			req.setAttribute("info", "学号"+info);
+			return ERROR;
+		}
+		
+		
+		Student s = this.studentService.getByNumberAndPass(this.student);
+		if(s != null) {
+			return "before";
+		}else {
+			req.setAttribute("info", "学号或密码错误");
+			return ERROR;
+		}
+		
+	}
+	
+	/**
+	 * 得到可以注册的科目
+	 * @return
+	 */
+	public String getSubjects() {
+		Student s = (Student) ServletActionContext.getRequest().getSession().getAttribute("student");
+		List<StudentRegister> list = this.studentRegisterService.getStudentRegisterByNumber(s.getS_number());
+		for(int i=0; i<list.size(); i++) {
+			Subject sub = list.get(i).getSubject();
+			this.result.put(String.valueOf(sub.getSub_id()), sub.getSub_name());
+		}
+		return "subs";
+	}
+	
+	public String signin() {
+		HttpServletRequest req = ServletActionContext.getRequest();
+		String sub_id = req.getParameter("sub");
+		//验证数据
+		info = this.validateUtil.isNumber(sub_id);
+		if(info !=null) {
+			this.result.put("status", "0");
+			this.result.put("msg", "注册失败");
+			return "subs";
+		}
+		Student s = this.studentService.getByNumberAndPass(student);
+		if(s == null) {
+			this.result.put("status", "0");
+			this.result.put("msg", "注册失败");
+			return "subs";
+		}
+		int rows = this.studentRegisterService.updateStatus(student.getS_number(), Integer.parseInt(sub_id), Byte.parseByte("1"));
+		if(rows <=0) {
+			this.result.put("status", "0");
+			this.result.put("msg", "注册失败");
+			return "subs";
+		}else {
+			this.result.put("status", "1");
+			this.result.put("msg", "注册成功,如果还有科目需要考试,请继续注册");
+			return "subs";
+		}
+		
+	}
+	
 	/**
 	 * 退出
 	 * @return

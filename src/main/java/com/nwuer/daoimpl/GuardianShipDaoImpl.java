@@ -26,4 +26,12 @@ public class GuardianShipDaoImpl extends BaseDaoImpl<GuardianShip> {
 	public void clear() {
 		this.getSessionFactory().getCurrentSession().createNativeQuery("truncate table t_guardianship").executeUpdate();
 	}
+	
+	public int getByMajorAndSubject(int m_id,int sub_id) {
+		List list = this.getSessionFactory().getCurrentSession().createNativeQuery("select g_id from t_guardianship where major_guard_ship="+m_id+" and subject_guard_ship="+sub_id).getResultList();
+		if(list != null && list.size()>0)
+			return (int) list.get(0);
+		else
+			return 0;
+	}
 }
