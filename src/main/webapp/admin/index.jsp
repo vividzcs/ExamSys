@@ -26,7 +26,11 @@
                         <ul class="nav nav-second-level">
                             <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/importQbank.jsp">导入题库</a>
                             </li>
-                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/emportQbank.jsp">导出题库</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/exportQbank.jsp">导出题库</a>
+                            </li>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/importQTestbank.jsp">导入练习题库</a>
+                            </li>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/exportQTestbank.jsp">导出练习题库</a>
                             </li>
                         </ul>
                     </li>

@@ -24,23 +24,29 @@ import org.springframework.stereotype.Controller;
 import com.nwuer.entity.Academy;
 import com.nwuer.entity.Admin;
 import com.nwuer.entity.ChoiceQuestion;
+import com.nwuer.entity.ChoiceQuestionTest;
 import com.nwuer.entity.GuardianShip;
 import com.nwuer.entity.JudgeQuestion;
+import com.nwuer.entity.JudgeQuestionTest;
 import com.nwuer.entity.Major;
 import com.nwuer.entity.StudentRegister;
 import com.nwuer.entity.Subject;
 import com.nwuer.entity.SubjectiveQuestion;
+import com.nwuer.entity.SubjectiveQuestionTest;
 import com.nwuer.entity.Teacher;
 import com.nwuer.service.AcademyService;
 import com.nwuer.service.AdminService;
 import com.nwuer.service.ChoiceQuestionService;
+import com.nwuer.service.ChoiceQuestionTestService;
 import com.nwuer.service.GuardianShipService;
 import com.nwuer.service.JudgeQuestionService;
+import com.nwuer.service.JudgeQuestionTestService;
 import com.nwuer.service.MajorService;
 import com.nwuer.service.StudentRegisterService;
 import com.nwuer.service.StudentService;
 import com.nwuer.service.SubjectService;
 import com.nwuer.service.SubjectiveQuestionService;
+import com.nwuer.service.SubjectiveQuestionTestService;
 import com.nwuer.service.TeacherService;
 import com.nwuer.utils.Crpty;
 import com.nwuer.utils.ValidateUtil;
@@ -82,6 +88,12 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	private JudgeQuestionService judgeQuestionService;
 	@Autowired
 	private SubjectiveQuestionService subjectiveQuestionService;
+	@Autowired
+	private ChoiceQuestionTestService choiceQuestionTestService;
+	@Autowired
+	private JudgeQuestionTestService judgeQuestionTestService;
+	@Autowired
+	private SubjectiveQuestionTestService subjectiveQuestionTestService;
 	@Autowired
 	private StudentRegisterService studentRegisterService;
 	@Autowired
@@ -341,6 +353,48 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		return "erroro";
 		
 	}
+	/**
+	 * 导入练习题库
+	 * @return
+	 */
+	public String importQuestionTestBank() {
+		//检查数据
+		
+		//开始导入
+		info = "";
+		switch (kind) {
+		case 0 :
+			//选择题
+			info = importChoiceQuestionTest();
+			if(info == null) {
+				//导入成功
+				return SUCCESS;
+			}
+			break;
+		case 1 :
+			//判断题
+			info = importJudgeQuestionTest();
+			if(info == null) {
+				//导入成功
+				return SUCCESS;
+			}
+			break;
+		case 2 :
+			//主观题
+			info = importSubjectiveQuestionTest();
+			if(info == null) {
+				//导入成功
+				return SUCCESS;
+			}
+			break;
+		}
+		
+		//到这里说明导入失败
+		info = "系统错误,请稍后重试";
+		ServletActionContext.getRequest().setAttribute("info", info);
+		return "erroro";
+		
+	}
 	
 	/**
 	 * 导入选择题
@@ -502,6 +556,165 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	}
 	
 	/**
+	 * 导入练习选择题
+	 * @return 成功返回null,否则返回错误信息
+	 */
+	public String importChoiceQuestionTest() {
+		//添加也得清空
+		//先清空选择题库,先判断选择题库是否有数据
+		if(this.choiceQuestionTestService.hasData()) {
+			this.choiceQuestionTestService.clear();
+			if(this.choiceQuestionTestService.hasData()) {
+				//没有清空表
+				info = "历史选择题库数据无法清空!请稍后再试" ;
+				return info;
+			}
+		}
+		//开始导入
+		FileInputStream excel = null;
+		Workbook wb =  null;
+		HttpServletRequest req = ServletActionContext.getRequest();
+		try {
+			//得到Excel文件
+			excel = new FileInputStream(file_upload);
+			//获取工作簿对象
+			wb = Workbook.getWorkbook(excel);//只读
+			//开始对excel数据进行操作(行,列)
+			Sheet sheet = wb.getSheet(0);
+			//首先要得到有多少行
+			int rows = 0;
+			int rowsAll = sheet.getRows();
+			for(int i=0; i<rowsAll; i++) {
+				Cell cell = sheet.getCell(0,i);
+				if(cell.getContents().trim().equals("")) {
+					rows = i;
+					break;
+				}
+			}
+			rows = rows == 0 ? rowsAll : rows; //如果有多余空行就等于实际行,否则等于总行
+			for(int j=1; j<rows; j++) {
+				ChoiceQuestionTest choiceQuestionTest = new ChoiceQuestionTest();
+				 //处理题目
+				Cell questionCell = sheet.getCell(0, j);
+				String question = questionCell.getContents();
+				if(question.trim().equals("")) {
+					//不对
+					info =  "第" + j + "行题目不能为空" ;
+					return info;
+				}
+				
+				//处理正确选项
+				Cell answerCell = sheet.getCell(1,j);
+				String answer = answerCell.getContents();
+				if(answer.trim().equals("")) {
+					//不对
+					info = "第" + j + "行正确选项不能为空";
+					return info;
+				}
+
+				//处理其他选项1
+				Cell other1Cell = sheet.getCell(2,j);
+				String other1 = other1Cell.getContents();
+				if(other1.trim().equals("")) {
+					//不对
+					info = "第" + j + "行其他选项1不能为空";
+					return info;
+				}
+				
+				//处理其他选项2
+				Cell other2Cell = sheet.getCell(3,j);
+				String other2 = other2Cell.getContents();
+				if(other2.trim().equals("")) {
+					//不对
+					info = "第" + j + "行其他选项2填写错误";
+					return info;
+				}
+				
+				//处理其他选项3
+				Cell other3Cell = sheet.getCell(4,j);
+				String other3 = other3Cell.getContents();
+				if(other3.trim().equals("")) {
+					info = "第" + j + "行其他选项3填写错误";
+					return info;
+				}
+				
+				//处理难易程度
+				Cell degreeCell = sheet.getCell(5,j);
+				String degree = degreeCell.getContents();
+				if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2")) {
+					//不对
+					info = "第" + j + "行难易程度填写错误";
+					return info;
+				}
+				byte deg = Byte.parseByte(degree);
+				
+				//处理专业
+				Cell majorCell = sheet.getCell(6,j);
+				String major = majorCell.getContents();
+				int m_id = 0;
+				if(major.trim().equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
+					
+					info = "第" + j + "行专业填写错误";
+					return info;
+				}
+				
+				//处理科目
+				Cell subjectCell = sheet.getCell(7,j);
+				String sub = subjectCell.getContents();
+				int sub_id = 0;
+				if(sub.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
+					
+					info = "第" + j + "行科目填写错误";
+					return info;
+				}
+				
+				//验证通过
+				Major m = new Major();
+				m.setM_id(m_id);
+				Subject s = new Subject();
+				s.setSub_id(sub_id);
+				choiceQuestionTest.setCho_question(question);
+				choiceQuestionTest.setCho_answer(answer);
+				choiceQuestionTest.setCho_choice_1(other1);
+				choiceQuestionTest.setCho_choice_2(other2);
+				choiceQuestionTest.setCho_choice_3(other3);
+				choiceQuestionTest.setDegree(deg);
+				choiceQuestionTest.setMajor(m);
+				choiceQuestionTest.setSubject(s);
+				
+				int id = this.choiceQuestionTestService.add(choiceQuestionTest);
+				if(id <= 0) {
+					//添加失败
+					info = "第" + j + "个题目添加失败,请重试";
+					return info;
+				}
+			}
+			
+			//添加完成
+			return null;
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (BiffException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+				try {
+					if(excel != null)
+						excel.close();
+					if(wb != null)
+						wb.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
+		return "系统错误,请稍后再试!";
+	}
+	
+	/**
 	 * 导入判断题
 	 * 题目	答案	难度 专业	所属科目
 	 * @return 成功返回null,否则返回错误信息
@@ -603,6 +816,140 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						judgeQuestion.setSubject(s);
 						
 						int id = this.judgeQuestionService.add(judgeQuestion);
+						if(id <= 0) {
+							//添加失败
+							info = "第" + j + "个题目添加失败,请重试";
+							return info;
+						}
+					}
+					
+					//添加完成
+					return null;
+					
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (BiffException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}finally {
+						try {
+							if(excel != null)
+								excel.close();
+							if(wb != null)
+								wb.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+				}
+				return "系统错误,请稍后再试!";
+	}
+	
+	
+	/**
+	 * 导入练习判断题
+	 * 题目	答案	难度 专业	所属科目
+	 * @return 成功返回null,否则返回错误信息
+	 */
+	public String importJudgeQuestionTest() {
+		//添加也得清空
+				String info = "";
+				//先清空判断题,先判断判断题是否有数据
+						if(this.judgeQuestionTestService.hasData()) {
+							this.judgeQuestionTestService.clear();
+							if(this.judgeQuestionTestService.hasData()) {
+								//没有清空表
+								info = "历史判断题数据无法清空!请稍后再试" ;
+								return info;
+							}
+						}
+				//开始导入
+				FileInputStream excel = null;
+				Workbook wb =  null;
+				HttpServletRequest req = ServletActionContext.getRequest();
+				try {
+					//得到Excel文件
+					excel = new FileInputStream(file_upload);
+					//获取工作簿对象
+					wb = Workbook.getWorkbook(excel);//只读
+					//开始对excel数据进行操作(行,列)
+					Sheet sheet = wb.getSheet(0);
+					//首先要得到有多少行
+					int rows = 0;
+					int rowsAll = sheet.getRows();
+					for(int i=0; i<rowsAll; i++) {
+						Cell cell = sheet.getCell(0,i);
+						if(cell.getContents().trim().equals("")) {
+							rows = i;
+							break;
+						}
+					}
+					rows = rows == 0 ? rowsAll : rows; //如果有多余空行就等于实际行,否则等于总行
+					for(int j=1; j<rows; j++) {
+						JudgeQuestionTest judgeQuestionTest = new JudgeQuestionTest();
+						 //处理题目
+						Cell questionCell = sheet.getCell(0, j);
+						String question = questionCell.getContents();
+						if(question.trim().equals("")) {
+							//不对
+							info =  "第" + j + "行题目不能为空" ;
+							return info;
+						}
+						
+						//处理答案 0 , 1
+						Cell answerCell = sheet.getCell(1,j);
+						String answer = answerCell.getContents();
+						if(!answer.trim().equals("T") && !answer.trim().equals("F")) {
+							//不对
+							info = "第" + j + "行答案格式错误";
+							return info;
+						}
+						byte sub_answer = (byte) (answer.equals("T") ? 1 : 0);
+						
+						//处理难易程度
+						Cell degreeCell = sheet.getCell(2,j);
+						String degree = degreeCell.getContents();
+						if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2")) {
+							//不对
+							info = "第" + j + "行难易程度填写错误";
+							return info;
+						}
+						byte deg = Byte.parseByte(degree);
+						
+						//处理专业
+						Cell majorCell = sheet.getCell(3,j);
+						String major = majorCell.getContents();
+						int m_id = 0;
+						if(major.trim().equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
+							
+							info = "第" + j + "行专业填写错误";
+							return info;
+						}
+						
+						//处理科目
+						Cell subjectCell = sheet.getCell(4,j);
+						String sub = subjectCell.getContents();
+						int sub_id = 0;
+						if(sub.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
+							
+							info = "第" + j + "行科目填写错误";
+							return info;
+						}
+						
+						//验证通过
+						Major m = new Major();
+						m.setM_id(m_id);
+						Subject s = new Subject();
+						s.setSub_id(sub_id);
+						judgeQuestionTest.setJud_question(question);
+						judgeQuestionTest.setJud_answer(sub_answer);
+						judgeQuestionTest.setDegree(deg);
+						judgeQuestionTest.setMajor(m);
+						judgeQuestionTest.setSubject(s);
+						
+						int id = this.judgeQuestionTestService.add(judgeQuestionTest);
 						if(id <= 0) {
 							//添加失败
 							info = "第" + j + "个题目添加失败,请重试";
@@ -773,6 +1120,149 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		return "系统错误,请稍后再试!";
 	}
 	
+	/**
+	 * 练习主观题导入
+	 * 成功返回null,否则返回错误信息
+	 * @return
+	 */
+	public String importSubjectiveQuestionTest() {
+		//添加也得清空
+		String info = "";
+		//先清空判断题,先判断判断题是否有数据
+				if(this.subjectiveQuestionTestService.hasData()) {
+					this.subjectiveQuestionTestService.clear();
+					if(this.subjectiveQuestionTestService.hasData()) {
+						//没有清空表
+						info = "历史主观题数据无法清空!请稍后再试" ;
+						return info;
+					}
+				}
+		//开始导入
+		FileInputStream excel = null;
+		Workbook wb =  null;
+		HttpServletRequest req = ServletActionContext.getRequest();
+		try {
+			//得到Excel文件
+			excel = new FileInputStream(file_upload);
+			//获取工作簿对象
+			wb = Workbook.getWorkbook(excel);//只读
+			//开始对excel数据进行操作(行,列)
+			Sheet sheet = wb.getSheet(0);
+			//首先要得到有多少行
+			int rows = 0;
+			int rowsAll = sheet.getRows();
+			for(int i=0; i<rowsAll; i++) {
+				Cell cell = sheet.getCell(0,i);
+				if(cell.getContents().trim().equals("")) {
+					rows = i;
+					break;
+				}
+			}
+			rows = rows == 0 ? rowsAll : rows; //如果有多余空行就等于实际行,否则等于总行
+			for(int j=1; j<rows; j++) {
+				SubjectiveQuestionTest subjectiveQuestionTest = new SubjectiveQuestionTest();
+				 //处理题目
+				Cell questionCell = sheet.getCell(0, j);
+				String question = questionCell.getContents();
+				if(question.trim().equals("")) {
+					//不对
+					info =  "第" + j + "行题目不能为空" ;
+					return info;
+				}
+				
+				//处理答案
+				Cell answerCell = sheet.getCell(1,j);
+				String answer = answerCell.getContents();
+				if(answer.trim().equals("")) {
+					//不对
+					info = "第" + j + "行答案不能为空";
+					return info;
+				}
+				
+				//处理难易程度
+				Cell degreeCell = sheet.getCell(2,j);
+				String degree = degreeCell.getContents();
+				if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2")) {
+					//不对
+					info = "第" + j + "行难易程度填写错误";
+					return info;
+				}
+				byte deg = Byte.parseByte(degree);
+				
+				//处理类型
+				Cell questionKindCell = sheet.getCell(2,j);
+				String qKind = questionKindCell.getContents();
+				if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2") && !degree.trim().equals("3") && !degree.trim().equals("4")) {
+					//不对
+					info = "第" + j + "行主观题类型填写错误";
+					return info;
+				}
+				byte sq_kind = Byte.parseByte(qKind);
+				
+				//处理专业
+				Cell majorCell = sheet.getCell(4,j);
+				String major = majorCell.getContents();
+				int m_id = 0;
+				if(major.trim().equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
+					
+					info = "第" + j + "行专业填写错误";
+					return info;
+				}
+				
+				//处理科目
+				Cell subjectCell = sheet.getCell(5,j);
+				String sub = subjectCell.getContents();
+				int sub_id = 0;
+				if(sub.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
+					
+					info = "第" + j + "行科目填写错误";
+					return info;
+				}
+				
+				//验证通过
+				subjectiveQuestionTest.setSq_question(question);
+				subjectiveQuestionTest.setSq_answer(answer);
+				subjectiveQuestionTest.setDegree(deg);
+				subjectiveQuestionTest.setSq_kind(sq_kind);
+				subjectiveQuestionTest.getMajor().setM_id(m_id);
+				subjectiveQuestionTest.getSubject().setSub_id(sub_id);
+				
+				int id = this.subjectiveQuestionTestService.add(subjectiveQuestionTest);
+				if(id <= 0) {
+					//添加失败
+					info = "第" + j + "个题目添加失败,请重试";
+					return info;
+				}
+			}
+			
+			//添加完成
+			return null;
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (BiffException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+				try {
+					if(excel != null)
+						excel.close();
+					if(wb != null)
+						wb.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+		}
+		return "系统错误,请稍后再试!";
+	}
+	
+	/**
+	 * 导出练习题库
+	 * @return
+	 */
 	public String downloadQuestionBank() {
 		//开始导出
 		switch (kind) {
@@ -793,7 +1283,34 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		//到这里说明导出失败
 		return NONE;
 	}
+	/**
+	 * 导出题库
+	 * @return
+	 */
+	public String downloadQuestionTestBank() {
+		//开始导出
+		switch (kind) {
+		case 0 :
+			//选择题
+			exportChoiceQuestionTest();
+			break;
+		case 1 :
+			//判断题
+			exportJudgeQuestionTest();
+			break;
+		case 2 :
+			//主观题
+			exportSubjectiveQuestionTest();
+			break;
+		}
+		
+		//到这里说明导出失败
+		return NONE;
+	}
 	
+	/**
+	 * 导出选择题题库
+	 */
 	public void exportChoiceQuestion() {
 		//开始写入
 		ServletOutputStream sos = null;
@@ -897,6 +1414,116 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		}
 	}
 	
+	/**
+	 * 导出练习选择题题库
+	 */
+	public void exportChoiceQuestionTest() {
+		//开始写入
+		ServletOutputStream sos = null;
+		WritableWorkbook wwk = null;
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType("application/octet-stream");
+		String name = "练习选择题题库.xls";
+		try {
+			name = new String(name.getBytes("UTF-8"),"ISO-8859-1");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		response.setHeader("Content-Disposition","attachment;fileName=" + name);
+		try {
+			sos = response.getOutputStream();
+			//创建一个可以写的工作簿
+			wwk = Workbook.createWorkbook(sos);
+			//创建可写入的工作表
+			WritableSheet sheet = wwk.createSheet("练习选择题题库", 0);
+			sheet.setColumnView(0, 100);//根据内容自动设置列宽
+			sheet.setColumnView(1, 50);//根据内容自动设置列宽
+			sheet.setColumnView(2, 50);//根据内容自动设置列宽
+			sheet.setColumnView(3, 50);//根据内容自动设置列宽
+			sheet.setColumnView(4, 50);
+			sheet.setColumnView(5, 15);
+			sheet.setColumnView(6, 20);
+			sheet.setColumnView(7, 20);
+			//先创建表头    列 行
+			Label lab_00 = new Label(0, 0, "题目");
+			Label lab_10 = new Label(1, 0, "答案项");
+			Label lab_20 = new Label(2, 0, "其他选项1");
+			Label lab_30 = new Label(3, 0, "其他选项2");
+			Label lab_40 = new Label(4, 0, "其他选项3");
+			Label lab_50 = new Label(5, 0, "难易程度");
+			Label lab_60 = new Label(6, 0, "专业");
+			Label lab_70 = new Label(7, 0, "科目");
+			
+			sheet.addCell(lab_00);
+			sheet.addCell(lab_10);
+			sheet.addCell(lab_20);
+			sheet.addCell(lab_30);
+			sheet.addCell(lab_40);
+			sheet.addCell(lab_50);
+			sheet.addCell(lab_60);
+			sheet.addCell(lab_70);
+			//开始写入表内容
+			List<ChoiceQuestionTest> list = this.choiceQuestionTestService.getAll();
+			ChoiceQuestionTest choiceQTest = null;
+			for(int i=1; i<=list.size(); i++) {
+				 choiceQTest = list.get(i-1);
+				Label lab_0 = new Label(0, i, choiceQTest.getCho_question());
+				Label lab_1 = new Label(1, i, choiceQTest.getCho_answer());
+				Label lab_2 = new Label(2, i, choiceQTest.getCho_choice_1());
+				Label lab_3 = new Label(3, i, choiceQTest.getCho_choice_2());
+				Label lab_4 = new Label(4, i, choiceQTest.getCho_choice_3());
+				Label lab_5 = new Label(5, i, String.valueOf(choiceQTest.getDegree()));
+				Label lab_6 = new Label(6, i, choiceQTest.getMajor().getM_name());
+				Label lab_7 = new Label(7, i, choiceQTest.getSubject().getSub_name());
+				
+				sheet.addCell(lab_0);
+				sheet.addCell(lab_1);
+				sheet.addCell(lab_2);
+				sheet.addCell(lab_3);
+				sheet.addCell(lab_4);
+				sheet.addCell(lab_5);
+				sheet.addCell(lab_6);
+				sheet.addCell(lab_7);
+				
+			}
+			
+			//添加完成
+			wwk.write();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (RowsExceededException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (WriteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+				try {
+					if(wwk != null)
+						wwk.close();
+					if(sos != null) {
+						response.setHeader("Content-Disposition","attachment;fileName=导出选择题出错");
+						sos.close();
+						sos.flush();
+					}
+						
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (WriteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+	}
+	
+	
+	/**
+	 * 导出判断题题库
+	 */
 	public void exportJudgeQuestion() {
 		//开始写入
 				ServletOutputStream sos = null;
@@ -985,6 +1612,101 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				}
 	}
 	
+	/**
+	 * 导出练习判断题题库
+	 */
+	public void exportJudgeQuestionTest() {
+		//开始写入
+				ServletOutputStream sos = null;
+				WritableWorkbook wwk = null;
+				HttpServletResponse response = ServletActionContext.getResponse();
+				response.setContentType("application/octet-stream");
+				String name = "练习判断题题库.xls";
+				try {
+					name = new String(name.getBytes("UTF-8"),"ISO-8859-1");
+				} catch (UnsupportedEncodingException e1) {
+					e1.printStackTrace();
+				}
+				response.setHeader("Content-Disposition","attachment;fileName=" + name);
+				try {
+					sos = response.getOutputStream();
+					//创建一个可以写的工作簿
+					wwk = Workbook.createWorkbook(sos);
+					//创建可写入的工作表
+					WritableSheet sheet = wwk.createSheet("练习判断题题库", 0);
+					sheet.setColumnView(0, 100);//根据内容自动设置列宽
+					sheet.setColumnView(1, 15);//根据内容自动设置列宽
+					sheet.setColumnView(2, 15);//根据内容自动设置列宽
+					sheet.setColumnView(3, 20);//根据内容自动设置列宽
+					sheet.setColumnView(4, 20);
+					//先创建表头    列 行
+					Label lab_00 = new Label(0, 0, "题目");
+					Label lab_10 = new Label(1, 0, "答案项");
+					Label lab_20 = new Label(2, 0, "难易程度");
+					Label lab_30 = new Label(3, 0, "专业");
+					Label lab_40 = new Label(4, 0, "科目");
+					
+					sheet.addCell(lab_00);
+					sheet.addCell(lab_10);
+					sheet.addCell(lab_20);
+					sheet.addCell(lab_30);
+					sheet.addCell(lab_40);
+					//开始写入表内容
+					List<JudgeQuestionTest> list = this.judgeQuestionTestService.getAll();
+					JudgeQuestionTest judgeQTest = null;
+					for(int i=1; i<=list.size(); i++) {
+						judgeQTest = list.get(i-1);
+						Label lab_0 = new Label(0, i, judgeQTest.getJud_question());
+						Label lab_1 = new Label(1, i, judgeQTest.getJud_answer() == 0 ? "F" : "T");
+						Label lab_2 = new Label(2, i, String.valueOf(judgeQTest.getDegree()));
+						Label lab_3 = new Label(3, i, judgeQTest.getMajor().getM_name());
+						Label lab_4 = new Label(4, i, judgeQTest.getSubject().getSub_name());
+						
+						sheet.addCell(lab_0);
+						sheet.addCell(lab_1);
+						sheet.addCell(lab_2);
+						sheet.addCell(lab_3);
+						sheet.addCell(lab_4);
+						
+					}
+					
+					//添加完成
+					wwk.write();
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}catch (RowsExceededException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (WriteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}finally {
+						try {
+							if(wwk != null)
+								wwk.close();
+							if(sos != null) {
+								response.setHeader("Content-Disposition","attachment;fileName=导出判断题出错");
+								sos.close();
+								sos.flush();
+							}
+								
+							
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (WriteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				}
+	}
+	
+	
+	/**
+	 * 导出主观题题库
+	 */
 	public void exportSubjectiveQuestion(){
 		//开始写入
 		ServletOutputStream sos = null;
@@ -1035,6 +1757,102 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				Label lab_3 = new Label(3, i, String.valueOf(subjectiveQ.getSq_kind()));
 				Label lab_4 = new Label(4, i, subjectiveQ.getMajor().getM_name());
 				Label lab_5 = new Label(5, i, subjectiveQ.getSubject().getSub_name());
+				
+				sheet.addCell(lab_0);
+				sheet.addCell(lab_1);
+				sheet.addCell(lab_2);
+				sheet.addCell(lab_3);
+				sheet.addCell(lab_4);
+				sheet.addCell(lab_5);
+				
+			}
+			
+			//添加完成
+			wwk.write();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (RowsExceededException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (WriteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+				try {
+					if(wwk != null)
+						wwk.close();
+					if(sos != null) {
+						response.setHeader("Content-Disposition","attachment;fileName=导入主观题出错");
+						sos.close();
+						sos.flush();
+					}
+						
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (WriteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+	}
+	
+	/**
+	 * 导出练习主观题题库
+	 */
+	public void exportSubjectiveQuestionTest(){
+		//开始写入
+		ServletOutputStream sos = null;
+		WritableWorkbook wwk = null;
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType("application/octet-stream");
+		String name = "练习主观题题库.xls";
+		try {
+			name = new String(name.getBytes("UTF-8"),"ISO-8859-1");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+		}
+		response.setHeader("Content-Disposition","attachment;fileName=" + name);
+		try {
+			sos = response.getOutputStream();
+			//创建一个可以写的工作簿
+			wwk = Workbook.createWorkbook(sos);
+			//创建可写入的工作表
+			WritableSheet sheet = wwk.createSheet("练习主观题题库", 0);
+			sheet.setColumnView(0, 100);//根据内容自动设置列宽
+			sheet.setColumnView(1, 100);//根据内容自动设置列宽
+			sheet.setColumnView(2, 15);//根据内容自动设置列宽
+			sheet.setColumnView(3, 15);//根据内容自动设置列宽
+			sheet.setColumnView(4, 20);
+			sheet.setColumnView(5, 20);
+			//先创建表头    列 行
+			Label lab_00 = new Label(0, 0, "题目内容");
+			Label lab_10 = new Label(1, 0, "参考答案");
+			Label lab_20 = new Label(2, 0, "难易程度");
+			Label lab_30 = new Label(3, 0, "主观题类型");
+			Label lab_40 = new Label(4, 0, "专业");
+			Label lab_50 = new Label(5, 0, "科目");
+			
+			sheet.addCell(lab_00);
+			sheet.addCell(lab_10);
+			sheet.addCell(lab_20);
+			sheet.addCell(lab_30);
+			sheet.addCell(lab_40);
+			sheet.addCell(lab_50);
+			//开始写入表内容
+			List<SubjectiveQuestionTest> list = this.subjectiveQuestionTestService.getAll();
+			SubjectiveQuestionTest subjectiveQTest = null;
+			for(int i=1; i<=list.size(); i++) {
+				subjectiveQTest = list.get(i-1);
+				Label lab_0 = new Label(0, i, subjectiveQTest.getSq_question());
+				Label lab_1 = new Label(1, i, subjectiveQTest.getSq_answer());
+				Label lab_2 = new Label(2, i, String.valueOf(subjectiveQTest.getDegree()));
+				Label lab_3 = new Label(3, i, String.valueOf(subjectiveQTest.getSq_kind()));
+				Label lab_4 = new Label(4, i, subjectiveQTest.getMajor().getM_name());
+				Label lab_5 = new Label(5, i, subjectiveQTest.getSubject().getSub_name());
 				
 				sheet.addCell(lab_0);
 				sheet.addCell(lab_1);
@@ -1361,7 +2179,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				}
 		}
 		
-		return "系统错误,请添加情况后重试";
+		return "系统错误,请重试";
 	}
 }
 
