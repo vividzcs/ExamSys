@@ -10,8 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -48,7 +48,15 @@ public class StudentRegister {
 	@JoinColumn(name="examhistory_stu_reg")
 	private ExamHistory examHistory;
 	private String paper;  //直接存纸卷的uuid
+	@Transient
+	private GuardianShip guardianShip;
 	
+	public GuardianShip getGuardianShip() {
+		return guardianShip;
+	}
+	public void setGuardianShip(GuardianShip guardianShip) {
+		this.guardianShip = guardianShip;
+	}
 	public int getSr_id() {
 		return sr_id;
 	}

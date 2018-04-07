@@ -34,4 +34,12 @@ public class GuardianShipDaoImpl extends BaseDaoImpl<GuardianShip> {
 		else
 			return 0;
 	}
+	
+	public GuardianShip getGuardByMajorAndSubject(int m_id,int sub_id) {
+		int id = this.getByMajorAndSubject(m_id, sub_id);
+		if(id!=0) {
+			return this.getByIdEager(id);
+		}else
+			return null;
+	}
 }

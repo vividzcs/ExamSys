@@ -8,10 +8,10 @@
     <title>学生考试系统</title>
     <meta name="keywords" content="学生考试系统，专为学生打造在校考试功能">
     <meta name="description" content="大学生在线考试系统，学生在网络上在线填写试卷">
-    <!--<link href="../../../../style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">-->
-    <link href="../../../style/css/main.css" rel="stylesheet" type="text/css" />
-    <link href="../../../style/css/iconfont.css" rel="stylesheet" type="text/css" />
-    <link href="../../../style/css/test.css" rel="stylesheet" type="text/css" />
+    <!--<link href="../../../style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">-->
+    <link href="../../style/css/main.css" rel="stylesheet" type="text/css" />
+    <link href="../../style/css/iconfont.css" rel="stylesheet" type="text/css" />
+    <link href="../../style/css/test.css" rel="stylesheet" type="text/css" />
     <style>
     	.problem{
     		cursor: pointer;
@@ -556,10 +556,10 @@
 	</div>
    </div>
  
-<script src="../../../style/js/jquery-1.11.3.min.js"></script>
-<script src="../../../style/js/jquery.easy-pie-chart.js"></script>
+<script src="../../style/js/jquery-1.11.3.min.js"></script>
+<script src="../../style/js/jquery.easy-pie-chart.js"></script>
 <!--时间js-->
-<script src="../../../style/js/jquery.countdown.js"></script>
+<script src="../../style/js/jquery.countdown.js"></script>
 <script type="text/javascript">
 function getData() {
         //jq发ajax
@@ -638,7 +638,6 @@ function getData() {
 
 
 	});
-	
 	
 </script>
 

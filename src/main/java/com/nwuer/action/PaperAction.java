@@ -83,6 +83,22 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 		ServletActionContext.getRequest().setAttribute("list", list);
 		return "showAdd";
 	}
+	/**
+	 * 得到考试结束时间
+	 */
+	public String getEndTime() {
+		String p_id = ServletActionContext.getRequest().getParameter("p_id");
+		info = this.validateUtil.isNumber(p_id);
+		if(info!=null) {
+			this.result.put("endTime", System.currentTimeMillis()+7200000);
+			return "end";
+		}
+		long time = this.paperRuleService.getByIdEager(Integer.parseInt(p_id)).getEnd_time();
+		this.result.put("endTime", time);
+		return "end";
+	}
+	
+	
 	
 	/**
 	 * 生成试卷
@@ -116,46 +132,84 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 		return SUCCESS;
 	}
 	
+	/**
+	 * 生成练习试卷
+	 * @param num 练习试卷数目
+	 */
 	public void generatePracticePaper(int num) {
 		rule = paperRuleService.getByIdEager(paper.getP_id());
-		List<StudentRegister> studentRegisterList = this.studentRegisterService.getAll(); 
-		int s_num = studentRegisterList.size(); //注册学生人数
-		int other = num-s_num;  //多余的试卷
+		Paper p = null;
+		String sub_name = rule.getSubject().getSub_name();
 		for(int i=0; i<num; i++) {
-			
+			String uuid = null;
+			objectiveAnswer = new ObjectiveAnswer();
+			z_answer = new ArrayList<SubjectiveAnswer>();
 			//先插入试卷,获取uuid,然后将uuid作为试卷名
-			Paper p = new Paper();
+			p = new Paper();
 			p.setP_id(this.paper.getP_id());
-			String uuid = this.paperService.add(p);
+			int g_id = this.guardianShipService.getByMajorAndSubject(rule.getMajor().getM_id(), rule.getSubject().getSub_id());
+			p.setG_id(g_id);
+			p.setPap_kind(new Byte(1+""));
+			uuid = this.paperService.add(p);
+			p.setPap_id(uuid);
+			p.setCreate_time(System.currentTimeMillis());
 //				System.out.println(uuid);
 			//根据试卷生成规则挑选数据    在生成试卷时还要生成答案
 			//简单:  80% 简单 10%中 10%难
 			//中等:  60% 简单 20%中 20%难
 			//难   :  40%简单  30%中 30%难
 			
-			//不用挑,生成试卷,所有人都可以练习,不用与学生注册表关联
+			//不用挑学生,生成试卷
 			
 			//加选择题
 			generateChoiceQuestion();
 			//加判断题
 			generateJudgeQuestion();
 			//加名词解释题  0:名词解释,1:填空,2:简答,3:计算,4:综合
-			generateSubjectiveQuestion(rule.getTranslate_num(),new Byte("0"));
+			generateSubjectiveQuestion(rule.getTranslate_num(),new Byte("0"),"tPaperList");
 			//加填空题
-			generateSubjectiveQuestion(rule.getBlank_num(),new Byte("1"));
+			generateSubjectiveQuestion(rule.getBlank_num(),new Byte("1"),"bPaperList");
 			//加简答题
-			generateSubjectiveQuestion(rule.getSimple_question_num(),new Byte("2"));
+			generateSubjectiveQuestion(rule.getSimple_question_num(),new Byte("2"),"simPaperList");
 			//加计算题
-			generateSubjectiveQuestion(rule.getCompute_num(),new Byte("3"));
+			generateSubjectiveQuestion(rule.getCompute_num(),new Byte("3"),"comPaperList");
 			//加综合题
-			generateSubjectiveQuestion(rule.getMix_num(),new Byte("4"));
+			generateSubjectiveQuestion(rule.getMix_num(),new Byte("4"),"mPaperList");
+			
+			//处理答案
+			//处理客观题答案
+			objectiveAnswer.setAnswer_right(k_answer.toString());
+			objectiveAnswer.setUuid(uuid);
+			for(int k=0;k<z_answer.size();k++) {
+				SubjectiveAnswer s = z_answer.get(k);
+				s.setUuid(uuid);
+			}
+				
+			
+			data.put("paper", p);
+			data.put("rule", rule);
+			data.put("subject",sub_name );
+			data.put("contextPath", ServletActionContext.getRequest().getContextPath()+"/student");
+			String paperPath = this.freemarkerUtil.makePracticePaper(data, uuid);
+			p.setPap_url(paperPath);
+			this.objectiveAnswerService.add(objectiveAnswer);
+			if(z_answer != null) {
+				for(int k=0;k<z_answer.size();k++) {
+					this.SubjectiveAnswerService.add(z_answer.get(k));
+				}
+				//答案添加完毕
+			}
 			
 			
-			this.freemarkerUtil.makePaper(data, uuid);
 			
-		}
+			 //END//一张卷子添加完毕
+		} 
 	}
 	
+	/**
+	 * 生成考试试卷
+	 * @param num 考试试卷数目
+	 */
 	public void generateExamPaper(int num) {
 		rule = paperRuleService.getByIdEager(paper.getP_id());
 		List<StudentRegister> studentRegisterList = this.studentRegisterService.getAll(); 
@@ -192,15 +246,15 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 				//加判断题
 				generateJudgeQuestion();
 				//加名词解释题  0:名词解释,1:填空,2:简答,3:计算,4:综合
-				generateSubjectiveQuestion(rule.getTranslate_num(),new Byte("0"));
+				generateSubjectiveQuestion(rule.getTranslate_num(),new Byte("0"),"tPaperList");
 				//加填空题
-				generateSubjectiveQuestion(rule.getBlank_num(),new Byte("1"));
+				generateSubjectiveQuestion(rule.getBlank_num(),new Byte("1"),"bPaperList");
 				//加简答题
-				generateSubjectiveQuestion(rule.getSimple_question_num(),new Byte("2"));
+				generateSubjectiveQuestion(rule.getSimple_question_num(),new Byte("2"),"simPaperList");
 				//加计算题
-				generateSubjectiveQuestion(rule.getCompute_num(),new Byte("3"));
+				generateSubjectiveQuestion(rule.getCompute_num(),new Byte("3"),"comPaperList");
 				//加综合题
-				generateSubjectiveQuestion(rule.getMix_num(),new Byte("4"));
+				generateSubjectiveQuestion(rule.getMix_num(),new Byte("4"),"mPaperList");
 				
 				//处理答案
 				//处理客观题答案
@@ -237,15 +291,15 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 				//加判断题
 				generateJudgeQuestion();
 				//加名词解释题  0:名词解释,1:填空,2:简答,3:计算,4:综合
-				generateSubjectiveQuestion(rule.getTranslate_num(),new Byte("0"));
+				generateSubjectiveQuestion(rule.getTranslate_num(),new Byte("0"),"tPaperList");
 				//加填空题
-				generateSubjectiveQuestion(rule.getBlank_num(),new Byte("1"));
+				generateSubjectiveQuestion(rule.getBlank_num(),new Byte("1"),"bPaperList");
 				//加简答题
-				generateSubjectiveQuestion(rule.getSimple_question_num(),new Byte("2"));
+				generateSubjectiveQuestion(rule.getSimple_question_num(),new Byte("2"),"simPaperList");
 				//加计算题
-				generateSubjectiveQuestion(rule.getCompute_num(),new Byte("3"));
+				generateSubjectiveQuestion(rule.getCompute_num(),new Byte("3"),"comPaperList");
 				//加综合题
-				generateSubjectiveQuestion(rule.getMix_num(),new Byte("4"));
+				generateSubjectiveQuestion(rule.getMix_num(),new Byte("4"),"mPaperList");
 				
 				//处理答案
 				//处理客观题答案
@@ -259,14 +313,19 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			}
 			
 			data.put("paper", p);
+			data.put("rule", rule);
 			data.put("subject",sub_name );
+			data.put("contextPath", ServletActionContext.getRequest().getContextPath()+"/student");
 			String paperPath = this.freemarkerUtil.makePaper(data, uuid);
 			p.setPap_url(paperPath);
 			this.objectiveAnswerService.add(objectiveAnswer);
-			for(int k=0;k<z_answer.size();k++) {
-				this.SubjectiveAnswerService.add(z_answer.get(k));
+			if(z_answer != null) {
+				for(int k=0;k<z_answer.size();k++) {
+					this.SubjectiveAnswerService.add(z_answer.get(k));
+				}
+				//答案添加完毕
 			}
-			//答案添加完毕
+			
 			
 			
 			 //END//一张卷子添加完毕
@@ -457,7 +516,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 		}
 	}
 
-	public void generateSubjectiveQuestion(int subjective_num,byte kind) {
+	public void generateSubjectiveQuestion(int subjective_num,byte kind,String name) {
 		//加名词解释
 		if(subjective_num != 0) {
 			//挑选名词解释
@@ -506,6 +565,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 					//加答案
 					subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
 					subjectiveAnswer.setSequence(count);
+					z_answer.add(subjectiveAnswer);
 					count++;
 					simpleCount--;
 					
@@ -517,6 +577,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 					//加答案
 					subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
 					subjectiveAnswer.setSequence(count);
+					z_answer.add(subjectiveAnswer);
 					count++;
 					middleCount--;
 					
@@ -528,19 +589,16 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 					//加答案
 					subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
 					subjectiveAnswer.setSequence(count);
+					z_answer.add(subjectiveAnswer);
 					count++;
 					highCount--;
 					
-				}
-				//否则已经挑选完成
-				break;
+				}else if(simpleCount==0 && middleCount==0 && highCount==0 )
+					break;//否则已经挑选完成
 				
 			}
 			//将选择题添加进数据集里
-			data.put("jPaperList", sPaperList);
-			z_answer = new ArrayList<SubjectiveAnswer>();
-			z_answer.add(subjectiveAnswer);
-			
+			data.put(name, sPaperList);
 		}
 	}
 }

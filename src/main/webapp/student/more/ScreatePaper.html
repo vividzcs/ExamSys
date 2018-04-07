@@ -8,10 +8,10 @@
     <title>学生考试系统</title>
     <meta name="keywords" content="学生考试系统，专为学生打造在校考试功能">
     <meta name="description" content="大学生在线考试系统，学生在网络上在线填写试卷">
-    <!--<link href="../../../../style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">-->
-    <link href="../../../style/css/main.css" rel="stylesheet" type="text/css" />
-    <link href="../../../style/css/iconfont.css" rel="stylesheet" type="text/css" />
-    <link href="../../../style/css/test.css" rel="stylesheet" type="text/css" />
+    <!--<link href="../../../style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">-->
+    <link href="../../style/css/main.css" rel="stylesheet" type="text/css" />
+    <link href="../../style/css/iconfont.css" rel="stylesheet" type="text/css" />
+    <link href="../../style/css/test.css" rel="stylesheet" type="text/css" />
     <style>
     	.problem{
     		cursor: pointer;
@@ -115,33 +115,27 @@
 			<div class="test">
 				
 				<form action=" " method="post"  >
-					<div width="200px" >
-                 <span>试卷编号：${paper.pap_id}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span>考试科目：${subject}</span >
-				
-                 </div>
 					<div class="test_title">
 						<p class="test_time">
-							<i class="icon iconfont">&#xe6fb;</i><b class="alt-1">02:00</b>
+							<i class="icon iconfont">&#xe6fb;</i><b class="alt-1">7:22:40</b>
 						</p>
 						<font><input type="submit" name="test_jiaojuan" value="交卷"  onclick=" return checkstart()"></font>
 					</div>
-						<ul>
-						<#if cPaperList??>
-						<li>
+					
 						<div class="test_content">
 							<div class="test_content_title">
 								<h2>单选题</h2>
 								<p>
-									<span>共</span><i class="content_lit">${rule.single_choice_num}</i><span>题，</span><span>合计</span><i class="content_fs">${rule.single_choice_score}</i><span>分</span>
+									<span>共</span><i class="content_lit">60</i><span>题，</span><span>合计</span><i class="content_fs">60</i><span>分</span>
 								</p>
 							</div>
 						</div>
 						<div class="test_content_nr">
 							<ul >
-								<#list cPaperList as cquestion>
-									<li id="qu_0_${cquestion_index}" class="choice">
+								
+									<li id="qu_0_0" class="choice">
 										<div class="test_content_nr_tt">
-											<i>${cquestion_index+1}</i><span></span><font>${cquestion[0]} </font><b class="icon iconfont">&#xe881;</b>
+											<i>1</i><span>(1分)</span><font>在生产管理信息系统中，下列操作步骤能正确将工单推进流程的是（  ）</font><b class="icon iconfont">&#xe881;</b>
 										</div>
 
 										<div class="test_content_nr_main">
@@ -156,7 +150,7 @@
 														
 														<label for="0_answer_1_option_1">
 															A.
-															<p class="ue" style="display: inline;">${cquestion[1]}</p>
+															<p class="ue" style="display: inline;">在工具栏中点击“workflow”标签</p>
 														</label>
 													</li>
 												
@@ -169,7 +163,7 @@
 														
 														<label for="0_answer_1_option_2">
 															B.
-															<p class="ue" style="display: inline;">${cquestion[2]}</p>
+															<p class="ue" style="display: inline;">在缺陷单界面中点击“推进流程”按钮</p>
 														</label>
 													</li>
 												
@@ -182,7 +176,7 @@
 														
 														<label for="0_answer_1_option_3">
 															C.
-															<p class="ue" style="display: inline;">${cquestion[3]}</p>
+															<p class="ue" style="display: inline;">在缺陷单界面中点击“提交”按钮</p>
 														</label>
 													</li>
 												
@@ -195,34 +189,93 @@
 														
 														<label for="0_answer_1_option_4">
 															D.
-															<p class="ue" style="display: inline;">${cquestion[4]}</p>
+															<p class="ue" style="display: inline;">后台启动流程推进</p>
 														</label>
 													</li>
 												
 											</ul>
 										</div>
 									</li>
-								</#list>
+								
+									<li id="qu_0_1" class="choice">
+										<div class="test_content_nr_tt">
+											<i>2</i><span>(1分)</span><font>在营销系统中查询客户有无欠费、余额及抄表数据接待客户时应做到哪些最基本的礼仪？</font><b class="icon iconfont">&#xe881;</b>
+										</div>
+
+										<div class="test_content_nr_main">
+											<ul>
+												
+													<li class="option">
+														
+															<input type="radio" class="radioOrCheck" name="answer2"
+																id="0_answer_2_option_1"
+															/>
+														
+														
+														<label for="0_answer_2_option_1">
+															A.
+															<p class="ue" style="display: inline;">起身、微笑、示坐、问候客户</p>
+														</label>
+													</li>
+												
+													<li class="option">
+														
+															<input type="radio" class="radioOrCheck" name="answer2"
+																id="0_answer_2_option_2"
+															/>
+														
+														
+														<label for="0_answer_2_option_2">
+															B.
+															<p class="ue" style="display: inline;">坐着，问候客户</p>
+														</label>
+													</li>
+												
+													<li class="option">
+														
+															<input type="radio" class="radioOrCheck" name="answer2"
+																id="0_answer_2_option_3"
+															/>
+														
+														
+														<label for="0_answer_2_option_3">
+															C.
+															<p class="ue" style="display: inline;">坐着，问候客户</p>
+														</label>
+													</li>
+												
+													<li class="option">
+														
+															<input type="radio" class="radioOrCheck" name="answer2"
+																id="0_answer_2_option_4"
+															/>
+														
+														
+														<label for="0_answer_2_option_4">
+															D.
+															<p class="ue" style="display: inline;">请问需要办理什么业务</p>
+														</label>
+													</li>
+												
+											</ul>
+										</div>
+									</li>
 							</ul>
 						</div>
-						</li>
-					</#if>
-					<#if jPaperList??>
-						<li>
+					
 						<div class="test_content">
 							<div class="test_content_title">
 								<h2>判断题</h2>
 								<p>
-									<span>共</span><i class="content_lit">${rule.judge_num}</i><span>题，</span><span>合计</span><i class="content_fs">${rule.judge_score}</i><span>分</span>
+									<span>共</span><i class="content_lit">30</i><span>题，</span><span>合计</span><i class="content_fs">30</i><span>分</span>
 								</p>
 							</div>
 						</div>
 						<div class="test_content_nr">
 							<ul >
-								<#list jPaperList as jquestion>
-								<li id="qu_1_${jquestion_index}" class="judge">
+								<li id="qu_1_0" class="judge">
 										<div class="test_content_nr_tt">
-											<i>${jquestion_index+1}</i><span></span><font>${jquestion[0]}</font><b class="icon iconfont">&#xe881;</b>
+											<i>1</i><span>(1分)</span><font>以下属于南方电网员工职业操守中明文规定的有()</font><b class="icon iconfont">&#xe881;</b>
 										</div>
 
 										<div class="test_content_nr_main">
@@ -254,27 +307,61 @@
 											</ul>
 										</div>
 									</li>
-								</#list>
+								
+									<li id="qu_1_1" class="judge">
+										<div class="test_content_nr_tt">
+											<i>2</i><span>(1分)</span><font>以下属于南方电网员工职业禁区的有()</font><b class="icon iconfont">&#xe881;</b>
+										</div>
+
+										<div class="test_content_nr_main">
+											<ul>
+												
+													<li class="option">
+														
+														
+															<input type="radio" class="radioOrCheck" name="janswer2"
+																id="1_answer_2_option_1"
+															/>
+														
+														<label for="1_answer_2_option_1">
+															<p class="ue" style="display: inline;">是</p>
+														</label>
+													</li>
+												
+													<li class="option">
+														
+														
+															<input type="radio" class="radioOrCheck" name="janswer2"
+																id="1_answer_2_option_2"
+															/>
+														
+														<label for="1_answer_2_option_2">
+															 
+															<p class="ue" style="display: inline;">否</p>
+														</label>
+													</li>
+												
+											</ul>
+										</div>
+									</li>
 								</ul>
 							 </div>
 						 </li>
-						</#if>				
-						<#if bPaperList??>
-						<li>
+					<li>
+										
 						<div class="test_content">
 							<div class="test_content_title">
 								<h2>填空题</h2>
 								<p>
-									<span>共</span><i class="content_lit">${rule.blank_num}</i><span>题，</span><span>合计</span><i class="content_fs">${rule.blank_score}</i><span>分</span>
+									<span>共</span><i class="content_lit">30</i><span>题，</span><span>合计</span><i class="content_fs">30</i><span>分</span>
 								</p>
 							</div>
 						</div>
 						<div class="test_content_nr">
 							<ul class="subjective">
-								<#list bPaperList as bquestion>
-									<li id="qu_2_${bquestion_index}" class="fill">
+									<li id="qu_6_0" class="fill">
 										<div class="test_content_nr_tt">
-											<i>${bquestion_index+1}</i><span></span><font>${bquestion[0]}</font><b class="icon iconfont">&#xe881;</b>
+											<i>1</i><span>(1分)</span><font>以下属于南方电网员工职业禁区的有____</font><b class="icon iconfont">&#xe881;</b>
 										</div>
 										<div class="test_content_nr_main">
 									        <div class="row ">
@@ -283,27 +370,25 @@
 										      
 										</div>
 									</li>
-									</#list>
 								</ul>
 							</div>
 						</li>
-					</#if>					
-					<#if tPaperList??>
+					
 					<li>
+										
 						<div class="test_content">
 							<div class="test_content_title">
 								<h2>名词解释</h2>
 								<p>
-									<span>共</span><i class="content_lit">${rule.translate_num}</i><span>题，</span><span>合计</span><i class="content_fs">${rule.translate_score}</i><span>分</span>
+									<span>共</span><i class="content_lit">30</i><span>题，</span><span>合计</span><i class="content_fs">30</i><span>分</span>
 								</p>
 							</div>
 						</div>
 						<div class="test_content_nr">
 							<ul >
-								<#list tPaperList as tquestion>
-									<li id="qu_3_${tquestion_index}" class="fill">
+									<li id="qu_2_0" class="fill">
 										<div class="test_content_nr_tt">
-											<i>${tquestion_index+1}</i><span></span><font>${tquestion[0]}</font><b class="icon iconfont">&#xe881;</b>
+											<i>1</i><span>(1分)</span><font>以下属于南方电网员工职业禁区的有()</font><b class="icon iconfont">&#xe881;</b>
 										</div>
 										<div class="test_content_nr_main">
 									        <div class="row ">
@@ -312,57 +397,24 @@
 										      
 										</div>
 									</li>
-									</#list>
 								</ul>
 							</div>
 						</li>
-						</#if>
-								
-						<#if simPaperList??>			
 						<li>
-						<div class="test_content">
-							<div class="test_content_title">
-								<h2>简答</h2>
-								<p>
-									<span>共</span><i class="content_lit">${rule.simple_question_num}</i><span>题，</span><span>合计</span><i class="content_fs">${rule.simple_question_score}</i><span>分</span>
-								</p>
-							</div>
-						</div>
-						<div class="test_content_nr">
-							<ul class="subjective">
-								<#list simPaperList as simquestion>
-									<li id="qu_4_${simquestion_index}" class="fill">
-										<div class="test_content_nr_tt">
-											<i>${simquestion_index+1}</i><span>(1分)</span><font>${simquestion[0]}</font><b class="icon iconfont">&#xe881;</b>
-										</div>
-										<div class="test_content_nr_main">
-									        <div class="row ">
-                    	                         <textarea name="fanswer" rows="" cols=""></textarea>
-                                            </div>
-										      
-										</div>
-									</li>
-									</#list>
-								</ul>
-							</div>
-							</li>
-						</#if>
-						<#if comPaperList??>
-						<li>
+										
 						<div class="test_content">
 							<div class="test_content_title">
 								<h2>计算题</h2>
 								<p>
-									<span>共</span><i class="content_lit">${rule.compute_num}</i><span>题，</span><span>合计</span><i class="content_fs">${rule.compute_score}</i><span>分</span>
+									<span>共</span><i class="content_lit">30</i><span>题，</span><span>合计</span><i class="content_fs">30</i><span>分</span>
 								</p>
 							</div>
 						</div>
 						<div class="test_content_nr">
 							<ul class="subjective">
-								<#list comPaperList as comquestion>
-									<li id="qu_5_${comquestion_index}" class="fill">
+									<li id="qu_3_0" class="fill">
 										<div class="test_content_nr_tt">
-											<i>${comquestion_index+1}</i><span></span><font>${comquestion[0]}</font><b class="icon iconfont">&#xe881;</b>
+											<i>1</i><span>(1分)</span><font>以下属于南方电网员工职业禁区的有()</font><b class="icon iconfont">&#xe881;</b>
 										</div>
 										<div class="test_content_nr_main">
 									        <div class="row ">
@@ -371,27 +423,50 @@
 										      
 										</div>
 									</li>
-									</#list>
 								</ul>
 							</div>
-							</li>
-							</#if>			
-							<#if mPaperList??>
-							<li>
+						</li>
+						<li>
+										
+						<div class="test_content">
+							<div class="test_content_title">
+								<h2>简答</h2>
+								<p>
+									<span>共</span><i class="content_lit">30</i><span>题，</span><span>合计</span><i class="content_fs">30</i><span>分</span>
+								</p>
+							</div>
+						</div>
+						<div class="test_content_nr">
+							<ul class="subjective">
+									<li id="qu_4_0" class="fill">
+										<div class="test_content_nr_tt">
+											<i>1</i><span>(1分)</span><font>以下属于南方电网员工职业禁区的有()</font><b class="icon iconfont">&#xe881;</b>
+										</div>
+										<div class="test_content_nr_main">
+									        <div class="row ">
+                    	                         <textarea name="fanswer" rows="" cols=""></textarea>
+                                            </div>
+										      
+										</div>
+									</li>
+								</ul>
+							</div>
+						</li>
+						<li>
+										
 						<div class="test_content">
 							<div class="test_content_title">
 								<h2>综合</h2>
 								<p>
-									<span>共</span><i class="content_lit">${rule.mix_num}</i><span>题，</span><span>合计</span><i class="content_fs">${rule.mix_score}</i><span>分</span>
+									<span>共</span><i class="content_lit">30</i><span>题，</span><span>合计</span><i class="content_fs">30</i><span>分</span>
 								</p>
 							</div>
 						</div>
 						<div class="test_content_nr">
 							<ul class="subjective">
-								<#list mPaperList as mquestion>
-									<li id="qu_6_${mquestion_index}" class="fill">
+									<li id="qu_5_0" class="fill">
 										<div class="test_content_nr_tt">
-											<i>${mquestion_index+1}</i><span></span><font>${mquestion[0]}</font><b class="icon iconfont">&#xe881;</b>
+											<i>1</i><span>(1分)</span><font>以下属于南方电网员工职业禁区的有()</font><b class="icon iconfont">&#xe881;</b>
 										</div>
 										<div class="test_content_nr_main">
 									        <div class="row ">
@@ -400,16 +475,14 @@
 										      
 										</div>
 									</li>
-									</#list>
 								</ul>
 							</div>
 						</li>
-						</#if>		
+								
 			 </ul>
-			 </form>
 	 </div>
 					
-				
+				</form>
 			</div>
 
 		</div>
@@ -421,133 +494,107 @@
 							<i class="icon iconfont">&#xe692;</i>答题卡
 						</h1>
 						<p class="test_time">
-							<i class="icon iconfont">&#xe6fb;</i><b class="alt-1">02:00</b>
+							<i class="icon iconfont">&#xe6fb;</i><b class="alt-1">01:40</b>
 						</p>
 					</div>
-					<#if cPaperList??>
+					
 						<div class="rt_content">
 							<div class="rt_content_tt">
 								<h2>单选题</h2>
 								<p>
-									<span>共</span><i class="content_lit">${rule.single_choice_num}</i><span>题</span>
+									<span>共</span><i class="content_lit">60</i><span>题</span>
 								</p>
 							</div>
 							<div class="rt_content_nr answerSheet">
 								<ul>
-									<#list cPaperList as cquestion>
-										<li><a href="#qu_0_${cquestion_index}">${cquestion_index+1}</a></li>
-									</#list>
+										<li><a href="#qu_0_0">1</a></li>
+										<li><a href="#qu_0_1">2</a></li>
 									
 								</ul>
 							</div>
 						</div>
-						</#if>
-						<#if jPaperList??>
+					
 						<div class="rt_content">
 							<div class="rt_content_tt">
 								<h2>判断题</h2>
 								<p>
-									<span>共</span><i class="content_lit">${rule.judge_num}</i><span>题</span>
+									<span>共</span><i class="content_lit">30</i><span>题</span>
 								</p>
 							</div>
 							<div class="rt_content_nr answerSheet">
 								<ul>
-								<#list jPaperList as jquestion>
-										<li><a href="#qu_1_${jquestion_index}">${jquestion_index+1}</a></li>
-								</#list>
+										<li><a href="#qu_1_0">1</a></li>
+										<li><a href="#qu_1_1">2</a></li>
 									
 								</ul>
 							</div>
 						</div>
-						</#if>
-						<#if bPaperList??>
+
 						<div class="rt_content">
 							<div class="rt_content_tt">
 								<h2>填空题</h2>
 								<p>
-									<span>共</span><i class="content_lit">${rule.blank_num}</i><span>题</span>
+									<span>共</span><i class="content_lit">30</i><span>题</span>
 								</p>
 							</div>
 							<div class="rt_content_nr answerSheet">
 								<ul>
-									<#list bPaperList as bquestion>
-										<li><a href="#qu_2_${bquestion_index}">${bquestion_index+1}</a></li>
-									</#list>
+										<li><a href="#qu_6_0">1</a></li>
 								</ul>
 							</div>
 						</div>
-						</#if>
-						<#if tPaperList??>
 						<div class="rt_content">
 							<div class="rt_content_tt">
 								<h2>名词解释</h2>
 								<p>
-									<span>共</span><i class="content_lit">${rule.translate_num}</i><span>题</span>
+									<span>共</span><i class="content_lit">30</i><span>题</span>
 								</p>
 							</div>
 							<div class="rt_content_nr answerSheet">
 								<ul>
-									<#list tPaperList as tquestion>
-										<li><a href="#qu_3_${tquestion_index}">${tquestion_index+1}</a></li>
-									</#list>
+										<li><a href="#qu_2_0">1</a></li>
 								</ul>
 							</div>
 						</div>
-						</#if>
-						
-						<#if simPaperList??>
-							<div class="rt_content">
-							<div class="rt_content_tt">
-								<h2>简答题</h2>
-								<p>
-									<span>共</span><i class="content_lit">${rule.simple_question_num}</i><span>题</span>
-								</p>
-							</div>
-							<div class="rt_content_nr answerSheet">
-								<ul>
-									<#list simPaperList as simquestion>
-										<li><a href="#qu_4_${simquestion_index}">$${simquestion_index+1}</a></li>
-									</#list>
-								</ul>
-							</div>
-						</div>
-						</#if>
-						
-						<#if comPaperList??>
 							<div class="rt_content">
 							<div class="rt_content_tt">
 								<h2>计算题</h2>
 								<p>
-									<span>共</span><i class="content_lit">${rule.compute_num}</i><span>题</span>
+									<span>共</span><i class="content_lit">30</i><span>题</span>
 								</p>
 							</div>
 							<div class="rt_content_nr answerSheet">
 								<ul>
-								<#list comPaperList as comquestion>
-										<li><a href="#qu_5_${comquestion_index}">${comquestion_index+1}</a></li>
-								</#list>
+										<li><a href="#qu_3_0">1</a></li>
 								</ul>
 							</div>
 						</div>
-						</#if>
-						
-						<#if mPaperList??>
+							<div class="rt_content">
+							<div class="rt_content_tt">
+								<h2>简答题</h2>
+								<p>
+									<span>共</span><i class="content_lit">30</i><span>题</span>
+								</p>
+							</div>
+							<div class="rt_content_nr answerSheet">
+								<ul>
+										<li><a href="#qu_4_0">1</a></li>
+								</ul>
+							</div>
+						</div>
 							<div class="rt_content">
 							<div class="rt_content_tt">
 								<h2>综合</h2>
 								<p>
-									<span>共</span><i class="content_lit">${rule.mix_num}</i><span>题</span>
+									<span>共</span><i class="content_lit">30</i><span>题</span>
 								</p>
 							</div>
 							<div class="rt_content_nr answerSheet">
 								<ul>
-									<#list mPaperList as mquestion>
-										<li><a href="#qu_6_${mquestion_index}">${mquestion_index+1}</a></li>
-									</#list>
+										<li><a href="#qu_5_0">1</a></li>
 								</ul>
 							</div>
 						</div>
-						</#if>
 					
 				</div>
 
@@ -556,10 +603,10 @@
 	</div>
    </div>
  
-<script src="../../../style/js/jquery-1.11.3.min.js"></script>
-<script src="../../../style/js/jquery.easy-pie-chart.js"></script>
+<script src="../../style/js/jquery-1.11.3.min.js"></script>
+<script src="../../style/js/jquery.easy-pie-chart.js"></script>
 <!--时间js-->
-<script src="../../../style/js/jquery.countdown.js"></script>
+<script src="../../style/js/jquery.countdown.js"></script>
 <script type="text/javascript">
 function getData() {
         //jq发ajax
@@ -589,24 +636,18 @@ function getData() {
 }
 </script>
 <script>
-	/**
+/**
 	* 初始化考试剩余时间
 	*/
-	$.ajaxSetup({  
-        async : false //取消异步  
-    }); 
 	$(function(){
-		var p_id = ${rule.p_id};
-		var data = {p_id:p_id};
-		$.post('${contextPath}/paper_getEndTime.action',data,function(data){
-			var time = new Date(data.endTime - new Date().getTime());
+		alert(1)
+			var time = new Date();
 			var hour = time.getHours();
 			var minu = time.getMinutes();
 			var second = time.getSeconds();
-			$(".alt-1").html(hour+':'+minu+':'+second);  //01:40
-		},"json")
+			$(".alt-1").html(1+':'+2+':'+3);  //01:40
+		
 	})
-	
 	window.jQuery(function($) {
 		"use strict";
 		
@@ -638,8 +679,8 @@ function getData() {
 
 
 	});
-	
-	
+
+    
 </script>
 
 

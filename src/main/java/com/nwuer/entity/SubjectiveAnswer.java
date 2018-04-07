@@ -29,6 +29,9 @@ public class SubjectiveAnswer {
 	private Double grade;
 	
 	private Integer sr_id; //学生注册表
+	@Column(columnDefinition="tinyint not null default 0")
+	private int status; //0 未阅 , 1 已阅
+	
 
 	public int getAnswer_id() {
 		return answer_id;
@@ -93,6 +96,14 @@ public class SubjectiveAnswer {
 
 	public void setSr_id(Integer sr_id) {
 		this.sr_id = sr_id;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 }

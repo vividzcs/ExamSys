@@ -66,5 +66,9 @@ public class GuardianShipService implements BaseService<GuardianShip> {
 	public int getByMajorAndSubject(int m_id,int sub_id) {
 		return this.guardianShipDaoImpl.getByMajorAndSubject(m_id, sub_id);
 	}
+	
+	public GuardianShip getGuardByMajorAndSubject(int m_id,int sub_id) {
+		return this.guardianShipDaoImpl.getGuardByMajorAndSubject(m_id, sub_id);
+	}
 
 }

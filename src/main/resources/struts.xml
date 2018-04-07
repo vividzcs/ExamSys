@@ -117,6 +117,14 @@
 				<result name="list">manageStudent.jsp</result>
 				<result name="success" type="redirectAction">paper_list</result>
 			</action>
+			<action name="studentRegister_*" class="studentRegisterAction" method="{1}">
+				<result name="list">examRelatedPeople.jsp</result>
+				<result name="success" type="redirectAction">studentRegister_list</result>
+			</action>
+			<action name="guardianShip_*" class="guardianShipAction" method="{1}">
+				<result name="list">examRelatedPeople.jsp</result>
+				<result name="success" type="redirectAction">studentRegister_list</result>
+			</action>
 			
 		</package>
 		
@@ -193,6 +201,11 @@
 			</action>
 			<action name="logout" class="studentAction" method="logout">
 				<result name="logout">/index.jsp</result>
+			</action>
+			<action name="paper_*" class="paperAction" method="{1}">
+				<result name="end" type="json">
+					<param name="root">result</param>
+				</result>
 			</action>
 			
 		</package>

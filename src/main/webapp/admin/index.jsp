@@ -64,7 +64,7 @@
                             </li>
                             <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/paperrule_list.action">查看试卷规则</a>
                             </li>
-                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/examRelatedPeople.jsp">考试人员管理</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/studentRegister_list.action">考试人员管理</a>
                             </li>
                             <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/paper_showAdd.action">生成考试试卷</a>
                             </li>
