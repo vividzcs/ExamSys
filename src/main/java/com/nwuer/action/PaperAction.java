@@ -78,6 +78,27 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 	@Autowired
 	private FreemarkerUtil freemarkerUtil;
 	
+	public String list() {
+		List<Paper> list = this.paperService.getAll();
+		PaperRule rule = null;
+		Paper p = null;
+		StudentRegister sr = null;
+		for(int i=0; i<list.size(); i++) {
+			p = list.get(i);
+			rule = this.paperRuleService.getByIdEager(p.getP_id());
+			
+			sr = p.getSr_id() == null? null : this.studentRegisterService.getByIdEager(p.getSr_id());
+			p.setPaperRule(rule);
+			p.setStudentRegister(sr);
+		}
+		ServletActionContext.getRequest().setAttribute("list", list);
+		return "list";
+	}
+	
+	/**
+	 * 展示生成试卷页面
+	 * @return
+	 */
 	public String showAdd() {
 		List<PaperRule> list = paperRuleService.getAll();
 		ServletActionContext.getRequest().setAttribute("list", list);
@@ -189,9 +210,10 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			data.put("paper", p);
 			data.put("rule", rule);
 			data.put("subject",sub_name );
-			data.put("contextPath", ServletActionContext.getRequest().getContextPath()+"/student");
+			String contextPath = ServletActionContext.getRequest().getContextPath()+"/student";
+			data.put("contextPath", contextPath);
 			String paperPath = this.freemarkerUtil.makePracticePaper(data, uuid);
-			p.setPap_url(paperPath);
+			p.setPap_url(contextPath + "/practice/" + uuid + ".html");
 			this.objectiveAnswerService.add(objectiveAnswer);
 			if(z_answer != null) {
 				for(int k=0;k<z_answer.size();k++) {
@@ -315,9 +337,12 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			data.put("paper", p);
 			data.put("rule", rule);
 			data.put("subject",sub_name );
-			data.put("contextPath", ServletActionContext.getRequest().getContextPath()+"/student");
+			String contextPath = ServletActionContext.getRequest().getContextPath()+"/student";
+			data.put("contextPath", contextPath);
 			String paperPath = this.freemarkerUtil.makePaper(data, uuid);
-			p.setPap_url(paperPath);
+			p.setPap_url(contextPath + "/more/paper/"+uuid+".html");
+			//更新试卷信息
+			this.paperService.update(p);
 			this.objectiveAnswerService.add(objectiveAnswer);
 			if(z_answer != null) {
 				for(int k=0;k<z_answer.size();k++) {

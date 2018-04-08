@@ -66,12 +66,10 @@
                             </li>
                             <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/studentRegister_list.action">考试人员管理</a>
                             </li>
-                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/paper_showAdd.action">生成考试试卷</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/paper_showAdd.action">生成试卷</a>
                             </li>
-                            <li><a class="J_menuItem" href="importPaper.html">导出考试试卷</a>
+                            <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/paper_list.action">查看试卷</a>
                             </li> <li><a class="J_menuItem" href="changePaper.html">更换考试试卷</a>
-                            </li>
-                            <li><a  class="J_menuItem" href="createTestPaper.html">生成练习试卷</a>
                             </li>
                          
                          

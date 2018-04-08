@@ -32,4 +32,8 @@ public class PaperDaoImpl extends HibernateDaoSupport  {
 	public List<Paper> getAll(){
 		return (List<Paper>) this.getHibernateTemplate().find("from Paper");
 	}
+
+	public void update(Paper t) {
+		this.getHibernateTemplate().update(t);
+	}
 }

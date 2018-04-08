@@ -38,7 +38,7 @@ public class StudentRegisterService implements BaseService<StudentRegister> {
 
 	@Override
 	public StudentRegister getByIdEager(Serializable id) {
-		return this.getByIdEager(id);
+		return this.studentRegisterDaoImpl.getByIdEager(id);
 	}
 
 	@Override

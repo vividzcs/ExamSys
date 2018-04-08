@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -28,10 +29,10 @@ public class Paper {
 	private String pap_id;
 	private String pap_url; //生成的试卷存放位置
 	@Column(columnDefinition="tinyint not null default 0")
-	private byte pap_kind; //试卷类型, 0:考试, 1:练习
+	private byte pap_kind; //试卷类型, 0:练习, 1:考试
 	
 	private long create_time;
-	private byte status;  //0:刚生成, 1:考试中, 2 已交卷
+	private byte status;  //0:刚生成, 1:考试中, 2 已交卷, 3 已阅卷, 
 	
 //	private Integer subjective_answer_id;  //关联答案表
 //	private Integer objective_answer_id;  //关联答案表
@@ -51,6 +52,24 @@ public class Paper {
 	private Integer sr_id; //学生注册表的id
 	private Integer g_id; //监考人员表的id
 	
+	@Transient
+	private PaperRule paperRule;
+	@Transient
+	private StudentRegister studentRegister;
+	
+	
+	public StudentRegister getStudentRegister() {
+		return studentRegister;
+	}
+	public void setStudentRegister(StudentRegister studentRegister) {
+		this.studentRegister = studentRegister;
+	}
+	public PaperRule getPaperRule() {
+		return paperRule;
+	}
+	public void setPaperRule(PaperRule paperRule) {
+		this.paperRule = paperRule;
+	}
 	public String getPap_id() {
 		return pap_id;
 	}

@@ -32,7 +32,7 @@ public class StudentRegister {
 	private String sr_name; //学生姓名
 	private long create_time; 
 	
-	private byte status; //0:未注册, 1:已注册, 2:考试中, 3: 已考完
+	private byte status; //0:未注册, 1:已注册未生成试卷, 2:已注册已生成试卷  3:考试中, 4: 已考完, 5:已阅卷
 	
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="major_stu_reg")
@@ -48,6 +48,7 @@ public class StudentRegister {
 	@JoinColumn(name="examhistory_stu_reg")
 	private ExamHistory examHistory;
 	private String paper;  //直接存纸卷的uuid
+	
 	@Transient
 	private GuardianShip guardianShip;
 	

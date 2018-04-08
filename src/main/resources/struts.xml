@@ -114,13 +114,15 @@
 			
 			<action name="paper_*" class="paperAction" method="{1}">
 				<result name="showAdd">createPaper.jsp</result>
-				<result name="list">manageStudent.jsp</result>
+				<result name="list">lookPaper.jsp</result>
 				<result name="success" type="redirectAction">paper_list</result>
 			</action>
+			
 			<action name="studentRegister_*" class="studentRegisterAction" method="{1}">
 				<result name="list">examRelatedPeople.jsp</result>
 				<result name="success" type="redirectAction">studentRegister_list</result>
 			</action>
+			
 			<action name="guardianShip_*" class="guardianShipAction" method="{1}">
 				<result name="list">examRelatedPeople.jsp</result>
 				<result name="success" type="redirectAction">studentRegister_list</result>

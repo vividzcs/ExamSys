@@ -36,13 +36,13 @@ public class PaperService {
 	public Paper getByIdEager(String uuid) {
 		return this.paperDaoImpl.getByIdEager(uuid);
 	}
-
+	
+	@Transactional
 	public void update(Paper t) {
-		
+		this.paperDaoImpl.update(t);
 	}
-
+	@Transactional
 	public void delete(int id) {
-		// TODO Auto-generated method stub
 		
 	}
 
