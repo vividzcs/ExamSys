@@ -44,7 +44,7 @@ public class StudentRegisterService implements BaseService<StudentRegister> {
 	@Override
 	@Transactional
 	public void update(StudentRegister t) {
-		
+		this.studentRegisterDaoImpl.update(t);
 	}
 
 	@Override
@@ -69,5 +69,9 @@ public class StudentRegisterService implements BaseService<StudentRegister> {
 	@Transactional
 	public int updateStatus(String number,int sub_id,byte status) {
 		return this.studentRegisterDaoImpl.updateStatus(number,sub_id,status);
+	}
+
+	public List<StudentRegister> getAllByMajorAndSubject(int m_id,int sub_id) {
+		return this.studentRegisterDaoImpl.getAllByMajorAndSubject(m_id,sub_id);
 	}
 }

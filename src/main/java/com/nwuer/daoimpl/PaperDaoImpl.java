@@ -34,6 +34,24 @@ public class PaperDaoImpl extends HibernateDaoSupport  {
 	}
 
 	public void update(Paper t) {
+		this.getHibernateTemplate().clear();
 		this.getHibernateTemplate().update(t);
+	}
+	
+	public void delete(Paper t) {
+		this.getHibernateTemplate().delete(t);
+	}
+	
+	/**
+	 * 根据专业和科目得到未绑定学生的试卷
+	 * @return
+	 */
+	public Paper getNonePaperByMajorAndSubject(int m_id,int sub_id) {
+		List<Paper> list = (List<Paper>) this.getHibernateTemplate().find("from Paper where major.m_id=? and subject.sub_id=? and status=0", m_id,sub_id);
+		if(list != null && list.size()>0) {
+			return list.get(0);
+		}else {
+			return null;
+		}
 	}
 }

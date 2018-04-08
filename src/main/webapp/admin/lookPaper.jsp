@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 
@@ -55,6 +56,7 @@
                                         	 <th>考生名</th>
                                         	 <th>考生学号</th>
                                              <th>名称</th>
+                                             <th>创建时间</th>
 											 <th>状态</th>
 											 <th>类型</th>
 											 <th>操作</th>
@@ -68,17 +70,22 @@
 	                                        	 <th>${paper.studentRegister.sr_name }</th>
 	                                        	 <th>${paper.studentRegister.sr_number }</th>
 	                                             <th>${paper.pap_id }</th>
-												 <th>
+	                                             <jsp:useBean id="date" class="java.util.Date"></jsp:useBean>
+	                                             <jsp:setProperty property="time" name="date" value="${paper.create_time }"/>
+	                                             <th><fmt:formatDate value="${date }" pattern="yyyy/MM/dd HH:mm:ss"/></th>
+												 <th><%--0:刚生成, 1:已绑定 2:考试中, 3 已交卷, 4 已阅卷, 5,已废弃 --%>
 												 	<c:if test="${paper.status eq 0 }">刚生成</c:if>
-												 	<c:if test="${paper.status eq 1 }">考试中</c:if>
-												 	<c:if test="${paper.status eq 2 }">已交卷</c:if>
-												 	<c:if test="${paper.status eq 3 }">已阅卷</c:if>
+												 	<c:if test="${paper.status eq 1 }">已绑定</c:if>
+												 	<c:if test="${paper.status eq 2 }">考试中</c:if>
+												 	<c:if test="${paper.status eq 3 }">已交卷</c:if>
+												 	<c:if test="${paper.status eq 4 }">已阅卷</c:if>
+												 	<c:if test="${paper.status eq 5 }">已废弃</c:if>
 												 </th>
 												 <th>
 												 	<c:if test="${paper.pap_kind eq 0 }">练习</c:if>
 												 	<c:if test="${paper.pap_kind eq 1 }">考试</c:if>
 												 </th>
-	                                            <td class="center"><a href="" class="delete">删除</a>&nbsp<a href=" editPaperRule.html" >修改</a></td>
+	                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/paper_delete.action?pap_id=${paper.pap_id}" class="delete">删除</a></td>
 	                                        </tr>
                                         </c:forEach>
                                     </tbody>

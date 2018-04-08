@@ -32,6 +32,7 @@ public class JudgeQuestion {
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="sub_judge")
 	private Subject subject = new Subject();
+	
 	public Major getMajor() {
 		return major;
 	}

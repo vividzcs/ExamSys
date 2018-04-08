@@ -69,7 +69,7 @@
                             <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/paper_showAdd.action">生成试卷</a>
                             </li>
                             <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/paper_list.action">查看试卷</a>
-                            </li> <li><a class="J_menuItem" href="changePaper.html">更换考试试卷</a>
+                            </li> <li><a class="J_menuItem" href="${pageContext.request.contextPath }/admin/changePaper.jsp">更换考试试卷</a>
                             </li>
                          
                          

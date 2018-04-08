@@ -32,13 +32,16 @@ public class Paper {
 	private byte pap_kind; //试卷类型, 0:练习, 1:考试
 	
 	private long create_time;
-	private byte status;  //0:刚生成, 1:考试中, 2 已交卷, 3 已阅卷, 
+	private byte status;  //0:刚生成, 1:已绑定 2:考试中, 3 已交卷, 4 已阅卷, 5,已废弃
 	
 //	private Integer subjective_answer_id;  //关联答案表
 //	private Integer objective_answer_id;  //关联答案表
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)
 	@JoinColumn(name="sub_paper")
-	private Subject subject;
+	private Subject subject = new Subject();
+	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.EAGER)
+	@JoinColumn(name="major_paper")
+	private Major major = new Major();
 //	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 //	@JoinColumn(name="rule_paper")
 //	private PaperRule paperRule;
@@ -66,6 +69,12 @@ public class Paper {
 	}
 	public PaperRule getPaperRule() {
 		return paperRule;
+	}
+	public Major getMajor() {
+		return major;
+	}
+	public void setMajor(Major major) {
+		this.major = major;
 	}
 	public void setPaperRule(PaperRule paperRule) {
 		this.paperRule = paperRule;

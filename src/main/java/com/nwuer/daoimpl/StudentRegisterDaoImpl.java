@@ -39,4 +39,8 @@ public class StudentRegisterDaoImpl extends BaseDaoImpl<StudentRegister> {
 	public int updateStatus(String s_number,int sub_id,byte status) {
 		return this.getSessionFactory().getCurrentSession().createNativeQuery("update t_student_register set status="+status+" where sr_number="+s_number+" and sub_stu_reg="+sub_id ).executeUpdate();
 	}
+
+	public List<StudentRegister> getAllByMajorAndSubject(int m_id, int sub_id) {
+		return (List<StudentRegister>) this.getHibernateTemplate().find("from StudentRegister where major.m_id=? and subject.sub_id=?", m_id,sub_id);
+	}
 }

@@ -158,6 +158,10 @@
 				<result name="login">/index.jsp</result>
 				<result name="logout">/index.jsp</result>
 			</action>
+			
+			<action name="paper_list" class="paperAction" method="list">
+				<result name="list">lookPaper.jsp</result>
+			</action>
 		</package>
 		
 		<package name="student" extends="struts-default,json-default" namespace="/student/more" >

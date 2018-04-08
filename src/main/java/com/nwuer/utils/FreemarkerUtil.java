@@ -32,7 +32,7 @@ public class FreemarkerUtil {
 	 * @param number  生成试卷的份数
 	 * @return
 	 */
-	public String makePaper(Map data,String name) {
+	public void makePaper(Map data,String name) {
 		Writer out = null;
 		String paperPath = null;
 		try {
@@ -81,7 +81,7 @@ public class FreemarkerUtil {
 				
 		}
 		
-		return paperPath;
+//		return paperPath;
 	}
 	
 	/**
@@ -91,7 +91,7 @@ public class FreemarkerUtil {
 	 * @param number  生成试卷的份数
 	 * @return
 	 */
-	public String makePracticePaper(Map data,String name) {
+	public void makePracticePaper(Map data,String name) {
 		Writer out = null;
 		String paperPath = null;
 		try {
@@ -140,7 +140,7 @@ public class FreemarkerUtil {
 				
 		}
 		
-		return paperPath;
+//		return paperPath;
 	}
 	
 }

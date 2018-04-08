@@ -42,8 +42,16 @@ public class PaperService {
 		this.paperDaoImpl.update(t);
 	}
 	@Transactional
-	public void delete(int id) {
-		
+	public void delete(Paper t) {
+		this.paperDaoImpl.delete(t);
+	}
+	
+	/**
+	 * 根据专业和科目得到未绑定学生的试卷
+	 * @return
+	 */
+	public Paper getNonePaperByMajorAndSubject(int m_id,int sub_id) {
+		return this.paperDaoImpl.getNonePaperByMajorAndSubject(m_id, sub_id);
 	}
 
 }
