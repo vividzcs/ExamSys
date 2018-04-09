@@ -33,22 +33,29 @@
 <body  ng-app="exam"  ng-controller="createTestPaper" >
 	<div style="height: 100%;" class=" row border-bottom white-bg dashboard-header" >
 		<div class="col-lg-7" > 
-			<div class="form-group"  >
-                   <label class="col-sm-3 control-label">选择练习科目：</label>
-				         <div class="col-sm-6">
-			             <select  class="form-control" id="dep" name="dep"  ng-model="selectStyle" ><!--根据数据库中的考试科目内容动态生成-->
-						  <option value ="00001">00001 c语言程序设计</option>
-						  <option value ="00002">00002 java程序设计</option>
-						  <option value="00003">00003 数据结构</option>
-						  <option value="00004">00004 离散数学</option>
-	   					</select>
-                  </div>
-           </div>
+		<form action="${pageContext.request.contextPath }/student/beginPratice.action" method="post">
+			<div class="form-group"> 
+                                        <label class="col-sm-3 control-label">专业</label>
+                                        <div class="col-sm-8">
+                                            <select id="profess" name="m_id" class="form-control m-b"   ng-model="selected" ng-options="m.profess for m in professes" ng-change="changeClassification(selected)">
+                                                 <option value="">-- 请选择 --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">练习科目</label>
+                                        <div class="col-sm-8">
+                                             <select id="subject" name="sub_id" class="form-control m-b"   ng-model="selected2" ng-options="m for m in course" >
+                                             	  <option value="">-- 请选择 --</option>
+                                            </select>
+                                        </div>
+                                    </div>
 		    <div class="form-group">
 			      <div class="col-sm-9 col-sm-offset-10">
-				   <a href="ScreatePaper.html"><button class="btn btn-primary"   ng-click="toggle()" >开始练习</button></a>
+				   <button class="btn btn-primary" ng-click="toggle()" type="">开始练习</button>
 			      </div>
            </div>
+           </form>
           </div>
       </br></br><br />
 			 <div class="row"  ng-cloak ng-show="practice" >
@@ -95,5 +102,36 @@
    <script src="../style/js/anjularJS/anjularjs/control.js"></script>
 
 </body>
-
+<script>
+/**
+ * 专业和科目的联动
+ */
+var allData;
+ $(function(){
+	  $.post('${pageContext.request.contextPath }/student/mesFS.action',{},function(data){
+		  allData = data;
+			var strProf = '<option value="">-- 请选择 --</option>';
+			for(var i in data) {
+				strProf += '<option value="' + i + '">'+ data[i].profess +'</option>'
+			}
+			
+			$("#profess").html(strProf);
+			
+		},"json")
+ })
+ 
+ $("#profess").change(function(){
+	  var id = $(this).val();
+	  if(id != '') {
+		  var sub = $("#subject");  
+		  var strSub = '<option value="">-- 请选择 --</option>';
+		  var subjects = allData[id];
+		  for(var i in subjects.subject) {
+			strSub += '<option value="' + i + '">'+ subjects.subject[i] +'</option>'
+			}
+		sub.html(strSub);
+	  }
+	  
+ });
+</script>
 </html>

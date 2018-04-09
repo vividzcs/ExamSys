@@ -144,7 +144,16 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			String url = p.getPap_url();
 			//删除
 			this.paperService.delete(p);
-			//  /student/more/paper/4028b88162a5164a0162a51752ae0006.html
+			
+			//将答案清除
+			ObjectiveAnswer oAnswer = this.objectiveAnswerService.getByUuid(paper.getPap_id());
+			this.objectiveAnswerService.delete(oAnswer.getAnswer_id());
+			List<SubjectiveAnswer> sList = this.SubjectiveAnswerService.getByUuid(paper.getPap_id());
+			for(int i=0; i<sList.size(); i++) {
+				this.SubjectiveAnswerService.delete(sList.get(i).getAnswer_id());
+			}
+			
+			//  student/more/paper/4028b88162a5164a0162a51752ae0006.html
 			String tmp = this.getClass().getResource("/").getPath();
 			int end = tmp.indexOf("WEB-INF");
 			String path = tmp.substring(0,end) + url;
@@ -173,9 +182,9 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			req.setAttribute("info", "学号或姓名错误");
 			return ERROR;
 		}
-		List<StudentRegister> list = this.studentRegisterService.getStudentRegisterByNumber(s_number);
+		List<StudentRegister> list = this.studentRegisterService.getStudentRegisterByNumberAndStatus(s_number,new Byte(3+""));  //3:考试中
 		if(list==null || list.size()==0) {
-			req.setAttribute("info", "该生未在注册学生里,请重新导入注册学生后重试");
+			req.setAttribute("info", "该生未在注册学生里,考试期间才能更换试卷,请重新导入注册学生后重试");
 			return ERROR;
 		}
 		//挑选出这个注册信息
@@ -191,16 +200,17 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			req.setAttribute("info", "注册科目出错或系统错误,请确认后重试");
 			return ERROR;
 		}
-		//挑选出注册信息,将原来的试卷作废
-		Paper tmp = this.paperService.getById(sr.getPaper());
-		tmp.setStatus(new Byte(5+""));
-		this.paperService.update(tmp);
 		
 		Paper p = this.paperService.getNonePaperByMajorAndSubject(this.paper.getMajor().getM_id(), this.paper.getSubject().getSub_id());
 		if(p == null) {
 			req.setAttribute("info", "试卷不够,请生成试卷后重新尝试!");
 			return ERROR;
 		}
+		//挑选出注册信息,将原来的试卷作废
+		Paper tmp = this.paperService.getById(sr.getPaper());
+		tmp.setStatus(new Byte(5+""));
+		this.paperService.update(tmp);
+		
 		p.setStatus(new Byte(1+""));
 		p.setSr_id(sr.getSr_id());
 		this.paperService.update(p);
@@ -233,7 +243,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 	 */
 	PaperRule rule = null;
 	Map data = new HashMap();
-	StringBuilder k_answer = new StringBuilder();
+	StringBuilder k_answer = null;
 	ObjectiveAnswer objectiveAnswer = null;
 	List<SubjectiveAnswer> z_answer = null;
 	public String add() {
@@ -272,6 +282,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			String uuid = null;
 			objectiveAnswer = new ObjectiveAnswer();
 			z_answer = new ArrayList<SubjectiveAnswer>();
+			k_answer = new StringBuilder();
 			//先插入试卷,获取uuid,然后将uuid作为试卷名
 			p = new Paper();
 			p.setP_id(this.paper.getP_id());
@@ -319,10 +330,12 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			data.put("paper", p);
 			data.put("rule", rule);
 			data.put("subject",sub_name );
-			String contextPath = ServletActionContext.getRequest().getContextPath()+"/student";
+			String contextPath = ServletActionContext.getRequest().getContextPath();
 			data.put("contextPath", contextPath);
 			this.freemarkerUtil.makePracticePaper(data, uuid);
-			p.setPap_url("student/practice/" + uuid + ".html");
+			p.setPap_url( "student/practice/" + uuid + ".html");
+			//更新试卷信息
+			this.paperService.update(p);
 			this.objectiveAnswerService.add(objectiveAnswer);
 			if(z_answer != null) {
 				for(int k=0;k<z_answer.size();k++) {
@@ -331,7 +344,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 				//答案添加完毕
 			}
 			
-			
+			//清理数据
 			
 			 //END//一张卷子添加完毕
 		} 
@@ -343,15 +356,17 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 	 */
 	public void generateExamPaper(int num) {
 		rule = paperRuleService.getByIdEager(paper.getP_id());
-		List<StudentRegister> studentRegisterList = this.studentRegisterService.getAllByMajorAndSubject(rule.getMajor().getM_id(),rule.getSubject().getSub_id()); 
+		List<StudentRegister> studentRegisterList = this.studentRegisterService.getAllByMajorAndSubjectAndStatus(rule.getMajor().getM_id(),rule.getSubject().getSub_id(),new Byte(1+"")); 
 		int s_num = studentRegisterList.size(); //注册学生人数
 		int other = num-s_num;  //多余的试卷
 		Paper p = null;
+		StudentRegister studentRegister = null;
 		String sub_name = rule.getSubject().getSub_name();
 		for(int i=0; i<num; i++) {
 			String uuid = null;
 			objectiveAnswer = new ObjectiveAnswer();
 			z_answer = new ArrayList<SubjectiveAnswer>();
+			k_answer = new StringBuilder();
 			if(i<s_num) { //说明是生成正常考试卷子
 				//先插入试卷,获取uuid,然后将uuid作为试卷名
 				p = new Paper();
@@ -371,9 +386,9 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 				//难   :  40%简单  30%中 30%难
 				
 				//挑一个学生来生成试卷
-				StudentRegister studentRegister = studentRegisterList.get(i); 
+				studentRegister = studentRegisterList.get(i); 
 				p.setSr_id(studentRegister.getSr_id());
-				p.setStatus(new Byte(1+""));  //绑定试卷
+				p.setStatus(new Byte(2+""));  //绑定试卷
 				
 				//加选择题
 				generateChoiceQuestion(this.paper.getPap_kind());
@@ -451,12 +466,15 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			data.put("paper", p);
 			data.put("rule", rule);
 			data.put("subject",sub_name );
-			String contextPath = ServletActionContext.getRequest().getContextPath()+"/student";
+			String contextPath = ServletActionContext.getRequest().getContextPath();
 			data.put("contextPath", contextPath);
 			this.freemarkerUtil.makePaper(data, uuid);
 			p.setPap_url("student/more/paper/"+uuid+".html");
-			//更新试卷信息
+			//更新试卷信息,考生注册信息为已生成试卷
 			this.paperService.update(p);
+			studentRegister.setPaper(p.getPap_id());
+			studentRegister.setStatus(new Byte(2+""));
+			this.studentRegisterService.update(studentRegister);
 			this.objectiveAnswerService.add(objectiveAnswer);
 			if(z_answer != null) {
 				for(int k=0;k<z_answer.size();k++) {

@@ -38,7 +38,7 @@
 </p>
       <p>6．凡有抄袭、暗示、传递、夹带、代考等作弊行为者，一经发现，立即取消考试资格并令其退场，成绩记为“作弊零分”。考试结束后， 学校将按校学字[2001]063号文件修订的《中国科学技术大学学生违纪处分实施细则》有关考试违纪处分条款严肃处理。
 			</p>	 </div>
-			<a href="beginExam.html"><button class="btn btn-primary"  type="submit" >开始考试</button></a>
+			<a href="${pageContext.request.contextPath }/student/more/student_beginExam.action"><button class="btn btn-primary"  type="submit" >开始考试</button></a>
 			</div>
 			 </div>
 <!--<div class="row  border-bottom white-bg dashboard-header">         

@@ -62,8 +62,8 @@ public class StudentRegisterService implements BaseService<StudentRegister> {
 		this.studentRegisterDaoImpl.clear();
 	}
 	
-	public List<StudentRegister> getStudentRegisterByNumber(String number) {
-		return this.studentRegisterDaoImpl.getStudentRegisterByNumber(number);
+	public List<StudentRegister> getStudentRegisterByNumberAndStatus(String number,byte status) {
+		return this.studentRegisterDaoImpl.getStudentRegisterByNumberAndStatus(number,status);
 	}
 	
 	@Transactional
@@ -71,7 +71,11 @@ public class StudentRegisterService implements BaseService<StudentRegister> {
 		return this.studentRegisterDaoImpl.updateStatus(number,sub_id,status);
 	}
 
-	public List<StudentRegister> getAllByMajorAndSubject(int m_id,int sub_id) {
-		return this.studentRegisterDaoImpl.getAllByMajorAndSubject(m_id,sub_id);
+	public List<StudentRegister> getAllByMajorAndSubjectAndStatus(int m_id,int sub_id,byte status) {
+		return this.studentRegisterDaoImpl.getAllByMajorAndSubjectAndStatus(m_id,sub_id,status);
+	}
+	
+	public List<StudentRegister> getCanExamByNumber(String number){
+		return this.studentRegisterDaoImpl.getCanExamByNumber(number);
 	}
 }

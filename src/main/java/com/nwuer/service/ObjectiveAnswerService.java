@@ -13,45 +13,50 @@ import com.nwuer.entity.ObjectiveAnswer;
 @Service
 public class ObjectiveAnswerService implements BaseService<ObjectiveAnswer> {
 	@Autowired
-	private ObjectiveAnswerDaoImpl answerDaoImpl;
+	private ObjectiveAnswerDaoImpl objectiveAnswerDaoImpl;
 	
 	@Override
 	@Transactional
 	public int add(ObjectiveAnswer t) {
 		t.setCreate_time(System.currentTimeMillis());
-		return this.answerDaoImpl.add(t);
+		return this.objectiveAnswerDaoImpl.add(t);
 	}
 
 	@Override
 	public List<ObjectiveAnswer> getAll() {
-		return this.answerDaoImpl.getAll();
+		return this.objectiveAnswerDaoImpl.getAll();
 	}
 
 	@Override
 	public ObjectiveAnswer getById(int id) {
-		return this.answerDaoImpl.getById(id);
+		return this.objectiveAnswerDaoImpl.getById(id);
 	}
 
 	@Override
 	public List<ObjectiveAnswer> getAllByTimeDesc() {
-		return this.answerDaoImpl.getAllByTimeDesc();
+		return this.objectiveAnswerDaoImpl.getAllByTimeDesc();
 	}
 
 	@Override
 	public ObjectiveAnswer getByIdEager(Serializable id) {
-		return this.answerDaoImpl.getByIdEager(id);
+		return this.objectiveAnswerDaoImpl.getByIdEager(id);
 	}
 
 	@Override
 	@Transactional
 	public void update(ObjectiveAnswer t) {
-		this.answerDaoImpl.update(t);
+		this.objectiveAnswerDaoImpl.update(t);
 	}
 
 	@Override
 	@Transactional
 	public void delete(int id) {
-		this.answerDaoImpl.delete(id);
+		this.objectiveAnswerDaoImpl.delete(id);
 	}
+	
+	public ObjectiveAnswer getByUuid(String uuid) {
+		return this.objectiveAnswerDaoImpl.getByUuid(uuid);
+	}
+	
 
 }

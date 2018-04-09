@@ -53,5 +53,9 @@ public class PaperService {
 	public Paper getNonePaperByMajorAndSubject(int m_id,int sub_id) {
 		return this.paperDaoImpl.getNonePaperByMajorAndSubject(m_id, sub_id);
 	}
+	
+	public Paper getPraticePaperByMajorAndSubject(int m_id,int sub_id) {
+		return this.paperDaoImpl.getPraticePaperByMajorAndSubject(m_id,sub_id);
+	}
 
 }

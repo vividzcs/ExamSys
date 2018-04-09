@@ -53,5 +53,9 @@ public class SubjectiveAnswerService implements BaseService<SubjectiveAnswer> {
 	public void delete(int id) {
 		this.subjectiveAnswerDaoImpl.delete(id);
 	}
+	
+	public List<SubjectiveAnswer> getByUuid(String uuid){
+		return this.subjectiveAnswerDaoImpl.getByUuid(uuid);
+	}
 
 }

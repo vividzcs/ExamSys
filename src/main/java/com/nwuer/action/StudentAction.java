@@ -6,8 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -21,11 +23,15 @@ import org.springframework.stereotype.Controller;
 
 import com.nwuer.entity.Academy;
 import com.nwuer.entity.Major;
+import com.nwuer.entity.Paper;
+import com.nwuer.entity.PaperRule;
 import com.nwuer.entity.Student;
 import com.nwuer.entity.StudentRegister;
 import com.nwuer.entity.Subject;
 import com.nwuer.service.AcademyService;
 import com.nwuer.service.MajorService;
+import com.nwuer.service.PaperRuleService;
+import com.nwuer.service.PaperService;
 import com.nwuer.service.StudentRegisterService;
 import com.nwuer.service.StudentService;
 import com.nwuer.utils.Crpty;
@@ -53,15 +59,19 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	}  //模型驱动获取数据
 	String info;
 	
-	private Map<String,String> result = new HashMap<String,String>();
-	public Map<String,String> getResult() {
+	private Map result = new HashMap();
+	public Map getResult() {
 		return result;
 	}
-	public void setResult(Map<String,String> result) {
+	public void setResult(Map result) {
 		this.result = result;
 	} //传回前端得Json数据
 	@Autowired
 	private StudentService studentService;
+	@Autowired
+	private PaperService paperService;
+	@Autowired
+	private PaperRuleService paperRuleService;
 	@Autowired
 	private AcademyService academyService; 
 	@Autowired
@@ -72,6 +82,7 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	private Crpty crpty;
 	@Autowired
 	private ValidateUtil validateUtil;
+	HttpServletRequest req = ServletActionContext.getRequest();
 
 	/**
 	 * 登录
@@ -120,24 +131,116 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	 */
 	public String confirm() {
 		//验证
-		HttpServletRequest req = ServletActionContext.getRequest();
 		
 		info = this.validateUtil.validateNumber(this.student.getS_number(), 10);
 		if(info!= null) {
 			req.setAttribute("info", "学号"+info);
 			return ERROR;
 		}
-		
+		//检查登录的考生和现在确认的考生是否同一个
+		Student stu = (Student) req.getSession().getAttribute("student"); 
+		if(!stu.getS_number().equals(this.student.getS_number())){
+			req.setAttribute("info","登录考生和确认考生不一致" );
+			return ERROR;
+		}
 		
 		Student s = this.studentService.getByNumberAndPass(this.student);
-		if(s != null) {
+		List<StudentRegister> list = this.studentRegisterService.getCanExamByNumber(this.student.getS_number());
+		
+		if(s != null && list!= null && list.size()>0) {
 			return "before";
 		}else {
-			req.setAttribute("info", "学号或密码错误");
+			req.setAttribute("info", "学号或密码错误或没有考试或未生成试卷");
 			return ERROR;
 		}
 		
 	}
+	
+	/**
+	 * 开始考试,挑选时间正确的
+	 * @return
+	 */
+	public String beginExam() {
+		Student stu = (Student) req.getSession().getAttribute("student"); 
+		//检查是否已注册
+		List<StudentRegister> list = this.studentRegisterService.getCanExamByNumber(stu.getS_number()); 
+		if(list==null || list.size()==0) {
+			req.setAttribute("info", "该生未注册,或未生成试卷");
+			return ERROR;
+		}
+		//开始挑卷子
+		StudentRegister sr = null;
+		Paper p = null;
+		PaperRule rule = null;
+		for(int i=0;i<list.size();i++) {
+			sr = list.get(i);
+			p = this.paperService.getByIdEager(sr.getPaper());
+			rule = this.paperRuleService.getByIdEager(p.getP_id());
+			if(rule.getStart_time()>System.currentTimeMillis() || rule.getEnd_time()<System.currentTimeMillis()) {
+				p=null;
+				rule=null;
+				sr=null;
+				continue; //说明还没有开始考试
+			}else {
+				//已经可以考试
+				sr.setStatus(new Byte(3+""));
+				this.studentRegisterService.update(sr);
+				break;
+			}
+		}
+		//
+		if(p==null || sr==null) {
+			//说明不能考试
+			req.setAttribute("info", "考试时间未到或已过");
+			return ERROR;
+		}else {
+			//可以考试考试
+			try {
+				ServletActionContext.getResponse().sendRedirect(req.getContextPath() + "/" +p.getPap_url());
+				return NONE;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		req.setAttribute("info", "请检查考试时间后重试");
+		return ERROR;
+	}
+	
+	/**
+	 * 开始考试,挑选时间正确的
+	 * @return
+	 */
+	public String beginPratice() {
+		//开始挑卷子
+		String m_id = req.getParameter("m_id");
+		String sub_id = req.getParameter("sub_id");
+		if(this.validateUtil.isNumber(m_id)!=null || this.validateUtil.isNumber(sub_id)!=null) {
+			req.setAttribute("info", "专业或科目错误");
+			return ERROR;
+		}
+		Paper p = this.paperService.getPraticePaperByMajorAndSubject(Integer.parseInt(m_id), Integer.parseInt(sub_id));
+		if(p==null) {
+			//说明未生成练习试卷
+			req.setAttribute("info", "未生成练习试卷");
+			return ERROR;
+		}else {
+			//可以考试考试
+			try {
+				ServletActionContext.getResponse().sendRedirect(req.getContextPath() + "/" +p.getPap_url());
+				return NONE;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		req.setAttribute("info", "系统错误");
+		return ERROR;
+	}
+	public String pushPaper() {
+		Map map = req.getParameterMap();
+		String[] choice = req.getParameterValues("translate[]");
+		return NONE;
+	}
+	
 	
 	/**
 	 * 得到可以注册的科目
@@ -145,7 +248,7 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	 */
 	public String getSubjects() {
 		Student s = (Student) ServletActionContext.getRequest().getSession().getAttribute("student");
-		List<StudentRegister> list = this.studentRegisterService.getStudentRegisterByNumber(s.getS_number());
+		List<StudentRegister> list = this.studentRegisterService.getStudentRegisterByNumberAndStatus(s.getS_number(),new Byte(0+"")); //0:未注册
 		for(int i=0; i<list.size(); i++) {
 			Subject sub = list.get(i).getSubject();
 			this.result.put(String.valueOf(sub.getSub_id()), sub.getSub_name());
@@ -153,6 +256,10 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		return "subs";
 	}
 	
+	/**
+	 * 注册考试
+	 * @return
+	 */
 	public String signin() {
 		HttpServletRequest req = ServletActionContext.getRequest();
 		String sub_id = req.getParameter("sub");
@@ -196,6 +303,37 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		
 		ServletActionContext.getRequest().setAttribute("s_list", s_list);
 		return "list";
+	}
+	
+	/**
+	 * 返回专业和科目的联动数据
+	 * @return
+	 */
+	public String mesFS() {
+		List<Major> majors = this.majorService.getAll();
+		
+		/*{
+	      	department:'信息科学与技术学院',
+	      	profess:['软件工程','计算机科学与技术','电子信息','通信工程']
+	      },*/
+		Set<Subject> subs = null;
+		for(int i=0; i<majors.size(); i++) {
+			Map<String,Object> map = new HashMap<String,Object>(); //存放专业和科目的地址
+			Major maj = majors.get(i); //得到专业
+			map.put("profess", maj.getM_name()); //第一个元素值放专业
+			Map<Integer,String> sub = new HashMap<Integer,String>();  //存放科目数据
+			subs = maj.getS_set();  //得到专业
+			Subject s = null;
+			Iterator<Subject> it = subs.iterator();
+			while (it.hasNext()) {
+				s = it.next();
+				sub.put(s.getSub_id(), s.getSub_name());
+			}
+			//
+			map.put("subject", sub);
+			this.result.put(maj.getM_id(), map);
+		}
+		return SUCCESS;
 	}
 	
 	/**

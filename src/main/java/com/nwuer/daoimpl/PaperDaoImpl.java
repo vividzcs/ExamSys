@@ -1,5 +1,6 @@
 package com.nwuer.daoimpl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -53,5 +54,15 @@ public class PaperDaoImpl extends HibernateDaoSupport  {
 		}else {
 			return null;
 		}
+	}
+	
+	public Paper getPraticePaperByMajorAndSubject(int m_id,int sub_id) {
+		List<Paper> list = (List<Paper>) this.getHibernateTemplate().find("from Paper where pap_kind=0 and major.m_id=? and subject.sub_id=?",m_id,sub_id);
+		if(list!=null && list.size()>0) {
+			Collections.shuffle(list);
+			return list.get(0);
+		}else
+			return null;
+		
 	}
 }

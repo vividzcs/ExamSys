@@ -65,10 +65,10 @@
 											 	<c:if test="${rule.degree eq 2 }">难</c:if>
 											 </th>
 											 <th>${rule.full_score}</th>
-											 <jsp:useBean id="start" class="java.util.Date"></jsp:useBean>
+											 <jsp:useBean id="start" class="java.util.Date" scope="request"></jsp:useBean>
 											 <jsp:setProperty property="time" name="start" value="${rule.start_time }"/>
 											 <th><fmt:formatDate value="${start }" pattern="yyyy/MM/dd HH:mm"/></th>
-											 <jsp:useBean id="end" class="java.util.Date"></jsp:useBean>
+											 <jsp:useBean id="end" class="java.util.Date" scope="request"></jsp:useBean>
 											 <jsp:setProperty property="time" name="end" value="${rule.end_time }"/>
 											 <th><fmt:formatDate value="${end }" pattern="yyyy/MM/dd HH:mm"/></th>
                                             <td class="center"><a href="${pageContext.request.contextPath }/admin/paperrule_delete.action?p_id=${rule.p_id}" class="delete">删除</a>&nbsp<a href="${pageContext.request.contextPath }/admin/paperrule_edit.action?p_id=${rule.p_id}" >修改</a>&nbsp<a href="${pageContext.request.contextPath }/admin/paperrule_detail.action?p_id=${rule.p_id}" >详细</a></td>

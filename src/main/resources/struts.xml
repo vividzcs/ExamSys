@@ -208,11 +208,18 @@
 			<action name="logout" class="studentAction" method="logout">
 				<result name="logout">/index.jsp</result>
 			</action>
-			<action name="paper_*" class="paperAction" method="{1}">
+			<action name="paper_getEndTime" class="paperAction" method="getEndTime">
 				<result name="end" type="json">
 					<param name="root">result</param>
 				</result>
 			</action>
 			
+			<action name="beginPratice" class="studentAction" method="beginPratice"></action>
+			
+			<action name="mesFS" class="studentAction" method="mesFS">
+				<result name="success" type="json">
+					<param name="root">result</param>
+				</result>
+			</action>
 		</package>
 	</struts>

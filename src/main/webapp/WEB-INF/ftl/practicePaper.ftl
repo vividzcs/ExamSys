@@ -12,6 +12,9 @@
     <link href="../../style/css/main.css" rel="stylesheet" type="text/css" />
     <link href="../../style/css/iconfont.css" rel="stylesheet" type="text/css" />
     <link href="../../style/css/test.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" charset="utf-8" src="../../style/plugins/ueditor/ueditor.config1.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../style/plugins/ueditor/ueditor.all.min.js"> </script>
+     <script type="text/javascript" charset="utf-8" src="../../style/plugins/ueditor/lang/zh-cn/zh-cn.js"></script>
     <style>
     	.problem{
     		cursor: pointer;
@@ -107,7 +110,7 @@
     <div class="problem" ng-controller="createTestPaper" ng-cloak>
     	 <div class="main">
 	<div class="test_content_title">
-				<a href="practice.html" class="content_lit"><p>&nbsp;&nbsp;&nbsp;退出&nbsp;&nbsp;&nbsp;</p></a>
+				<a href="javascript:history.go(-1)" class="content_lit"><p>&nbsp;&nbsp;&nbsp;退出&nbsp;&nbsp;&nbsp;</p></a>
 				</div>
 	<!--nr start-->
 	<div class="test_main">
@@ -149,12 +152,12 @@
 												
 													<li class="option">
 														
-															<input type="radio" class="radioOrCheck" name="answer1"
-																id="0_answer_1_option_1"
+															<input type="radio" class="radioOrCheck" name="choice[${cquestion_index}]"
+																id="${cquestion_index}_answer_1_option_1"
 															/>
 														
 														
-														<label for="0_answer_1_option_1">
+														<label for="${cquestion_index}_answer_1_option_1">
 															A.
 															<p class="ue" style="display: inline;">${cquestion[1]}</p>
 														</label>
@@ -162,12 +165,12 @@
 												
 													<li class="option">
 														
-															<input type="radio" class="radioOrCheck" name="answer1"
-																id="0_answer_1_option_2"
+															<input type="radio" class="radioOrCheck" name="choice[${cquestion_index}]"
+																id="${cquestion_index}_answer_1_option_2"
 															/>
 														
 														
-														<label for="0_answer_1_option_2">
+														<label for="${cquestion_index}_answer_1_option_2">
 															B.
 															<p class="ue" style="display: inline;">${cquestion[2]}</p>
 														</label>
@@ -175,12 +178,12 @@
 												
 													<li class="option">
 														
-															<input type="radio" class="radioOrCheck" name="answer1"
-																id="0_answer_1_option_3"
+															<input type="radio" class="radioOrCheck" name="choice[${cquestion_index}]"
+																id="${cquestion_index}_answer_1_option_3"
 															/>
 														
 														
-														<label for="0_answer_1_option_3">
+														<label for="${cquestion_index}_answer_1_option_3">
 															C.
 															<p class="ue" style="display: inline;">${cquestion[3]}</p>
 														</label>
@@ -188,12 +191,12 @@
 												
 													<li class="option">
 														
-															<input type="radio" class="radioOrCheck" name="answer1"
-																id="0_answer_1_option_4"
+															<input type="radio" class="radioOrCheck" name="choice[${cquestion_index}]"
+																id="${cquestion_index}_answer_1_option_4"
 															/>
 														
 														
-														<label for="0_answer_1_option_4">
+														<label for="${cquestion_index}_answer_1_option_4">
 															D.
 															<p class="ue" style="display: inline;">${cquestion[4]}</p>
 														</label>
@@ -231,11 +234,11 @@
 													<li class="option">
 														
 														
-															<input type="radio" class="radioOrCheck" name="janswer1"
-																id="1_answer_1_option_1"
+															<input type="radio" class="radioOrCheck" name="judge[${jquestion_index}]"
+																id="${jquestion_index}_answer_1_option_1"
 															/>
 														
-														<label for="1_answer_1_option_1">
+														<label for="${jquestion_index}_answer_1_option_1">
 															<p class="ue" style="display: inline;">是</p>
 														</label>
 													</li>
@@ -243,11 +246,11 @@
 													<li class="option">
 														
 														
-															<input type="radio" class="radioOrCheck" name="janswer1"
-																id="1_answer_1_option_2"
+															<input type="radio" class="radioOrCheck" name="judge[${jquestion_index}]"
+																id="${jquestion_index}_answer_1_option_2"
 															/>
 														
-														<label for="1_answer_1_option_2">
+														<label for="${jquestion_index}_answer_1_option_2">
 															<p class="ue" style="display: inline;">否</p>
 														</label>
 													</li>
@@ -278,7 +281,7 @@
 										</div>
 										<div class="test_content_nr_main">
 									        <div class="row ">
-                    	                         <textarea name="fanswer0" rows="" cols=""></textarea>
+                    	                         <textarea name="blank[${bquestion_index}]" rows="" cols=""></textarea>
                                             </div>
 										      
 										</div>
@@ -307,7 +310,7 @@
 										</div>
 										<div class="test_content_nr_main">
 									        <div class="row ">
-                    	                         <textarea name="fanswer" rows="" cols=""></textarea>
+                    	                         <textarea name="translate[${tquestion_index}]" rows="" cols=""></textarea>
                                             </div>
 										      
 										</div>
@@ -337,7 +340,7 @@
 										</div>
 										<div class="test_content_nr_main">
 									        <div class="row ">
-                    	                         <textarea name="fanswer" rows="" cols=""></textarea>
+                    	                         <script name="simple[${simquestion_index}]" id="simple${simquestion_index}"></script>
                                             </div>
 										      
 										</div>
@@ -366,7 +369,7 @@
 										</div>
 										<div class="test_content_nr_main">
 									        <div class="row ">
-                    	                         <textarea name="fanswer" rows="" cols=""></textarea>
+                    	                         <script name="compute[${comquestion_index}]" id="compute${comquestion_index}"></script>
                                             </div>
 										      
 										</div>
@@ -395,7 +398,7 @@
 										</div>
 										<div class="test_content_nr_main">
 									        <div class="row ">
-                    	                         <textarea name="fanswer" rows="" cols=""></textarea>
+                    	                         <script name="mix[${mquestion_index}]" id="mix${mquestion_index}"></script>
                                             </div>
 										      
 										</div>
@@ -506,7 +509,7 @@
 							<div class="rt_content_nr answerSheet">
 								<ul>
 									<#list simPaperList as simquestion>
-										<li><a href="#qu_4_${simquestion_index}">$${simquestion_index+1}</a></li>
+										<li><a href="#qu_4_${simquestion_index}">${simquestion_index+1}</a></li>
 									</#list>
 								</ul>
 							</div>
@@ -638,6 +641,17 @@ function getData() {
 
 
 	});
+	//ueditor
+	<#list simPaperList as simquestion>
+		var simple${simquestion_index} = UE.getEditor('simple${simquestion_index}');
+	</#list>
+	<#list comPaperList as comquestion>
+			var compute${comquestion_index} = UE.getEditor('compute${comquestion_index}');
+	</#list>
+	<#list mPaperList as mquestion>
+		var mix${mquestion_index} = UE.getEditor('mix${mquestion_index}');
+	</#list>
+	
 	
 </script>
 

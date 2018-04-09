@@ -32,15 +32,22 @@ public class StudentRegisterDaoImpl extends BaseDaoImpl<StudentRegister> {
 	 * @param number
 	 * @return
 	 */
-	public List<StudentRegister> getStudentRegisterByNumber(String number){
-		return (List<StudentRegister>) this.getHibernateTemplate().find("from StudentRegister where sr_number=? and status=0", number);
+	public List<StudentRegister> getStudentRegisterByNumberAndStatus(String number,byte status){
+		return (List<StudentRegister>) this.getHibernateTemplate().find("from StudentRegister where sr_number=? and status=?", number,status);
 	}
 	
 	public int updateStatus(String s_number,int sub_id,byte status) {
-		return this.getSessionFactory().getCurrentSession().createNativeQuery("update t_student_register set status="+status+" where sr_number="+s_number+" and sub_stu_reg="+sub_id ).executeUpdate();
+		int row = this.getSessionFactory().getCurrentSession().createNativeQuery("update t_student_register set status="+status+" where sr_number="+s_number+" and sub_stu_reg="+sub_id ).executeUpdate();
+		this.getSessionFactory().getCurrentSession().flush();
+		return row;
+		
 	}
 
-	public List<StudentRegister> getAllByMajorAndSubject(int m_id, int sub_id) {
-		return (List<StudentRegister>) this.getHibernateTemplate().find("from StudentRegister where major.m_id=? and subject.sub_id=?", m_id,sub_id);
+	public List<StudentRegister> getAllByMajorAndSubjectAndStatus(int m_id, int sub_id,byte status) {
+		return (List<StudentRegister>) this.getHibernateTemplate().find("from StudentRegister where major.m_id=? and subject.sub_id=? and status=?", m_id,sub_id,status);
+	}
+	
+	public List<StudentRegister> getCanExamByNumber(String number){
+		return (List<StudentRegister>) this.getHibernateTemplate().find("from StudentRegister where sr_number=? and status in(2,3)", number);
 	}
 }
