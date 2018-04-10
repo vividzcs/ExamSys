@@ -18,4 +18,5 @@ public class SubjectiveAnswerDaoImpl extends BaseDaoImpl<SubjectiveAnswer> {
 	public List<SubjectiveAnswer> getByUuid(String uuid){
 		return (List<SubjectiveAnswer>) this.getHibernateTemplate().find("from SubjectiveAnswer where uuid=?", uuid);
 	}
+	
 }

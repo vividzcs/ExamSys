@@ -117,7 +117,7 @@
 		<div class="nr_left">
 			<div class="test">
 				
-				<form action=" " method="post"  >
+				<form action="${contextPath}/student/pushPractice.action" method="post"  >
 					<div width="200px" >
                  <span>试卷编号：${paper.pap_id}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span>考试科目：${subject}</span >
 				
@@ -126,7 +126,8 @@
 						<p class="test_time">
 							<i class="icon iconfont">&#xe6fb;</i><b class="alt-1">02:00</b>
 						</p>
-						<font><input type="submit" name="test_jiaojuan" value="交卷"  onclick=" return checkstart()"></font>
+						<font><input type="submit" value="交卷"  onclick=" return checkstart()"></font>
+						<input type="hidden" value="${paper.pap_id}" name="uuid">
 					</div>
 						<ul>
 						<#if cPaperList??>
@@ -152,7 +153,7 @@
 												
 													<li class="option">
 														
-															<input type="radio" class="radioOrCheck" name="choice[${cquestion_index}]"
+															<input type="radio" class="radioOrCheck" name="choice${cquestion_index}" value="0"
 																id="${cquestion_index}_answer_1_option_1"
 															/>
 														
@@ -165,7 +166,7 @@
 												
 													<li class="option">
 														
-															<input type="radio" class="radioOrCheck" name="choice[${cquestion_index}]"
+															<input type="radio" class="radioOrCheck" name="choice${cquestion_index}" value="1"
 																id="${cquestion_index}_answer_1_option_2"
 															/>
 														
@@ -178,7 +179,7 @@
 												
 													<li class="option">
 														
-															<input type="radio" class="radioOrCheck" name="choice[${cquestion_index}]"
+															<input type="radio" class="radioOrCheck" name="choice${cquestion_index}" value="2"
 																id="${cquestion_index}_answer_1_option_3"
 															/>
 														
@@ -191,7 +192,7 @@
 												
 													<li class="option">
 														
-															<input type="radio" class="radioOrCheck" name="choice[${cquestion_index}]"
+															<input type="radio" class="radioOrCheck" name="choice${cquestion_index}" value="3"
 																id="${cquestion_index}_answer_1_option_4"
 															/>
 														
@@ -234,11 +235,11 @@
 													<li class="option">
 														
 														
-															<input type="radio" class="radioOrCheck" name="judge[${jquestion_index}]"
-																id="${jquestion_index}_answer_1_option_1"
+															<input type="radio" class="radioOrCheck" name="judge${jquestion_index}" value="1"
+																id="${jquestion_index}_answerj_1_option_1"
 															/>
 														
-														<label for="${jquestion_index}_answer_1_option_1">
+														<label for="${jquestion_index}_answerj_1_option_1">
 															<p class="ue" style="display: inline;">是</p>
 														</label>
 													</li>
@@ -246,11 +247,11 @@
 													<li class="option">
 														
 														
-															<input type="radio" class="radioOrCheck" name="judge[${jquestion_index}]"
-																id="${jquestion_index}_answer_1_option_2"
+															<input type="radio" class="radioOrCheck" name="judge${jquestion_index}" value="0"
+																id="${jquestion_index}_answerj_1_option_2"
 															/>
 														
-														<label for="${jquestion_index}_answer_1_option_2">
+														<label for="${jquestion_index}_answerj_1_option_2">
 															<p class="ue" style="display: inline;">否</p>
 														</label>
 													</li>
@@ -281,7 +282,7 @@
 										</div>
 										<div class="test_content_nr_main">
 									        <div class="row ">
-                    	                         <textarea name="blank[${bquestion_index}]" rows="" cols=""></textarea>
+                    	                         <textarea name="blank" rows="" cols=""></textarea>
                                             </div>
 										      
 										</div>
@@ -310,7 +311,7 @@
 										</div>
 										<div class="test_content_nr_main">
 									        <div class="row ">
-                    	                         <textarea name="translate[${tquestion_index}]" rows="" cols=""></textarea>
+                    	                         <textarea name="translate" rows="" cols=""></textarea>
                                             </div>
 										      
 										</div>
@@ -340,7 +341,7 @@
 										</div>
 										<div class="test_content_nr_main">
 									        <div class="row ">
-                    	                         <script name="simple[${simquestion_index}]" id="simple${simquestion_index}"></script>
+                    	                         <script name="simple" id="simple${simquestion_index}"></script>
                                             </div>
 										      
 										</div>
@@ -369,7 +370,7 @@
 										</div>
 										<div class="test_content_nr_main">
 									        <div class="row ">
-                    	                         <script name="compute[${comquestion_index}]" id="compute${comquestion_index}"></script>
+                    	                         <script name="compute" id="compute${comquestion_index}"></script>
                                             </div>
 										      
 										</div>
@@ -398,7 +399,7 @@
 										</div>
 										<div class="test_content_nr_main">
 									        <div class="row ">
-                    	                         <script name="mix[${mquestion_index}]" id="mix${mquestion_index}"></script>
+                    	                         <script name="mix" id="mix${mquestion_index}"></script>
                                             </div>
 										      
 										</div>
@@ -601,7 +602,7 @@ function getData() {
 	$(function(){
 		var p_id = ${rule.p_id};
 		var data = {p_id:p_id};
-		$.post('${contextPath}/paper_getEndTime.action',data,function(data){
+		$.post('${contextPath}/student/getEndTime.action',data,function(data){
 			var time = new Date(data.endTime - new Date().getTime());
 			var hour = time.getHours();
 			var minu = time.getMinutes();

@@ -22,6 +22,8 @@ public class SubjectiveAnswer {
 	private long create_time;
 	private Integer sequence; //主观题在试卷中的题号
 	@Column(columnDefinition="text")
+	private String answer_question;
+	@Column(columnDefinition="text")
 	private String answer_right;  //标准答案,主观题一个一个存 
 									
 	@Column(columnDefinition="text")
@@ -31,7 +33,8 @@ public class SubjectiveAnswer {
 	private Integer sr_id; //学生注册表
 	@Column(columnDefinition="tinyint not null default 0")
 	private int status; //0 未阅 , 1 已阅
-	
+	@Column(columnDefinition="tinyint not null default 0")
+	private int kind;	//0:名词解释,1:填空,2:简答,3:计算,4:综合 
 
 	public int getAnswer_id() {
 		return answer_id;
@@ -46,12 +49,28 @@ public class SubjectiveAnswer {
 	}
 
 
+	public int getKind() {
+		return kind;
+	}
+
+	public void setKind(int kind) {
+		this.kind = kind;
+	}
+
 	public Integer getSequence() {
 		return sequence;
 	}
 
 	public void setSequence(Integer sequence) {
 		this.sequence = sequence;
+	}
+
+	public String getAnswer_question() {
+		return answer_question;
+	}
+
+	public void setAnswer_question(String answer_question) {
+		this.answer_question = answer_question;
 	}
 
 	public void setUuid(String uuid) {

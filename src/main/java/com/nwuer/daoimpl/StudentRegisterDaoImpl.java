@@ -50,4 +50,38 @@ public class StudentRegisterDaoImpl extends BaseDaoImpl<StudentRegister> {
 	public List<StudentRegister> getCanExamByNumber(String number){
 		return (List<StudentRegister>) this.getHibernateTemplate().find("from StudentRegister where sr_number=? and status in(2,3)", number);
 	}
+	
+	public StudentRegister getByUuid(String uuid) {
+		List<StudentRegister> list = (List<StudentRegister>) this.getHibernateTemplate().find("from StudentRegister where paper=?", uuid);
+		if(list != null && list.size()>0)
+			return list.get(0);
+		else
+			return null;
+	}
+	/**
+	 * //到时阅卷时选择 t_id in(0,本教师id)&&status=4
+	 * @return
+	 */
+	public StudentRegister getCanBeReviewed(int m_id,int sub_id,int t_id){
+		//先找已经绑定要这个老师阅卷的试卷
+		List<StudentRegister> list = (List<StudentRegister>) this.getHibernateTemplate().find("from StudentRegister where major.m_id=? and subject.sub_id=? and status=4 and t_id=?", m_id,sub_id,t_id);
+		if(list==null || list.size()==0) {
+			//没找到已经绑定的,就找可以阅卷的
+			list = (List<StudentRegister>) this.getHibernateTemplate().find("from StudentRegister where major.m_id=? and subject.sub_id=? and status=4 and t_id=0", m_id,sub_id);
+			if(list !=null && list.size()>0) {
+				return list.get(0);
+			}else
+				return null;
+		}
+		return list.get(0);
+	}
+	
+	public boolean isReviewDone(int m_id,int sub_id) {
+		List<StudentRegister> list = (List<StudentRegister>) this.getHibernateTemplate().find("from StudentRegister where major.m_id=? and subject.sub_id=? and status=4", m_id,sub_id);
+		if(list!=null && list.size()>0) {
+			return false;
+		}else
+			return true;
+	}
 }
+

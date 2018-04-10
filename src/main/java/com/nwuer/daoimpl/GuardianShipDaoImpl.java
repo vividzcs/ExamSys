@@ -42,4 +42,8 @@ public class GuardianShipDaoImpl extends BaseDaoImpl<GuardianShip> {
 		}else
 			return null;
 	}
+	
+	public List<GuardianShip> getCanReviewByTid(int tid) {
+		return (List<GuardianShip>) this.getHibernateTemplate().find("from GuardianShip where read_1.t_id=? or read_2.t_id=? or read_3.t_id=?", tid,tid,tid);
+	}
 }

@@ -23,17 +23,21 @@ import org.springframework.stereotype.Controller;
 
 import com.nwuer.entity.Academy;
 import com.nwuer.entity.Major;
+import com.nwuer.entity.ObjectiveAnswer;
 import com.nwuer.entity.Paper;
 import com.nwuer.entity.PaperRule;
 import com.nwuer.entity.Student;
 import com.nwuer.entity.StudentRegister;
 import com.nwuer.entity.Subject;
+import com.nwuer.entity.SubjectiveAnswer;
 import com.nwuer.service.AcademyService;
 import com.nwuer.service.MajorService;
+import com.nwuer.service.ObjectiveAnswerService;
 import com.nwuer.service.PaperRuleService;
 import com.nwuer.service.PaperService;
 import com.nwuer.service.StudentRegisterService;
 import com.nwuer.service.StudentService;
+import com.nwuer.service.SubjectiveAnswerService;
 import com.nwuer.utils.Crpty;
 import com.nwuer.utils.ValidateUtil;
 import com.opensymphony.xwork2.ActionSupport;
@@ -78,6 +82,10 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	private MajorService majorService;
 	@Autowired
 	private StudentRegisterService studentRegisterService;
+	@Autowired
+	private ObjectiveAnswerService objectiveAnswerService;
+	@Autowired
+	private SubjectiveAnswerService SubjectiveAnswerService;
 	@Autowired
 	private Crpty crpty;
 	@Autowired
@@ -177,6 +185,9 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 			p = this.paperService.getByIdEager(sr.getPaper());
 			rule = this.paperRuleService.getByIdEager(p.getP_id());
 			if(rule.getStart_time()>System.currentTimeMillis() || rule.getEnd_time()<System.currentTimeMillis()) {
+				System.out.println(rule.getStart_time());
+				System.out.println(System.currentTimeMillis());
+				System.out.println(rule.getEnd_time());
 				p=null;
 				rule=null;
 				sr=null;
@@ -235,10 +246,181 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		req.setAttribute("info", "系统错误");
 		return ERROR;
 	}
+	/**
+	 * 提交考试试卷
+	 * @return
+	 */
 	public String pushPaper() {
+		//0:名词解释,1:填空,2:简答,3:计算,4:综合 ,5:选择 ,6:判断
 		Map map = req.getParameterMap();
-		String[] choice = req.getParameterValues("translate[]");
-		return NONE;
+		String uuid =  ((String[])map.get("uuid"))[0];
+		//对是否有交卷资格进行验证
+		StudentRegister sr = this.studentRegisterService.getByUuid(uuid);
+		if(sr==null || sr.getStatus()!=3) {
+			req.setAttribute("info", "系统错误");
+			return ERROR;
+		}
+		
+		Paper p = this.paperService.getById(uuid);
+		PaperRule rule = this.paperRuleService.getByIdEager(this.paperService.getByIdEager(uuid).getP_id());
+		if(rule ==null || p==null) {
+			req.setAttribute("info", "系统错误");
+			return ERROR;
+		}
+		//给客观题打分
+		double objectiveScore = rule.getSingle_choice_score()+rule.getJudge_score();
+		double sChoiceScore = rule.getSingle_choice_score()/rule.getSingle_choice_num();
+		double sJudgeScore = rule.getJudge_score()/rule.getJudge_num();
+		ObjectiveAnswer oAnswer = this.objectiveAnswerService.getByUuid(uuid);
+		String oAnswerStr = oAnswer.getAnswer_right();
+		String[] oAnswerArr = oAnswerStr.split(","); // 5_0_0 A
+		String[] singleAnswerArr = null;
+		String choice = "choice";
+		String judge = "judge";
+		int choiceNum=0;
+		int judgeNum=0;
+		StringBuilder answer_write = new StringBuilder();
+		for(int i=0; i<oAnswerArr.length-1; i++) {  //减一是因为最后一个为空
+			singleAnswerArr = oAnswerArr[i].split("_");
+			
+			if(singleAnswerArr[0].equals("5")) { //选择题
+				 if(!map.get(choice+choiceNum).equals(singleAnswerArr[2])) {
+					 //是选择题,并且错了
+					 objectiveScore -= sChoiceScore;
+				 }
+				 //将答案拼接
+				 answer_write.append("5_");
+				 answer_write.append(choiceNum);
+				 answer_write.append("_");
+				 answer_write.append(singleAnswerArr[2]);
+				 
+				choiceNum++;
+				
+			}else if(singleAnswerArr[0].equals("6")) { //判断题
+				if(!map.get(judge+judgeNum++).equals(singleAnswerArr[2])) {
+					 //是选择题,并且错了  
+					 objectiveScore -= sJudgeScore;
+				 }
+				 //将答案拼接
+				 answer_write.append("6_");
+				 answer_write.append(judgeNum);
+				 answer_write.append("_");
+				 answer_write.append(singleAnswerArr[2]);
+				 
+				judgeNum++;
+			}
+		}
+		//考试,需要入库
+		
+		//打完分将成绩更新到ObjectiveAnswer表里面
+		oAnswer.setGrade(objectiveScore);
+		oAnswer.setAnswer_write(answer_write.toString());
+		
+		this.objectiveAnswerService.update(oAnswer);
+		
+		//将主观题入库
+		List<SubjectiveAnswer> sAnswerList = this.SubjectiveAnswerService.getByUuid(uuid);
+		String[] blank = (String[]) map.get("blank");
+		String[] translate = (String[]) map.get("translate");
+		String[] simple = (String[]) map.get("simple");
+		String[] compute = (String[]) map.get("compute");
+		String[] mix = (String[]) map.get("mix");
+		SubjectiveAnswer sAnswer = null;
+		for(int i=0;i<sAnswerList.size();i++) {
+			sAnswer = sAnswerList.get(i);
+			switch(sAnswer.getKind()) {  //0:名词解释,1:填空,2:简答,3:计算,4:综合 
+			case 0: 
+				sAnswer.setAnswer_write(translate[sAnswer.getSequence()]);
+				break;
+			case 1:
+				sAnswer.setAnswer_write(blank[sAnswer.getSequence()]);
+				break;
+			case 2:
+				sAnswer.setAnswer_write(simple[sAnswer.getSequence()]);
+				break;
+			case 3:
+				sAnswer.setAnswer_write(mix[sAnswer.getSequence()]);
+				break;
+			}
+			//一个题目的解答设置完毕
+			
+			this.SubjectiveAnswerService.update(sAnswer);
+		}
+		
+		//3 已交卷
+		p.setStatus(new Byte(3+""));
+		this.paperService.update(p);
+		sr.setGrade(objectiveScore);
+		sr.setStatus(new Byte(4+""));
+		this.studentRegisterService.update(sr);
+		
+
+		
+		
+		
+		
+		req.setAttribute("info", "交卷成功");
+		return "showSuccess";
+	}
+	/**
+	 * 提交练习试卷,计算分数后即返回
+	 * @return
+	 */
+	public String pushPractice() {
+		//0:名词解释,1:填空,2:简答,3:计算,4:综合 ,5:选择 ,6:判断
+		Map map = req.getParameterMap();
+		String uuid =  ((String[])map.get("uuid"))[0];
+		Paper p = this.paperService.getById(uuid);
+		PaperRule rule = this.paperRuleService.getByIdEager(this.paperService.getByIdEager(uuid).getP_id());
+		if(rule ==null || p==null) {
+			req.setAttribute("info", "系统错误");
+			return ERROR;
+		}
+		//给客观题打分
+		double objectiveScore = rule.getSingle_choice_score()+rule.getJudge_score();
+		double sChoiceScore = rule.getSingle_choice_score()/rule.getSingle_choice_num();
+		double sJudgeScore = rule.getJudge_score()/rule.getJudge_num();
+		ObjectiveAnswer oAnswer = this.objectiveAnswerService.getByUuid(uuid);
+		String oAnswerStr = oAnswer.getAnswer_right();
+		String[] oAnswerArr = oAnswerStr.split(","); // 5_0_0 A
+		String[] singleAnswerArr = null;
+		String choice = "choice";
+		String judge = "judge";
+		int choiceNum=0;
+		int judgeNum=0;
+		StringBuilder answer_write = new StringBuilder();
+		for(int i=0; i<oAnswerArr.length-1; i++) {  //减一是因为最后一个为空
+			singleAnswerArr = oAnswerArr[i].split("_");
+			
+			if(singleAnswerArr[0].equals("5")) { //选择题
+				 if(!map.get(choice+choiceNum).equals(singleAnswerArr[2])) {
+					 //是选择题,并且错了
+					 objectiveScore -= sChoiceScore;
+				 }
+				 //将答案拼接
+				 answer_write.append("5_");
+				 answer_write.append(choiceNum);
+				 answer_write.append("_");
+				 answer_write.append(singleAnswerArr[2]);
+				 
+				choiceNum++;
+				
+			}else if(singleAnswerArr[0].equals("6")) { //判断题
+				if(!map.get(judge+judgeNum++).equals(singleAnswerArr[2])) {
+					 //是选择题,并且错了  
+					 objectiveScore -= sJudgeScore;
+				 }
+				 //将答案拼接
+				 answer_write.append("6_");
+				 answer_write.append(judgeNum);
+				 answer_write.append("_");
+				 answer_write.append(singleAnswerArr[2]);
+				 
+				judgeNum++;
+			}
+		}
+		req.setAttribute("info", "客观题(选择,判断)分数:"+objectiveScore);
+		return "showSuccess";
 	}
 	
 	

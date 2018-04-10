@@ -86,4 +86,9 @@ public class ValidateUtil {
 			return null;
 	}
 	
+	public boolean isDouble(String d) {
+		String pattern = "^[-+]?(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?[dD]?$";
+		return d.matches(pattern);
+	}
+	
 }

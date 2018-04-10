@@ -84,7 +84,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 	@Autowired
 	private ObjectiveAnswerService objectiveAnswerService;
 	@Autowired
-	private SubjectiveAnswerService SubjectiveAnswerService;
+	private SubjectiveAnswerService subjectiveAnswerService;
 	@Autowired
 	private GuardianShipService guardianShipService;
 	@Autowired
@@ -148,9 +148,9 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			//将答案清除
 			ObjectiveAnswer oAnswer = this.objectiveAnswerService.getByUuid(paper.getPap_id());
 			this.objectiveAnswerService.delete(oAnswer.getAnswer_id());
-			List<SubjectiveAnswer> sList = this.SubjectiveAnswerService.getByUuid(paper.getPap_id());
+			List<SubjectiveAnswer> sList = this.subjectiveAnswerService.getByUuid(paper.getPap_id());
 			for(int i=0; i<sList.size(); i++) {
-				this.SubjectiveAnswerService.delete(sList.get(i).getAnswer_id());
+				this.subjectiveAnswerService.delete(sList.get(i).getAnswer_id());
 			}
 			
 			//  student/more/paper/4028b88162a5164a0162a51752ae0006.html
@@ -339,7 +339,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			this.objectiveAnswerService.add(objectiveAnswer);
 			if(z_answer != null) {
 				for(int k=0;k<z_answer.size();k++) {
-					this.SubjectiveAnswerService.add(z_answer.get(k));
+					this.subjectiveAnswerService.add(z_answer.get(k));
 				}
 				//答案添加完毕
 			}
@@ -388,7 +388,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 				//挑一个学生来生成试卷
 				studentRegister = studentRegisterList.get(i); 
 				p.setSr_id(studentRegister.getSr_id());
-				p.setStatus(new Byte(2+""));  //绑定试卷
+				p.setStatus(new Byte(1+""));  //绑定试卷
 				
 				//加选择题
 				generateChoiceQuestion(this.paper.getPap_kind());
@@ -478,7 +478,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			this.objectiveAnswerService.add(objectiveAnswer);
 			if(z_answer != null) {
 				for(int k=0;k<z_answer.size();k++) {
-					this.SubjectiveAnswerService.add(z_answer.get(k));
+					this.subjectiveAnswerService.add(z_answer.get(k));
 				}
 				//答案添加完毕
 			}
@@ -894,6 +894,8 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						sPaperList.add(blank);
 						//加答案
 						subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
+						subjectiveAnswer.setAnswer_question(subjectiveQuestion.getSq_question());
+						subjectiveAnswer.setKind(type);
 						subjectiveAnswer.setSequence(count);
 						z_answer.add(subjectiveAnswer);
 						count++;
@@ -906,6 +908,8 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						sPaperList.add(blank);
 						//加答案
 						subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
+						subjectiveAnswer.setAnswer_question(subjectiveQuestion.getSq_question());
+						subjectiveAnswer.setKind(type);
 						subjectiveAnswer.setSequence(count);
 						z_answer.add(subjectiveAnswer);
 						count++;
@@ -918,6 +922,8 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						sPaperList.add(blank);
 						//加答案
 						subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
+						subjectiveAnswer.setAnswer_question(subjectiveQuestion.getSq_question());
+						subjectiveAnswer.setKind(type);
 						subjectiveAnswer.setSequence(count);
 						z_answer.add(subjectiveAnswer);
 						count++;

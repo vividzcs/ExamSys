@@ -62,7 +62,7 @@
                     </li>
 					
 					<li>
-                        <a class="J_menuItem"  href="${pageContext.request.contextPath }/student/practice.html"><i class="fa fa-edit"></i> <span class="nav-label">练习</span></a>
+                        <a class="J_menuItem"  href="${pageContext.request.contextPath }/student/practice.jsp"><i class="fa fa-edit"></i> <span class="nav-label">练习</span></a>
                     </li>
 					
                 </ul>

@@ -21,7 +21,10 @@ import org.hibernate.annotations.GenericGenerator;
  *
  */
 @Entity
-@Table(name="t_student_register",indexes=@Index(name="stu_reg_sr_number", columnList="sr_number"))
+@Table(name="t_student_register",
+		indexes= {@Index(name="stu_reg_sr_number", columnList="sr_number"),
+					@Index(name="uuid",columnList="paper")
+})
 public class StudentRegister {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO,generator="native")
@@ -43,11 +46,14 @@ public class StudentRegister {
 //	@OneToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 //	@JoinColumn(name="exam_stu_reg")//学生注册表用来关联 学生,试卷,科目
 //	private ExamRegister examRegister;
-	private Integer r_id; //考试注册表
+//	private Integer r_id; //考试注册表
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="examhistory_stu_reg")
 	private ExamHistory examHistory;
 	private String paper;  //直接存纸卷的uuid
+	private Double grade;
+	@Column(columnDefinition="int not null default 0")
+	private int t_id;  //到时阅卷时选择 t_id in(0,本教师id)&&status=4
 	
 	@Transient
 	private GuardianShip guardianShip;
@@ -67,8 +73,20 @@ public class StudentRegister {
 	public String getSr_number() {
 		return sr_number;
 	}
+	public int getT_id() {
+		return t_id;
+	}
+	public void setT_id(int t_id) {
+		this.t_id = t_id;
+	}
 	public void setSr_number(String sr_number) {
 		this.sr_number = sr_number;
+	}
+	public Double getGrade() {
+		return grade;
+	}
+	public void setGrade(Double grade) {
+		this.grade = grade;
 	}
 	public String getSr_name() {
 		return sr_name;
@@ -79,12 +97,12 @@ public class StudentRegister {
 	public long getCreate_time() {
 		return create_time;
 	}
-	public Integer getR_id() {
-		return r_id;
-	}
-	public void setR_id(Integer r_id) {
-		this.r_id = r_id;
-	}
+//	public Integer getR_id() {
+//		return r_id;
+//	}
+//	public void setR_id(Integer r_id) {
+//		this.r_id = r_id;
+//	}
 	public void setCreate_time(long create_time) {
 		this.create_time = create_time;
 	}

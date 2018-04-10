@@ -24,10 +24,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.nwuer.entity.Academy;
+import com.nwuer.entity.GuardianShip;
+import com.nwuer.entity.Paper;
+import com.nwuer.entity.PaperRule;
 import com.nwuer.entity.Student;
+import com.nwuer.entity.StudentRegister;
+import com.nwuer.entity.SubjectiveAnswer;
 import com.nwuer.entity.Teacher;
 import com.nwuer.service.AcademyService;
+import com.nwuer.service.GuardianShipService;
+import com.nwuer.service.PaperRuleService;
+import com.nwuer.service.PaperService;
+import com.nwuer.service.StudentRegisterService;
 import com.nwuer.service.StudentService;
+import com.nwuer.service.SubjectiveAnswerService;
 import com.nwuer.service.TeacherService;
 import com.nwuer.utils.Crpty;
 import com.nwuer.utils.ValidateUtil;
@@ -62,16 +72,118 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		this.result = result;
 	} //传回前端的数据
 	
+	HttpServletRequest req = ServletActionContext.getRequest();
+	
 	@Autowired
 	private TeacherService teacherService;
+	@Autowired
+	private PaperService paperService;
+	@Autowired
+	private PaperRuleService paperRuleService;
 	@Autowired
 	private AcademyService academyService;
 	@Autowired
 	private StudentService studentService;
 	@Autowired
+	private GuardianShipService guardianShipService;
+	@Autowired
+	private StudentRegisterService studentRegisterService;
+	@Autowired
+	private SubjectiveAnswerService subjectiveAnswerService;
+	@Autowired
 	private Crpty crpty;
 	@Autowired
 	private ValidateUtil validateUtil;
+	
+	/**
+	 * 确认开始阅卷
+	 * @return
+	 */
+	public String reviewConfirm() {
+		//首先在监考信息表中查是否有资格阅卷
+		Teacher t = (Teacher) req.getSession().getAttribute("teacher");
+		List<GuardianShip> list = this.guardianShipService.getCanReviewByTid(t.getT_id());
+		if(list==null || list.size()==0) {
+			req.setAttribute("info", "没有阅卷信息");
+			return ERROR;
+		}
+		return "before";
+	}
+	
+	public String beginReview() {
+		String mes = this.reviewConfirm();
+		if(mes.equals("error")) {
+			req.setAttribute("info", "系统错误");
+		}
+		String m_id = req.getParameter("m_id");
+		String sub_id = req.getParameter("sub_id");
+		if(this.validateUtil.isNumber(m_id)!=null || this.validateUtil.isNumber(sub_id)!=null) {
+			req.setAttribute("info", "专业科目错误");
+			return ERROR;
+		}
+		int mid = Integer.parseInt(m_id);
+		int subid = Integer.parseInt(sub_id);
+		//开始挑选试卷
+		Teacher t = (Teacher) req.getSession().getAttribute("teacher");
+		StudentRegister sr = this.studentRegisterService.getCanBeReviewed(mid,subid,t.getT_id());
+		if(sr == null) {
+			//可能已经阅完卷了
+			if(this.studentRegisterService.isReviewDone(mid, subid)) {
+				req.setAttribute("info", "此科目已经阅卷完毕");
+				return "showSuccess";
+			}else {
+				req.setAttribute("info", "另一位老师正在阅最后一份试卷");
+				return "showSuccess";
+			}
+		}else {
+			sr.setT_id(t.getT_id());
+			PaperRule rule = this.paperRuleService.getByIdEager(this.paperService.getByIdEager(sr.getPaper()).getP_id());
+			this.studentRegisterService.update(sr);
+			List<SubjectiveAnswer> list = this.subjectiveAnswerService.getByUuid(sr.getPaper());
+			req.setAttribute("list", list);
+			req.setAttribute("rule", rule);
+			return "view";
+		}
+		
+	}
+	
+	public String pushReview() {
+		String uuid = req.getParameter("uuid");
+		List<SubjectiveAnswer> list = this.subjectiveAnswerService.getByUuid(uuid);
+		Paper p = this.paperService.getByIdEager(uuid);
+		StudentRegister sr = this.studentRegisterService.getByUuid(uuid);
+		if(p == null || list==null || list.size()==0 || sr==null) {
+			req.setAttribute("info", "系统错误");
+			return ERROR;
+		}
+		SubjectiveAnswer sAnswer = null;
+		double sScore = 0.0;
+		double grade = 0;
+		String g = null;
+		for(int i=0; i<list.size(); i++) {
+			sAnswer = list.get(i);
+			String name = "_"+ sAnswer.getKind()+ "_" +sAnswer.getSequence();
+			g = req.getParameter(name);
+			if(!this.validateUtil.isDouble(g)) {
+				req.setAttribute("info", "分数错误");
+				return ERROR;
+			}
+			grade = Double.parseDouble(req.getParameter(name));
+			sScore += grade;
+			sAnswer.setGrade(grade);
+			this.subjectiveAnswerService.update(sAnswer);
+		}
+		sr.setGrade(sr.getGrade()+sScore);
+		sr.setStatus(new Byte(5+""));
+		this.studentRegisterService.update(sr);
+		p.setStatus(new Byte(4+""));
+		
+		req.setAttribute("m_id", sr.getMajor().getM_id());
+		req.setAttribute("sub_id", sr.getSubject().getSub_id());
+		return "next";
+		
+		
+	}
 	
 	/**
 	 * 查找学生信息

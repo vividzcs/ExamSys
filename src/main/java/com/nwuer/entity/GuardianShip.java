@@ -49,9 +49,6 @@ public class GuardianShip {
 	@ManyToOne(cascade=CascadeType.DETACH,fetch=FetchType.LAZY)
 	@JoinColumn(name="read3_guard_ship")
 	private Teacher read_3;
-	@OneToOne(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
-	@JoinColumn(name="paper_guard")
-	private Paper paper;
 	
 	public int getG_id() {
 		return g_id;
@@ -64,12 +61,6 @@ public class GuardianShip {
 	}
 	public void setMajor(Major major) {
 		this.major = major;
-	}
-	public Paper getPaper() {
-		return paper;
-	}
-	public void setPaper(Paper paper) {
-		this.paper = paper;
 	}
 	public Subject getSubject() {
 		return subject;

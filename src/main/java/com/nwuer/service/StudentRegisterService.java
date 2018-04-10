@@ -78,4 +78,16 @@ public class StudentRegisterService implements BaseService<StudentRegister> {
 	public List<StudentRegister> getCanExamByNumber(String number){
 		return this.studentRegisterDaoImpl.getCanExamByNumber(number);
 	}
+	
+	public StudentRegister getByUuid(String uuid) {
+		return this.studentRegisterDaoImpl.getByUuid(uuid);
+	}
+	
+	public StudentRegister getCanBeReviewed(int m_id,int sub_id,int t_id){
+		return this.studentRegisterDaoImpl.getCanBeReviewed(m_id,sub_id,t_id);
+	}
+	
+	public boolean isReviewDone(int m_id,int sub_id) {
+		return this.studentRegisterDaoImpl.isReviewDone(m_id, sub_id);
+	}
 }

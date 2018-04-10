@@ -42,7 +42,7 @@
                         <a href="${pageContext.request.contextPath }/teacher/paper_list.action"  class="J_menuItem"><i class="fa fa-desktop"></i> <span class="nav-label">查找试卷</span></a>
                     </li>
 					<li>
-                        <a href="teacher/paperReview.html"  class="J_menuItem"><i class="fa fa-edit"></i> <span class="nav-label">批阅试卷</span></a>
+                        <a href="${pageContext.request.contextPath }/teacher/teacher_reviewConfirm.action"  class="J_menuItem"><i class="fa fa-edit"></i> <span class="nav-label">批阅试卷</span></a>
                     </li>
 					<li>
                         <a href="passwordFind.jsp"  class="J_menuItem"><i class="fa fa-desktop"></i> <span class="nav-label">查看密码</span></a>
