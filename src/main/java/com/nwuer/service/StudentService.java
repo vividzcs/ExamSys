@@ -91,4 +91,8 @@ public class StudentService implements BaseService<Student> {
 	public String getNameByNumber(String number) {
 		return this.StudentDaoImpl.getNameByNumber(number);
 	}
+	
+	public	Student getByNumberE(String number) {
+		return this.StudentDaoImpl.getByNumberE(number);
+	}
 }

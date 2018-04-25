@@ -87,7 +87,23 @@ public class StudentRegisterService implements BaseService<StudentRegister> {
 		return this.studentRegisterDaoImpl.getCanBeReviewed(m_id,sub_id,t_id);
 	}
 	
+	/**
+	 * 是否阅卷完成
+	 * @return
+	 */
 	public boolean isReviewDone(int m_id,int sub_id) {
 		return this.studentRegisterDaoImpl.isReviewDone(m_id, sub_id);
+	}
+	
+	public List<Integer> getExamInfoIds(){
+		return this.studentRegisterDaoImpl.getExamInfoIds();
+	}
+	
+	public StudentRegister getByMajorAndSubjectAndNumber(int m_id,int sub_id,String number) {
+		return this.studentRegisterDaoImpl.getByMajorAndSubjectAndNumber(m_id, sub_id, number);
+	}
+	
+	public int getMajorIdByNumberAndSubject(String number,int sub_id) {
+		return this.studentRegisterDaoImpl.getMajorIdByNumberAndSubject(number, sub_id);
 	}
 }

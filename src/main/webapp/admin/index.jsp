@@ -76,9 +76,6 @@
                         </ul>
                   </li>
                     <li>
-                        <a href="maintainCourse.html" class="J_menuItem"><i class="fa fa-laptop"></i> <span class="nav-label">课程信息维护</span></a>
-                    </li>
-                    <li>
                         <a href="index.html#"  ><i class="fa fa-picture-o"></i> <span class="nav-label">考场信息监控</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li><a href="emportStatus.html"   class="J_menuItem">导出考试状态</a>

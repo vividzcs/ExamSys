@@ -25,6 +25,7 @@ public class SubjectAction extends ActionSupport implements ModelDriven<Subject>
 		return subject;
 	}//模型驱动获取数据
 	String info;
+	HttpServletRequest req = ServletActionContext.getRequest();
 	
 	@Autowired
 	private SubjectService subjectService;
@@ -37,55 +38,64 @@ public class SubjectAction extends ActionSupport implements ModelDriven<Subject>
 		//验证
 		Subject s = this.subjectService.getByIdEager(subject.getSub_id());
 		if(s == null) {
-			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
+			req.setAttribute("info", "系统错误,请稍后重试");
 			return ERROR;
 		}
-		this.subjectService.delete(this.subject.getSub_id());
+		try {
+			this.subjectService.delete(this.subject.getSub_id());
+		}catch(Exception e) {
+			req.setAttribute("info", "还有与此科目相关的题库,请先清理相关的题库");
+			return ERROR;
+		}
+		
 		return SUCCESS;
 	}
 	
 	public String list() {
 		List<Subject> list = this.subjectService.getAll();
 		
-		ServletActionContext.getRequest().setAttribute("list", list);
+		req.setAttribute("list", list);
 		return "list";
 	}
 	
 	public String showAdd() {
 		List<Major> list = this.majorService.getAll();
-		ServletActionContext.getRequest().setAttribute("list", list);
+		req.setAttribute("list", list);
 		return "showAdd";
 	}
 	
 	public String add() {
 		//验证
-		HttpServletRequest req = ServletActionContext.getRequest();
 		info = validateUtil.validateNumber(subject.getSub_number(), 6);
-		if(info != null) {
-			req.setAttribute("info", info);
+		if(info != null || subject.getMajor().getM_id() == 0) {
+			req.setAttribute("info", info == null ? "专业未填":info);
 			return ERROR;
 		}
-		
-		int id = this.subjectService.add(subject);
-		if(id > 0) {
-			//添加成功
-			return SUCCESS;
-		} else {
-			//添加失败
+		try {
+			int id = this.subjectService.add(subject);
+			if(id > 0) {
+				//添加成功
+				return SUCCESS;
+			} else {
+				//添加失败
+				req.setAttribute("info", "系统错误,请稍后重试");
+				return ERROR;
+			}
+		}catch(Exception e) {
 			req.setAttribute("info", "系统错误,请稍后重试");
 			return ERROR;
 		}
+		
 	}
 	
 	public String edit() {
 		Subject s = this.subjectService.getById(this.subject.getSub_id());
 		if(s == null) {
-			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
+			req.setAttribute("info", "系统错误,请稍后重试");
 			return ERROR;
 		}
 		List<Major> list = this.majorService.getAll();
 		
-		HttpServletRequest req = ServletActionContext.getRequest();
 		req.setAttribute("subject", s);
 		req.setAttribute("list", list);
 		return "edit";
@@ -94,13 +104,19 @@ public class SubjectAction extends ActionSupport implements ModelDriven<Subject>
 	public String update() {
 		Subject s = this.subjectService.getById(subject.getSub_id());
 		if(s == null) {
-			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
+			req.setAttribute("info", "系统错误,请稍后重试");
 			return ERROR;
 		}
 		subject.setCreate_time(s.getCreate_time());
 		
-		this.subjectService.update(subject);
-		return SUCCESS;
+		try {
+			this.subjectService.update(subject);
+			return SUCCESS;
+		}catch(Exception e) {
+			req.setAttribute("info", "系统错误,请稍后重试");
+			return ERROR;
+		}
+		
 	}
 }
 

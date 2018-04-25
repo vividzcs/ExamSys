@@ -19,4 +19,8 @@ public class SubjectiveAnswerDaoImpl extends BaseDaoImpl<SubjectiveAnswer> {
 		return (List<SubjectiveAnswer>) this.getHibernateTemplate().find("from SubjectiveAnswer where uuid=?", uuid);
 	}
 	
+	public void clear() {
+		this.getSessionFactory().getCurrentSession().createNativeQuery("truncate table t_subjective_answer").executeUpdate();
+	}
+	
 }

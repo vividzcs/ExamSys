@@ -57,5 +57,9 @@ public class SubjectiveAnswerService implements BaseService<SubjectiveAnswer> {
 	public List<SubjectiveAnswer> getByUuid(String uuid){
 		return this.subjectiveAnswerDaoImpl.getByUuid(uuid);
 	}
+	@Transactional
+	public void clear() {
+		this.subjectiveAnswerDaoImpl.clear();
+	}
 
 }

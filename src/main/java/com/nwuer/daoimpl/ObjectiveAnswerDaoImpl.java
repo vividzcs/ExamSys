@@ -22,4 +22,8 @@ public class ObjectiveAnswerDaoImpl extends BaseDaoImpl<ObjectiveAnswer> {
 		else
 			return null;
 	}
+	
+	public void clear() {
+		this.getSessionFactory().getCurrentSession().createNativeQuery("truncate table t_objective_answer").executeUpdate();
+	}
 }

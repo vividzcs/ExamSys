@@ -51,5 +51,9 @@ public class PaperRuleService implements BaseService<PaperRule>{
 	public void delete(int id) {
 		this.paperRuleDaoImpl.delete(id);
 	}
+	
+	public int getIdByMajorAndSubject(int m_id,int sub_id) {
+		return this.paperRuleDaoImpl.getIdByMajorAndSubject(m_id, sub_id);
+	}
 
 }

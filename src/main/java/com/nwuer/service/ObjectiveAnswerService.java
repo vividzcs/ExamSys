@@ -58,5 +58,10 @@ public class ObjectiveAnswerService implements BaseService<ObjectiveAnswer> {
 		return this.objectiveAnswerDaoImpl.getByUuid(uuid);
 	}
 	
+	@Transactional
+	public void clear() {
+		this.objectiveAnswerDaoImpl.clear();
+	}
+	
 
 }

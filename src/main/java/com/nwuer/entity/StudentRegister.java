@@ -54,6 +54,7 @@ public class StudentRegister {
 	private Double grade;
 	@Column(columnDefinition="int not null default 0")
 	private int t_id;  //到时阅卷时选择 t_id in(0,本教师id)&&status=4
+	private int e_id; //考场信息id
 	
 	@Transient
 	private GuardianShip guardianShip;
@@ -111,6 +112,12 @@ public class StudentRegister {
 	}
 	public Subject getSubject() {
 		return subject;
+	}
+	public int getE_id() {
+		return e_id;
+	}
+	public void setE_id(int e_id) {
+		this.e_id = e_id;
 	}
 	public void setSubject(Subject subject) {
 		this.subject = subject;

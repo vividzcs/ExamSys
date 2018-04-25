@@ -31,6 +31,7 @@ import com.nwuer.entity.StudentRegister;
 import com.nwuer.entity.Subject;
 import com.nwuer.entity.SubjectiveAnswer;
 import com.nwuer.service.AcademyService;
+import com.nwuer.service.ExamInfoService;
 import com.nwuer.service.MajorService;
 import com.nwuer.service.ObjectiveAnswerService;
 import com.nwuer.service.PaperRuleService;
@@ -86,6 +87,8 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 	private ObjectiveAnswerService objectiveAnswerService;
 	@Autowired
 	private SubjectiveAnswerService SubjectiveAnswerService;
+	@Autowired
+	private ExamInfoService examInfoService;
 	@Autowired
 	private Crpty crpty;
 	@Autowired
@@ -206,6 +209,11 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 			return ERROR;
 		}else {
 			//可以考试考试
+			//更新考场信息
+			if(!this.examInfoService.increaseExamNumReach(sr.getMajor().getM_id(),sr.getSubject().getSub_id())) {
+				req.setAttribute("info", "系统错误,请重试");
+				return ERROR;
+			}
 			try {
 				ServletActionContext.getResponse().sendRedirect(req.getContextPath() + "/" +p.getPap_url());
 				return NONE;
@@ -277,37 +285,32 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		String[] singleAnswerArr = null;
 		String choice = "choice";
 		String judge = "judge";
-		int choiceNum=0;
-		int judgeNum=0;
 		StringBuilder answer_write = new StringBuilder();
 		for(int i=0; i<oAnswerArr.length-1; i++) {  //减一是因为最后一个为空
 			singleAnswerArr = oAnswerArr[i].split("_");
 			
 			if(singleAnswerArr[0].equals("5")) { //选择题
-				 if(!map.get(choice+choiceNum).equals(singleAnswerArr[2])) {
+				 if(!((String[])map.get(choice+singleAnswerArr[1]))[0].equals(singleAnswerArr[2])) {
 					 //是选择题,并且错了
 					 objectiveScore -= sChoiceScore;
 				 }
 				 //将答案拼接
 				 answer_write.append("5_");
-				 answer_write.append(choiceNum);
+				 answer_write.append(singleAnswerArr[1]);
 				 answer_write.append("_");
 				 answer_write.append(singleAnswerArr[2]);
-				 
-				choiceNum++;
 				
 			}else if(singleAnswerArr[0].equals("6")) { //判断题
-				if(!map.get(judge+judgeNum++).equals(singleAnswerArr[2])) {
-					 //是选择题,并且错了  
+				if(!((String[])map.get(judge+singleAnswerArr[1]))[0].equals(singleAnswerArr[2])) {
+					 //是判断题,并且错了  
 					 objectiveScore -= sJudgeScore;
 				 }
 				 //将答案拼接
 				 answer_write.append("6_");
-				 answer_write.append(judgeNum);
+				 answer_write.append(singleAnswerArr[1]);
 				 answer_write.append("_");
 				 answer_write.append(singleAnswerArr[2]);
 				 
-				judgeNum++;
 			}
 		}
 		//考试,需要入库
@@ -386,37 +389,33 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 		String[] singleAnswerArr = null;
 		String choice = "choice";
 		String judge = "judge";
-		int choiceNum=0;
-		int judgeNum=0;
 		StringBuilder answer_write = new StringBuilder();
 		for(int i=0; i<oAnswerArr.length-1; i++) {  //减一是因为最后一个为空
 			singleAnswerArr = oAnswerArr[i].split("_");
 			
 			if(singleAnswerArr[0].equals("5")) { //选择题
-				 if(!map.get(choice+choiceNum).equals(singleAnswerArr[2])) {
+				 if(!((String[])map.get(choice+singleAnswerArr[1]))[0].equals(singleAnswerArr[2])) {
 					 //是选择题,并且错了
 					 objectiveScore -= sChoiceScore;
 				 }
 				 //将答案拼接
 				 answer_write.append("5_");
-				 answer_write.append(choiceNum);
+				 answer_write.append(singleAnswerArr[1]);
 				 answer_write.append("_");
 				 answer_write.append(singleAnswerArr[2]);
 				 
-				choiceNum++;
 				
 			}else if(singleAnswerArr[0].equals("6")) { //判断题
-				if(!map.get(judge+judgeNum++).equals(singleAnswerArr[2])) {
-					 //是选择题,并且错了  
+				if(!((String[])map.get(judge+singleAnswerArr[1]))[0].equals(singleAnswerArr[2])) {
+					 //是判断题,并且错了  
 					 objectiveScore -= sJudgeScore;
 				 }
 				 //将答案拼接
 				 answer_write.append("6_");
-				 answer_write.append(judgeNum);
+				 answer_write.append(singleAnswerArr[1]);
 				 answer_write.append("_");
 				 answer_write.append(singleAnswerArr[2]);
 				 
-				judgeNum++;
 			}
 		}
 		req.setAttribute("info", "客观题(选择,判断)分数:"+objectiveScore);
@@ -452,18 +451,26 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 			this.result.put("msg", "注册失败");
 			return "subs";
 		}
+		int sub =  Integer.parseInt(sub_id);
 		Student s = this.studentService.getByNumberAndPass(student);
 		if(s == null) {
 			this.result.put("status", "0");
 			this.result.put("msg", "注册失败");
 			return "subs";
 		}
-		int rows = this.studentRegisterService.updateStatus(student.getS_number(), Integer.parseInt(sub_id), Byte.parseByte("1"));
+		int rows = this.studentRegisterService.updateStatus(student.getS_number(),sub, Byte.parseByte("1"));
 		if(rows <=0) {
 			this.result.put("status", "0");
 			this.result.put("msg", "注册失败");
 			return "subs";
 		}else {
+			//更新考场信息
+			int m_id = studentRegisterService.getMajorIdByNumberAndSubject(student.getS_number(),sub);
+			if(!this.examInfoService.increaseExamNum(m_id,sub)) {
+				this.result.put("status", "0");
+				this.result.put("msg", "系统错误,请重试");
+				return "subs";
+			}
 			this.result.put("status", "1");
 			this.result.put("msg", "注册成功,如果还有科目需要考试,请继续注册");
 			return "subs";

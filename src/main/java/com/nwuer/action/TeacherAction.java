@@ -197,7 +197,6 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	}
 	public String findStu() {
 		//检查数据合法性
-		HttpServletRequest req = ServletActionContext.getRequest();
 		info = validateUtil.isNumber(s_number);
 		if(info != null) {
 			req.setAttribute("info","学号"+ info);
@@ -222,7 +221,6 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	 */
 	public String update() {
 		//验证信息
-		HttpServletRequest req = ServletActionContext.getRequest();
 		HttpSession session = req.getSession();
 		String passConfirm = req.getParameter("passConfirm");
 		String oldPass = req.getParameter("oldPass");
@@ -247,11 +245,16 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		//验证
 		Teacher t = this.teacherService.getByIdEager(teacher.getT_id());
 		if(t == null) {
-			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
+			req.setAttribute("info", "系统错误,请稍后重试");
+			return ERROR;
+		}
+		try {
+			this.teacherService.delete(this.teacher.getT_id());
+		}catch(Exception e) {
+			req.setAttribute("info", "请先清理相关的监考信息!");
 			return ERROR;
 		}
 		
-		this.teacherService.delete(this.teacher.getT_id());
 		return SUCCESS;
 	}
 	
@@ -262,7 +265,6 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	public String editA() {
 		Teacher t = this.teacherService.getById(this.teacher.getT_id());
 		List<Academy> list = this.academyService.getAll();
-		HttpServletRequest req = ServletActionContext.getRequest();
 		
 		req.setAttribute("teacher", t);
 		req.setAttribute("list", list);
@@ -277,7 +279,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		//验证信息
 		info = validateUtil.validateNumber(teacher.getT_number(), 10);
 		if(info != null) {
-			ServletActionContext.getRequest().setAttribute("info", info);
+			req.setAttribute("info", info);
 			return ERROR;
 		}
 		
@@ -293,7 +295,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	
 	
 	public String logout() {
-		ServletActionContext.getRequest().getSession().setAttribute("teacher", null);
+		req.getSession().setAttribute("teacher", null);
 		return "logout";
 	}
 	
@@ -303,10 +305,9 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	 */
 	public String login() {
 		//验证
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpSession session = request.getSession();
+		HttpSession session = req.getSession();
 		//验证验证码
-		String code = request.getParameter("code");
+		String code = req.getParameter("code");
 		String codeReal = (String)session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
 		if(!codeReal.equalsIgnoreCase(code)) {
 			result = new HashMap<String,String>();
@@ -317,7 +318,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		
 		info = validateUtil.validateNumber(teacher.getT_number(), 10);
 		if(info != null) {
-			ServletActionContext.getRequest().setAttribute("info", info);
+			req.setAttribute("info", info);
 			return ERROR;
 		}
 		
@@ -444,20 +445,18 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 	}
 	
 	public String list() {
-		HttpServletRequest request = ServletActionContext.getRequest();
 		//查询所有院系
 		List<Academy> aca_list = this.academyService.getAll();
 		//查询老师名单
 		List<Teacher> tea_list = this.teacherService.getAllByTimeDesc();
 		
 		
-		request.setAttribute("aca_list", aca_list);
-		request.setAttribute("tea_list", tea_list);
+		req.setAttribute("aca_list", aca_list);
+		req.setAttribute("tea_list", tea_list);
 		return "list";
 	}
 	
 	public String add() {
-		HttpServletRequest req = ServletActionContext.getRequest();
 		info = validateUtil.validateNumber(teacher.getT_number(), 10);
 		if(info != null) {
 			req.setAttribute("info", info);
@@ -498,7 +497,6 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		//开始导入
 		FileInputStream excel = null;
 		Workbook wb =  null;
-		HttpServletRequest req = ServletActionContext.getRequest();
 		try {
 			ApplicationContext application = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
 			//事务开始

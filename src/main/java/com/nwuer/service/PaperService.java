@@ -57,5 +57,13 @@ public class PaperService {
 	public Paper getPraticePaperByMajorAndSubject(int m_id,int sub_id) {
 		return this.paperDaoImpl.getPraticePaperByMajorAndSubject(m_id,sub_id);
 	}
+	@Transactional
+	public List<Paper> getPaperByPid(int pid){
+		return this.paperDaoImpl.getPaperByPid(pid);
+	}
+	@Transactional
+	public void clear() {
+		this.paperDaoImpl.clear();
+	}
 
 }

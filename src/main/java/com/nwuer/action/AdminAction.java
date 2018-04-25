@@ -25,6 +25,7 @@ import com.nwuer.entity.Academy;
 import com.nwuer.entity.Admin;
 import com.nwuer.entity.ChoiceQuestion;
 import com.nwuer.entity.ChoiceQuestionTest;
+import com.nwuer.entity.ExamInfo;
 import com.nwuer.entity.GuardianShip;
 import com.nwuer.entity.JudgeQuestion;
 import com.nwuer.entity.JudgeQuestionTest;
@@ -38,13 +39,17 @@ import com.nwuer.service.AcademyService;
 import com.nwuer.service.AdminService;
 import com.nwuer.service.ChoiceQuestionService;
 import com.nwuer.service.ChoiceQuestionTestService;
+import com.nwuer.service.ExamInfoService;
 import com.nwuer.service.GuardianShipService;
 import com.nwuer.service.JudgeQuestionService;
 import com.nwuer.service.JudgeQuestionTestService;
 import com.nwuer.service.MajorService;
+import com.nwuer.service.ObjectiveAnswerService;
+import com.nwuer.service.PaperService;
 import com.nwuer.service.StudentRegisterService;
 import com.nwuer.service.StudentService;
 import com.nwuer.service.SubjectService;
+import com.nwuer.service.SubjectiveAnswerService;
 import com.nwuer.service.SubjectiveQuestionService;
 import com.nwuer.service.SubjectiveQuestionTestService;
 import com.nwuer.service.TeacherService;
@@ -99,7 +104,15 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	@Autowired
 	private GuardianShipService guardianShipService;
 	@Autowired
+	private ExamInfoService examInfoService;
+	@Autowired
 	private StudentService studentService;
+	@Autowired
+	private PaperService paperService;
+	@Autowired
+	private ObjectiveAnswerService objectiveAnswerService;
+	@Autowired
+	private SubjectiveAnswerService subjectiveAnswerService;
 	@Autowired
 	private Crpty crpty;
 	@Autowired
@@ -348,7 +361,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		}
 		
 		//到这里说明导入失败
-		info = "系统错误,请稍后重试";
 		ServletActionContext.getRequest().setAttribute("info", info);
 		return "erroro";
 		
@@ -437,8 +449,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				ChoiceQuestion choiceQuestion = new ChoiceQuestion();
 				 //处理题目
 				Cell questionCell = sheet.getCell(0, j);
-				String question = questionCell.getContents();
-				if(question.trim().equals("")) {
+				String question = questionCell.getContents().trim();
+				if(question.equals("")) {
 					//不对
 					info =  "第" + j + "行题目不能为空" ;
 					return info;
@@ -446,8 +458,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理正确选项
 				Cell answerCell = sheet.getCell(1,j);
-				String answer = answerCell.getContents();
-				if(answer.trim().equals("")) {
+				String answer = answerCell.getContents().trim();
+				if(answer.equals("")) {
 					//不对
 					info = "第" + j + "行正确选项不能为空";
 					return info;
@@ -455,8 +467,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 
 				//处理其他选项1
 				Cell other1Cell = sheet.getCell(2,j);
-				String other1 = other1Cell.getContents();
-				if(other1.trim().equals("")) {
+				String other1 = other1Cell.getContents().trim();
+				if(other1.equals("")) {
 					//不对
 					info = "第" + j + "行其他选项1不能为空";
 					return info;
@@ -464,8 +476,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理其他选项2
 				Cell other2Cell = sheet.getCell(3,j);
-				String other2 = other2Cell.getContents();
-				if(other2.trim().equals("")) {
+				String other2 = other2Cell.getContents().trim();
+				if(other2.equals("")) {
 					//不对
 					info = "第" + j + "行其他选项2填写错误";
 					return info;
@@ -473,16 +485,16 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理其他选项3
 				Cell other3Cell = sheet.getCell(4,j);
-				String other3 = other3Cell.getContents();
-				if(other3.trim().equals("")) {
+				String other3 = other3Cell.getContents().trim();
+				if(other3.equals("")) {
 					info = "第" + j + "行其他选项3填写错误";
 					return info;
 				}
 				
 				//处理难易程度
 				Cell degreeCell = sheet.getCell(5,j);
-				String degree = degreeCell.getContents();
-				if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2")) {
+				String degree = degreeCell.getContents().trim();
+				if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 					//不对
 					info = "第" + j + "行难易程度填写错误";
 					return info;
@@ -491,9 +503,9 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理专业
 				Cell majorCell = sheet.getCell(6,j);
-				String major = majorCell.getContents();
+				String major = majorCell.getContents().trim();
 				int m_id = 0;
-				if(major.trim().equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
+				if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 					
 					info = "第" + j + "行专业填写错误";
 					return info;
@@ -501,9 +513,9 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理科目
 				Cell subjectCell = sheet.getCell(7,j);
-				String sub = subjectCell.getContents();
+				String sub = subjectCell.getContents().trim();
 				int sub_id = 0;
-				if(sub.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
+				if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 					
 					info = "第" + j + "行科目填写错误";
 					return info;
@@ -596,8 +608,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				ChoiceQuestionTest choiceQuestionTest = new ChoiceQuestionTest();
 				 //处理题目
 				Cell questionCell = sheet.getCell(0, j);
-				String question = questionCell.getContents();
-				if(question.trim().equals("")) {
+				String question = questionCell.getContents().trim();
+				if(question.equals("")) {
 					//不对
 					info =  "第" + j + "行题目不能为空" ;
 					return info;
@@ -605,8 +617,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理正确选项
 				Cell answerCell = sheet.getCell(1,j);
-				String answer = answerCell.getContents();
-				if(answer.trim().equals("")) {
+				String answer = answerCell.getContents().trim();
+				if(answer.equals("")) {
 					//不对
 					info = "第" + j + "行正确选项不能为空";
 					return info;
@@ -614,8 +626,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 
 				//处理其他选项1
 				Cell other1Cell = sheet.getCell(2,j);
-				String other1 = other1Cell.getContents();
-				if(other1.trim().equals("")) {
+				String other1 = other1Cell.getContents().trim();
+				if(other1.equals("")) {
 					//不对
 					info = "第" + j + "行其他选项1不能为空";
 					return info;
@@ -623,8 +635,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理其他选项2
 				Cell other2Cell = sheet.getCell(3,j);
-				String other2 = other2Cell.getContents();
-				if(other2.trim().equals("")) {
+				String other2 = other2Cell.getContents().trim();
+				if(other2.equals("")) {
 					//不对
 					info = "第" + j + "行其他选项2填写错误";
 					return info;
@@ -632,16 +644,16 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理其他选项3
 				Cell other3Cell = sheet.getCell(4,j);
-				String other3 = other3Cell.getContents();
-				if(other3.trim().equals("")) {
+				String other3 = other3Cell.getContents().trim();
+				if(other3.equals("")) {
 					info = "第" + j + "行其他选项3填写错误";
 					return info;
 				}
 				
 				//处理难易程度
 				Cell degreeCell = sheet.getCell(5,j);
-				String degree = degreeCell.getContents();
-				if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2")) {
+				String degree = degreeCell.getContents().trim();
+				if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 					//不对
 					info = "第" + j + "行难易程度填写错误";
 					return info;
@@ -650,9 +662,9 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理专业
 				Cell majorCell = sheet.getCell(6,j);
-				String major = majorCell.getContents();
+				String major = majorCell.getContents().trim();
 				int m_id = 0;
-				if(major.trim().equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
+				if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 					
 					info = "第" + j + "行专业填写错误";
 					return info;
@@ -660,9 +672,9 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理科目
 				Cell subjectCell = sheet.getCell(7,j);
-				String sub = subjectCell.getContents();
+				String sub = subjectCell.getContents().trim();
 				int sub_id = 0;
-				if(sub.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
+				if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 					
 					info = "第" + j + "行科目填写错误";
 					return info;
@@ -757,8 +769,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						JudgeQuestion judgeQuestion = new JudgeQuestion();
 						 //处理题目
 						Cell questionCell = sheet.getCell(0, j);
-						String question = questionCell.getContents();
-						if(question.trim().equals("")) {
+						String question = questionCell.getContents().trim();
+						if(question.equals("")) {
 							//不对
 							info =  "第" + j + "行题目不能为空" ;
 							return info;
@@ -766,8 +778,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						
 						//处理答案 0 , 1
 						Cell answerCell = sheet.getCell(1,j);
-						String answer = answerCell.getContents();
-						if(!answer.trim().equals("T") && !answer.trim().equals("F")) {
+						String answer = answerCell.getContents().trim();
+						if(!answer.equals("T") && !answer.equals("F")) {
 							//不对
 							info = "第" + j + "行答案格式错误";
 							return info;
@@ -776,8 +788,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						
 						//处理难易程度
 						Cell degreeCell = sheet.getCell(2,j);
-						String degree = degreeCell.getContents();
-						if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2")) {
+						String degree = degreeCell.getContents().trim();
+						if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 							//不对
 							info = "第" + j + "行难易程度填写错误";
 							return info;
@@ -786,9 +798,9 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						
 						//处理专业
 						Cell majorCell = sheet.getCell(3,j);
-						String major = majorCell.getContents();
+						String major = majorCell.getContents().trim();
 						int m_id = 0;
-						if(major.trim().equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
+						if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 							
 							info = "第" + j + "行专业填写错误";
 							return info;
@@ -796,9 +808,9 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						
 						//处理科目
 						Cell subjectCell = sheet.getCell(4,j);
-						String sub = subjectCell.getContents();
+						String sub = subjectCell.getContents().trim();
 						int sub_id = 0;
-						if(sub.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
+						if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 							
 							info = "第" + j + "行科目填写错误";
 							return info;
@@ -891,8 +903,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						JudgeQuestionTest judgeQuestionTest = new JudgeQuestionTest();
 						 //处理题目
 						Cell questionCell = sheet.getCell(0, j);
-						String question = questionCell.getContents();
-						if(question.trim().equals("")) {
+						String question = questionCell.getContents().trim();
+						if(question.equals("")) {
 							//不对
 							info =  "第" + j + "行题目不能为空" ;
 							return info;
@@ -900,8 +912,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						
 						//处理答案 0 , 1
 						Cell answerCell = sheet.getCell(1,j);
-						String answer = answerCell.getContents();
-						if(!answer.trim().equals("T") && !answer.trim().equals("F")) {
+						String answer = answerCell.getContents().trim();
+						if(!answer.equals("T") && !answer.equals("F")) {
 							//不对
 							info = "第" + j + "行答案格式错误";
 							return info;
@@ -910,8 +922,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						
 						//处理难易程度
 						Cell degreeCell = sheet.getCell(2,j);
-						String degree = degreeCell.getContents();
-						if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2")) {
+						String degree = degreeCell.getContents().trim();
+						if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 							//不对
 							info = "第" + j + "行难易程度填写错误";
 							return info;
@@ -920,9 +932,9 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						
 						//处理专业
 						Cell majorCell = sheet.getCell(3,j);
-						String major = majorCell.getContents();
+						String major = majorCell.getContents().trim();
 						int m_id = 0;
-						if(major.trim().equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
+						if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 							
 							info = "第" + j + "行专业填写错误";
 							return info;
@@ -930,9 +942,9 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						
 						//处理科目
 						Cell subjectCell = sheet.getCell(4,j);
-						String sub = subjectCell.getContents();
+						String sub = subjectCell.getContents().trim();
 						int sub_id = 0;
-						if(sub.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
+						if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 							
 							info = "第" + j + "行科目填写错误";
 							return info;
@@ -1024,8 +1036,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				SubjectiveQuestion subjectiveQuestion = new SubjectiveQuestion();
 				 //处理题目
 				Cell questionCell = sheet.getCell(0, j);
-				String question = questionCell.getContents();
-				if(question.trim().equals("")) {
+				String question = questionCell.getContents().trim();
+				if(question.equals("")) {
 					//不对
 					info =  "第" + j + "行题目不能为空" ;
 					return info;
@@ -1033,8 +1045,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理答案
 				Cell answerCell = sheet.getCell(1,j);
-				String answer = answerCell.getContents();
-				if(answer.trim().equals("")) {
+				String answer = answerCell.getContents().trim();
+				if(answer.equals("")) {
 					//不对
 					info = "第" + j + "行答案不能为空";
 					return info;
@@ -1042,8 +1054,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理难易程度
 				Cell degreeCell = sheet.getCell(2,j);
-				String degree = degreeCell.getContents();
-				if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2")) {
+				String degree = degreeCell.getContents().trim();
+				if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 					//不对
 					info = "第" + j + "行难易程度填写错误";
 					return info;
@@ -1052,8 +1064,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理类型
 				Cell questionKindCell = sheet.getCell(2,j);
-				String qKind = questionKindCell.getContents();
-				if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2") && !degree.trim().equals("3") && !degree.trim().equals("4")) {
+				String qKind = questionKindCell.getContents().trim();
+				if(!qKind.equals("0") && !qKind.equals("1") && !qKind.equals("2") && !qKind.equals("3") && !qKind.equals("4")) {
 					//不对
 					info = "第" + j + "行主观题类型填写错误";
 					return info;
@@ -1062,9 +1074,9 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理专业
 				Cell majorCell = sheet.getCell(4,j);
-				String major = majorCell.getContents();
+				String major = majorCell.getContents().trim();
 				int m_id = 0;
-				if(major.trim().equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
+				if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 					
 					info = "第" + j + "行专业填写错误";
 					return info;
@@ -1072,9 +1084,9 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理科目
 				Cell subjectCell = sheet.getCell(5,j);
-				String sub = subjectCell.getContents();
+				String sub = subjectCell.getContents().trim();
 				int sub_id = 0;
-				if(sub.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
+				if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 					
 					info = "第" + j + "行科目填写错误";
 					return info;
@@ -1163,8 +1175,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				SubjectiveQuestionTest subjectiveQuestionTest = new SubjectiveQuestionTest();
 				 //处理题目
 				Cell questionCell = sheet.getCell(0, j);
-				String question = questionCell.getContents();
-				if(question.trim().equals("")) {
+				String question = questionCell.getContents().trim();
+				if(question.equals("")) {
 					//不对
 					info =  "第" + j + "行题目不能为空" ;
 					return info;
@@ -1181,8 +1193,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理难易程度
 				Cell degreeCell = sheet.getCell(2,j);
-				String degree = degreeCell.getContents();
-				if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2")) {
+				String degree = degreeCell.getContents().trim();
+				if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 					//不对
 					info = "第" + j + "行难易程度填写错误";
 					return info;
@@ -1191,8 +1203,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理类型
 				Cell questionKindCell = sheet.getCell(2,j);
-				String qKind = questionKindCell.getContents();
-				if(!degree.trim().equals("0") && !degree.trim().equals("1") && !degree.trim().equals("2") && !degree.trim().equals("3") && !degree.trim().equals("4")) {
+				String qKind = questionKindCell.getContents().trim();
+				if(!qKind.equals("0") && !qKind.equals("1") && !qKind.equals("2") && !qKind.equals("3") && !qKind.equals("4")) {
 					//不对
 					info = "第" + j + "行主观题类型填写错误";
 					return info;
@@ -1201,9 +1213,9 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理专业
 				Cell majorCell = sheet.getCell(4,j);
-				String major = majorCell.getContents();
+				String major = majorCell.getContents().trim();
 				int m_id = 0;
-				if(major.trim().equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
+				if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 					
 					info = "第" + j + "行专业填写错误";
 					return info;
@@ -1211,9 +1223,9 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理科目
 				Cell subjectCell = sheet.getCell(5,j);
-				String sub = subjectCell.getContents();
+				String sub = subjectCell.getContents().trim();
 				int sub_id = 0;
-				if(sub.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
+				if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 					
 					info = "第" + j + "行科目填写错误";
 					return info;
@@ -1926,13 +1938,26 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 			return ERROR;
 		}
 		
-		return SUCCESS;
+		return "showsr";
 	}
 	
 	public String importStudentReg() {
 		//开始导入 先导入注册学生 先清空注册学生
 				if(this.studentRegisterService.hasData()) {
+					//在清除注册学生前,清除考场信息
+					List<Integer> examInfoIds = this.studentRegisterService.getExamInfoIds();
+					for(Integer e_id : examInfoIds ) {
+						if(e_id == 0)
+							continue;
+						this.examInfoService.delete(e_id);
+					}
+					
 					this.studentRegisterService.clear();
+					
+					//还得清空 Paper answer 等
+					this.paperService.clear();
+					this.objectiveAnswerService.clear();
+					this.subjectiveAnswerService.clear();
 					if(this.studentRegisterService.hasData()) {
 						//没有清空表
 						return "历史学生数据无法清空!请稍后再试";
@@ -1963,32 +1988,29 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						StudentRegister sRegister = new StudentRegister();
 						 //处理专业
 						Cell m_nameCell = sheet.getCell(0, j);
-						String m_name = m_nameCell.getContents();
+						String m_name = m_nameCell.getContents().trim();
 						int m_id = 0;
-						if(m_name.trim().equals("") || (m_id=this.majorService.getIdByName(m_name))== 0) {
+						if(m_name.equals("") || (m_id=this.majorService.getIdByName(m_name))== 0) {
 							//不对
 							return "第" + j + "行专业错误";
 						}
 						
 						//处理科目
 						Cell sub_nameCell = sheet.getCell(1,j);
-						String sub_name  = sub_nameCell.getContents();
+						String sub_name  = sub_nameCell.getContents().trim();
 						int sub_id = 0;
-						if(sub_name.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub_name))== 0) {
+						if(sub_name.equals("") || (sub_id=this.subjectService.getIdByName(sub_name))== 0) {
 							//不对
 							return "第" + j + "行科目错误";
 						}
 
 						//处理学号 
 						Cell s_numberCell = sheet.getCell(2,j);
-						String s_number = s_numberCell.getContents();
-						if(s_number.trim().equals("")) {
+						String s_number = s_numberCell.getContents().trim();
+						if(s_number.equals("") || this.studentRegisterService.getByMajorAndSubjectAndNumber(m_id, sub_id, s_number) != null || this.studentService.getByNumberE(s_number) == null) {
 							//不对
-							return "第" + j + "行学号不能为空";
+							return "第" + j + "行学号为空或重复";
 						}
-						//并且学号不能重复
-						
-						
 						//验证通过
 						
 						Major m = new Major();
@@ -2005,6 +2027,11 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						if(id <= 0) {
 							//添加失败
 							return "第" + j + "个学生添加失败,请重试";
+						}else {
+							//更新考场信息
+							if(!this.examInfoService.increaseExamNumAll(m_id,sub_id)) {
+								return "考场信息更新失败,请重试";
+							}
 						}
 					}
 					
@@ -2075,25 +2102,25 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				GuardianShip guard = new GuardianShip();
 				 //处理专业
 				Cell m_nameCell = sheet.getCell(0, j);
-				String m_name = m_nameCell.getContents();
+				String m_name = m_nameCell.getContents().trim();
 				int m_id = 0;
-				if(m_name.trim().equals("") || (m_id=this.majorService.getIdByName(m_name))== 0) {
+				if(m_name.equals("") || (m_id=this.majorService.getIdByName(m_name))== 0) {
 					//不对
 					return "第" + j + "行专业错误";
 				}
 				
 				//处理科目
 				Cell sub_nameCell = sheet.getCell(1,j);
-				String sub_name  = sub_nameCell.getContents();
+				String sub_name  = sub_nameCell.getContents().trim();
 				int sub_id = 0;
-				if(sub_name.trim().equals("") || (sub_id=this.subjectService.getIdByName(sub_name))== 0) {
+				if(sub_name.equals("") || (sub_id=this.subjectService.getIdByName(sub_name))== 0) {
 					//不对
 					return "第" + j + "行科目错误";
 				}
 
 				//处理监考信息
 				Cell number1Cell = sheet.getCell(2,j);
-				String number1 = number1Cell.getContents();
+				String number1 = number1Cell.getContents().trim();
 				Teacher t1 = null;
 				if((info = this.validateUtil.validateNumber(number1, 10))!= null || (t1 = this.teacherService.getByNumberE(number1))==null) {
 					//不对
@@ -2102,7 +2129,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				//并且工号不能重复
 				
 				Cell number2Cell = sheet.getCell(3,j);
-				String number2 = number2Cell.getContents();
+				String number2 = number2Cell.getContents().trim();
 				Teacher t2 = null;
 				if((info = this.validateUtil.validateNumber(number2, 10))!= null || (t2 = this.teacherService.getByNumberE(number2))==null ) {
 					//不对
@@ -2111,7 +2138,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				
 				//处理阅卷信息
 				Cell number3Cell = sheet.getCell(4,j);
-				String number3 = number3Cell.getContents();
+				String number3 = number3Cell.getContents().trim();
 				Teacher t3 = null;
 				if((info = this.validateUtil.validateNumber(number3, 10))!= null || (t3 = this.teacherService.getByNumberE(number3))==null) {
 					//不对
@@ -2119,7 +2146,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				}
 				//并且工号不能重复
 				Cell number4Cell = sheet.getCell(5,j);
-				String number4 = number4Cell.getContents();
+				String number4 = number4Cell.getContents().trim();
 				Teacher t4 = null;
 				if((info = this.validateUtil.validateNumber(number4, 10))!= null || (t4 = this.teacherService.getByNumberE(number4))==null) {
 					//不对
@@ -2128,7 +2155,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				//并且工号不能重复
 				
 				Cell number5Cell = sheet.getCell(6,j);
-				String number5 = number4Cell.getContents();
+				String number5 = number4Cell.getContents().trim();
 				Teacher t5 = null;
 				if((info = this.validateUtil.validateNumber(number5, 10))!= null || (t5 = this.teacherService.getByNumberE(number5))==null) {
 					//不对
@@ -2154,6 +2181,14 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				if(id <= 0) {
 					//添加失败
 					return "第" + j + "个监考阅卷信息添加失败,请重试";
+				}else {
+					//更新考场信息
+					ExamInfo ei = this.examInfoService.getByMajorAndSubject(m_id, sub_id);
+					if(ei == null) {
+						return "考场信息更新失败,请重试";
+					}
+					ei.setG_id(id);
+					this.examInfoService.update(ei);
 				}
 			}
 			

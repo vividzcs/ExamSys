@@ -137,6 +137,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 		Paper p = this.paperService.getByIdEager(this.paper.getPap_id());
 		if(p == null) {
 			req.setAttribute("info", "删除失败");
+			return ERROR;
 		}
 		 //0:刚生成, 1:已绑定 2:考试中, 3 已交卷, 4 已阅卷, 5,已废弃
 		if(p.getStatus()==0 || p.getStatus()==4||p.getStatus()==5) {
@@ -472,9 +473,12 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			p.setPap_url("student/more/paper/"+uuid+".html");
 			//更新试卷信息,考生注册信息为已生成试卷
 			this.paperService.update(p);
-			studentRegister.setPaper(p.getPap_id());
-			studentRegister.setStatus(new Byte(2+""));
-			this.studentRegisterService.update(studentRegister);
+			if(studentRegister!=null) {
+				studentRegister.setPaper(p.getPap_id());
+				studentRegister.setStatus(new Byte(2+""));
+				this.studentRegisterService.update(studentRegister);
+			}
+			
 			this.objectiveAnswerService.add(objectiveAnswer);
 			if(z_answer != null) {
 				for(int k=0;k<z_answer.size();k++) {
@@ -895,7 +899,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						//加答案
 						subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
 						subjectiveAnswer.setAnswer_question(subjectiveQuestion.getSq_question());
-						subjectiveAnswer.setKind(type);
+						subjectiveAnswer.setKind(kind);
 						subjectiveAnswer.setSequence(count);
 						z_answer.add(subjectiveAnswer);
 						count++;
@@ -909,7 +913,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						//加答案
 						subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
 						subjectiveAnswer.setAnswer_question(subjectiveQuestion.getSq_question());
-						subjectiveAnswer.setKind(type);
+						subjectiveAnswer.setKind(kind);
 						subjectiveAnswer.setSequence(count);
 						z_answer.add(subjectiveAnswer);
 						count++;
@@ -923,7 +927,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						//加答案
 						subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
 						subjectiveAnswer.setAnswer_question(subjectiveQuestion.getSq_question());
-						subjectiveAnswer.setKind(type);
+						subjectiveAnswer.setKind(kind);
 						subjectiveAnswer.setSequence(count);
 						z_answer.add(subjectiveAnswer);
 						count++;

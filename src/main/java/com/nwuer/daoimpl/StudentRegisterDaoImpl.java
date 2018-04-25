@@ -83,5 +83,28 @@ public class StudentRegisterDaoImpl extends BaseDaoImpl<StudentRegister> {
 		}else
 			return true;
 	}
+	/**
+	 * 得到考场信息表的id
+	 * @return
+	 */
+	public List<Integer> getExamInfoIds(){
+		return this.getSessionFactory().getCurrentSession().createNativeQuery("select e_id from t_student_register group by e_id").getResultList();
+	}
+	
+	public StudentRegister getByMajorAndSubjectAndNumber(int m_id,int sub_id,String number) {
+		List<StudentRegister> list = (List<StudentRegister>) this.getHibernateTemplate().find("from StudentRegister where major.m_id=? and subject.sub_id=? and sr_number=?", m_id,sub_id,number);
+		if(list != null && list.size()>0) {
+			return list.get(0);
+		}else
+			return null;
+	}
+	
+	public int getMajorIdByNumberAndSubject(String number,int sub_id) {
+		List<Number> list = (List<Number>) this.getHibernateTemplate().find("select major.m_id from StudentRegister where sr_number=? and subject.sub_id=?",number,sub_id);
+		if(list != null && list.size()>0) {
+			return list.get(0).intValue();
+		}else
+			return 0;
+	}
 }
 

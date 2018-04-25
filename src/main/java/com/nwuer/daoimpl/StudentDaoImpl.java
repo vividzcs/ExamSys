@@ -61,6 +61,14 @@ public class StudentDaoImpl extends BaseDaoImpl<Student> {
 		return (List<Student>) this.getHibernateTemplate().findByCriteria(criteria);
 	}
 	
+	public	Student getByNumberE(String number) {
+		List<Student> list = (List<Student>) this.getHibernateTemplate().find("from Student where s_number=?", number);
+		if(list != null && list.size()>0)
+			return list.get(0);
+		else
+			return null;
+	}
+	
 	public String getNameByNumber(String number) {
 		List<String> list = (List<String>) this.getHibernateTemplate().find("select s_name from Student where s_number=?",number );
 		if(list != null && list.size()>0)

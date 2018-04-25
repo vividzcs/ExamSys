@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.nwuer.entity.ExamInfo;
 import com.nwuer.entity.GuardianShip;
+import com.nwuer.service.ExamInfoService;
 import com.nwuer.service.GuardianShipService;
-import com.nwuer.service.StudentService;
 import com.nwuer.service.TeacherService;
 import com.nwuer.utils.ValidateUtil;
 import com.opensymphony.xwork2.ActionSupport;
@@ -29,10 +30,13 @@ public class GuardianShipAction extends ActionSupport implements ModelDriven<Gua
 	@Autowired
 	private TeacherService teacherService;
 	@Autowired
+	private ExamInfoService examInfoService;
+	@Autowired
 	private ValidateUtil validateUtil;
 	
 	public String add() {
 		//验证
+		
 		HttpServletRequest req = ServletActionContext.getRequest();
 		String mes1 = validateUtil.validateNumber(this.guardianShip.getGuard_1().getT_number(), 10);
 		String mes2 = validateUtil.validateNumber(this.guardianShip.getGuard_2().getT_number(), 10);
@@ -61,6 +65,10 @@ public class GuardianShipAction extends ActionSupport implements ModelDriven<Gua
 			req.setAttribute("info", "添加失败,请重试!");
 			return ERROR;
 		}
+		//更新考场信息
+		ExamInfo ei = this.examInfoService.getByMajorAndSubject(guardianShip.getMajor().getM_id(),guardianShip.getSubject().getSub_id());
+		ei.setP_id(id);
+		
 		return SUCCESS;
 	}
 }

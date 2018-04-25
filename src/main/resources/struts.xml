@@ -66,6 +66,7 @@
 				</result>
 				<result name="logout">/index.jsp</result>
 				<result name="erroro">/opationError.jsp</result>
+				<result name="showsr" type="redirectAction">studentRegister_list</result>
 			</action>
 			
 			<action name="teacher_*" class="teacherAction" method="{1}">
@@ -219,7 +220,9 @@
 				</result>
 			</action>
 			
-			<action name="beginPratice" class="studentAction" method="beginPratice"></action>
+			<action name="beginPratice" class="studentAction" method="beginPratice">
+				<result name="error">/opationSuccess.jsp</result>
+			</action>
 			
 			<action name="mesFS" class="studentAction" method="mesFS">
 				<result name="success" type="json">

@@ -25,6 +25,7 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 	} //模型驱动获取数据
 	
 	String info;
+	HttpServletRequest req = ServletActionContext.getRequest();
 	
 	@Autowired
 	private AcademyService academyService;
@@ -38,7 +39,7 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 	
 	public String list() {
 		List<Academy> list = this.academyService.getAllByTimeDesc();
-		ServletActionContext.getRequest().setAttribute("list", list);
+		req.setAttribute("list", list);
 		return "list";
 	}
 	
@@ -49,7 +50,6 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 	public String add() {
 		//验证   a_number
 		info = validateUtil.validateNumber(this.academy.getA_number(),4 );
-		HttpServletRequest req = ServletActionContext.getRequest();
 		if(info != null) {
 			req.setAttribute("info", "编号"+info);
 			return ERROR;
@@ -72,11 +72,16 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 		Academy a = this.academyService.getByIdEager(this.academy.getA_id());
 		if(a == null) {
 			info = "系统错误,请刷新重试或联系维护人员";
-			ServletActionContext.getRequest().setAttribute("info", info);
+			req.setAttribute("info", info);
+			return ERROR;
+		}
+		try {
+			this.academyService.delete(this.academy.getA_id());
+		}catch(Exception e) {
+			req.setAttribute("info", "次院系下还有学生,并且如果清理学生.在删除院系后,老师,专业都会被删除");
 			return ERROR;
 		}
 		
-		this.academyService.delete(this.academy.getA_id());
 		return SUCCESS;
 	}
 	
@@ -86,7 +91,7 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 	 */
 	public String edit() {
 		Academy a = this.academyService.getById(this.academy.getA_id());
-		ServletActionContext.getRequest().setAttribute("academy", a);
+		req.setAttribute("academy", a);
 		return "edit";
 	}
 	/**
@@ -96,7 +101,6 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 	public String update() {
 		//验证
 		info = validateUtil.validateNumber(this.academy.getA_number(),10 );
-		HttpServletRequest req = ServletActionContext.getRequest();
 		if(info != null) {
 			req.setAttribute("info", "编号"+info);
 			return ERROR;

@@ -36,6 +36,7 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 	} //模型驱动获取数据
 	
 	String info; 
+	HttpServletRequest req = ServletActionContext.getRequest();
 	
 	@Autowired
 	private MajorService majorService;
@@ -46,33 +47,39 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 	
 	public String showAdd() {
 		List<Academy> list = this.academyService.getAll();
-		ServletActionContext.getRequest().setAttribute("list", list);
+		req.setAttribute("list", list);
 		return "showAdd";
 	}
 	
 	public String list() {
 		List<Major> list = this.majorService.getAllByTimeDesc();
-		ServletActionContext.getRequest().setAttribute("list", list);
+		req.setAttribute("list", list);
 		return "list";
 	}
 	
 	public String add() {
 		//检验数据  m_number
-		HttpServletRequest req = ServletActionContext.getRequest();
 		info = validateUtil.validateNumber(major.getM_number(), 4);
-		if(info != null) {
-			req.setAttribute("info", "专业" +info);
+		if(info != null || major.getAcademy().getA_id() == 0) {
+			req.setAttribute("info", "专业" + (info==null?"或院系未填":info));
 			return ERROR;
 		}
 		
 		//添加
-		int id = this.majorService.add(major);
-		if(id>0) {
-			return SUCCESS;
-		}else {
+		try {
+			int id = this.majorService.add(major);
+			
+			if(id>0) {
+				return SUCCESS;
+			}else {
+				req.setAttribute("info", "系统错误,请稍后重试");
+				return ERROR;
+			}
+		}catch(Exception e) {
 			req.setAttribute("info", "系统错误,请稍后重试");
 			return ERROR;
 		}
+		
 		
 	}
 	
@@ -80,22 +87,27 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 		//验证数据
 		Major m = this.majorService.getByIdEager(major.getM_id());
 		if(m == null) {
-			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
+			req.setAttribute("info", "系统错误,请稍后重试");
 			return ERROR;
 		}
-		this.majorService.delete(this.major.getM_id());
+		try {
+			this.majorService.delete(this.major.getM_id());
+		}catch(Exception e) {
+			req.setAttribute("info", "此专业下还有科目,请先删除专业下的科目");
+			return ERROR;
+		}
+		
 		return SUCCESS;
 	}
 	
 	public String edit() {
 		Major m = this.majorService.getById(this.major.getM_id());
 		if(m == null) {
-			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
+			req.setAttribute("info", "系统错误,请稍后重试");
 			return ERROR;
 		}
 		List<Academy> list = this.academyService.getAll();
 		
-		HttpServletRequest req = ServletActionContext.getRequest();
 		req.setAttribute("major", m);
 		req.setAttribute("list", list);
 		return "edit";
@@ -106,15 +118,20 @@ public class MajorAction extends ActionSupport implements ModelDriven<Major> {
 		
 		Major m = this.majorService.getById(this.major.getM_id());
 		if(m == null) {
-			ServletActionContext.getRequest().setAttribute("info", "系统错误,请稍后重试");
+			req.setAttribute("info", "系统错误,请稍后重试");
 			return ERROR;
 		}
 		
 		major.setCreate_time(m.getCreate_time());
 		major.setM_num(m.getM_num());
+		try {
+			this.majorService.update(major);
+			return SUCCESS;
+		}catch(Exception e) {
+			req.setAttribute("info", "系统错误,请稍后重试");
+			return ERROR;
+		}
 		
-		this.majorService.update(major);
-		return SUCCESS;
 	}
 
 }

@@ -65,4 +65,12 @@ public class PaperDaoImpl extends HibernateDaoSupport  {
 			return null;
 		
 	}
+	
+	public List<Paper> getPaperByPid(int pid) {
+		return (List<Paper>) this.getHibernateTemplate().find("from Paper where p_id=?", pid);
+	}
+	
+	public void clear() {
+		this.getSessionFactory().getCurrentSession().createNativeQuery("truncate table t_paper").executeUpdate();
+	}
 }
