@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 
 import com.nwuer.entity.Academy;
 import com.nwuer.service.AcademyService;
+import com.nwuer.service.MajorService;
+import com.nwuer.service.TeacherService;
 import com.nwuer.utils.ValidateUtil;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -29,6 +31,10 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 	
 	@Autowired
 	private AcademyService academyService;
+	@Autowired
+	private TeacherService teacherService;
+	@Autowired
+	private MajorService majorService;
 	@Autowired
 	private ValidateUtil validateUtil; 
 	
@@ -73,6 +79,15 @@ public class AcademyAction extends ActionSupport implements ModelDriven<Academy>
 		if(a == null) {
 			info = "系统错误,请刷新重试或联系维护人员";
 			req.setAttribute("info", info);
+			return ERROR;
+		}
+		if(this.teacherService.getHasByAId(this.academy.getA_id())){
+			req.setAttribute("info", "院系下还有老师");
+			return ERROR;
+		}
+		
+		if(this.majorService.getHasByAId(this.academy.getA_id())) {
+			req.setAttribute("info", "院系下还有专业");
 			return ERROR;
 		}
 		try {

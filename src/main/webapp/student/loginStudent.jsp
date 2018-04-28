@@ -43,9 +43,8 @@
             font-family: Arial;
             font-style: italic;
             border: 0;
-            padding: 2px 3px;
-            width: 150px;
-            height:50px;
+            width: 100px;
+            height:40px;
             font-size: 18px;
         }
         .unchanged {
@@ -71,7 +70,6 @@
                     <input type="password" name="s_pass" class="form-control" placeholder="密码" required="">
                 </div>
                 <div class="form-group">
-                      <label class="col-lg-3 control-label">验证码</label>
                         <div class="col-lg-8">
                         	<input type="text" placeholder="验证码" id="code" class="form-control code_input" required="" />&nbsp;&nbsp;&nbsp;<img class="code" src="${pageContext.request.contextPath }/Kaptcha.jpg" alt="验证码位置"  onclick="changeCode()" />
                       </div>

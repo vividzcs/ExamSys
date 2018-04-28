@@ -106,4 +106,8 @@ public class StudentRegisterService implements BaseService<StudentRegister> {
 	public int getMajorIdByNumberAndSubject(String number,int sub_id) {
 		return this.studentRegisterDaoImpl.getMajorIdByNumberAndSubject(number, sub_id);
 	}
+	
+	public List<StudentRegister> getByEId(int e_id){
+		return this.studentRegisterDaoImpl.getByEId(e_id);
+	}
 }

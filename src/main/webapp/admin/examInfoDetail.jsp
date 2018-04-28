@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 
@@ -43,37 +42,26 @@
                                 <table class="table table-striped table-bordered table-hover dataTables-example">
                                     <thead>
                                         <tr>
-                                        <th>规则名</th>
-                                             <th>专业</th>
-                                               <th>科目</th>
-											 <th>难度</th>
-											 <th>总分</th>
-											 <th>开始时间</th>
-											 <th>结束时间</th>
-											  <th>操作</th>
+                                             <th>学号</th>
+                                               <th>姓名</th>
+											 <th>状态</th>
                                         </tr>
                                     </thead>
+                                    <c:forEach items="${srList }" var="sr">
                                     <tbody>
-                                    	<c:forEach items="${list }" var="rule">
                                         <tr class="gradeX">
-                                        <th>${rule.p_name }</th>
-                                             <th>${rule.major.m_name }</th>
-                                              <th>${rule.subject.sub_name }</th>
-											 <th>
-											 	<c:if test="${rule.degree eq 0 }">易</c:if>
-											 	<c:if test="${rule.degree eq 1 }">中</c:if>
-											 	<c:if test="${rule.degree eq 2 }">难</c:if>
+                                             <th>${sr.sr_number }</th>
+                                              <th>${sr.sr_name }</th>
+											 <th><%--0:未注册, 1:已注册未生成试卷, 2:已注册已生成试卷  3:考试中, 4: 已考完, 5:已阅卷 --%>
+											 	<c:if test="${sr.status eq 0 }">未注册</c:if>
+											 	<c:if test="${sr.status eq 1 }">已注册未生成试卷</c:if>
+											 	<c:if test="${sr.status eq 2 }">已注册已生成试卷</c:if>
+											 	<c:if test="${sr.status eq 3 }">考试中</c:if>
+											 	<c:if test="${sr.status eq 4 }">已考完</c:if>
+											 	<c:if test="${sr.status eq 5 }">已阅卷</c:if>
 											 </th>
-											 <th>${rule.full_score}</th>
-											 <jsp:useBean id="start" class="java.util.Date" scope="request"></jsp:useBean>
-											 <jsp:setProperty property="time" name="start" value="${rule.start_time }"/>
-											 <th><fmt:formatDate value="${start }" pattern="yyyy/MM/dd HH:mm:ss"/></th>
-											 <jsp:useBean id="end" class="java.util.Date" scope="request"></jsp:useBean>
-											 <jsp:setProperty property="time" name="end" value="${rule.end_time }"/>
-											 <th><fmt:formatDate value="${end }" pattern="yyyy/MM/dd HH:mm:ss"/></th>
-                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/paperrule_delete.action?p_id=${rule.p_id}" class="delete" onclick="javascript:return del();">删除</a>&nbsp<a href="${pageContext.request.contextPath }/admin/paperrule_edit.action?p_id=${rule.p_id}" >修改</a>&nbsp<a href="${pageContext.request.contextPath }/admin/paperrule_detail.action?p_id=${rule.p_id}" >详细</a></td>
                                         </tr>
-                                        </c:forEach> 
+                                    </c:forEach>
                                     </tbody>
                                 </table>
 
@@ -102,14 +90,6 @@
    
     <!-- Page-Level Scripts -->
     <script>
-    function del(){
-    	var msg="确认删除码?";
-    	if(confirm(msg)==true){
-    		return true;
-    	}else{
-    		return false;
-    	}
-    }
         $(document).ready(function () {
             $('.dataTables-example').dataTable(); 
 

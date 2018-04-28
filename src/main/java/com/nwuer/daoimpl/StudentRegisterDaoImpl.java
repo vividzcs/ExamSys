@@ -106,5 +106,9 @@ public class StudentRegisterDaoImpl extends BaseDaoImpl<StudentRegister> {
 		}else
 			return 0;
 	}
+	
+	public List<StudentRegister> getByEId(int e_id){
+		return (List<StudentRegister>) this.getHibernateTemplate().find("from StudentRegister where e_id=?", e_id);
+	}
 }
 

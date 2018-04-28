@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -58,6 +59,27 @@ public class ExamInfo {
 	private Integer g_id; //监考人员
 	private int p_id; //试卷生成规则
 	
+	@Transient
+	private GuardianShip guardianShip;
+	@Transient
+	private PaperRule rule;
+	
+	public GuardianShip getGuardianShip() {
+		return guardianShip;
+	}
+
+	public void setGuardianShip(GuardianShip guardianShip) {
+		this.guardianShip = guardianShip;
+	}
+
+	public PaperRule getRule() {
+		return rule;
+	}
+
+	public void setRule(PaperRule rule) {
+		this.rule = rule;
+	}
+
 	public int getE_id() {
 		return e_id;
 	}

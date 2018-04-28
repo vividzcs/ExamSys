@@ -78,7 +78,7 @@
 											 </th>
 											 <th>${teacher.t_pass }</th>
 											 <th>${teacher.academy.a_name}</th>
-                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/teacher_delete?t_id=${teacher.t_id}" class="delete">删除</a>&nbsp<a href="${pageContext.request.contextPath }/admin/teacher_editA.action?t_id=${teacher.t_id}" class="edit">修改</a></td>
+                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/teacher_delete?t_id=${teacher.t_id}" class="delete" onclick="javascript:return del();">删除</a>&nbsp<a href="${pageContext.request.contextPath }/admin/teacher_editA.action?t_id=${teacher.t_id}" class="edit">修改</a></td>
                                         </tr>
                                         </c:forEach>
                                     </tbody>
@@ -243,7 +243,14 @@
     
        <script src="../style/js/plugins/iCheck/icheck.min.js"></script>
     <script>
-
+    function del(){
+    	var msg="确认删除码?";
+    	if(confirm(msg)==true){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
          //以下为官方示例
         $().ready(function () {
             // validate the comment form when it is submitted

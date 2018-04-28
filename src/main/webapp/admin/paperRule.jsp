@@ -31,22 +31,36 @@
       <link rel="stylesheet" href="../style/css/solvePlay.css" />
       <link rel="stylesheet" type="text/css" href="../style/css/jquery.datetimepicker.css"/>
       <style>
+     <style>
       select{
       	width: 50%;
       }
       table{
       	 	margin-top: 5px;
       }
-      table th{
+      table thead td{
       	text-align: center;
      
       }
       table tbody td{
       	padding: 5px;
+       
       }
       table tbody td input[type='text']{
-       width: 120px;
+       width: 100px;
       }
+      #paperChapter table{
+      margin-left:90px;
+      width:600px;
+      }
+      #paperChapter table tr:nth-child(1) td{
+      width:100px;
+      }
+       #paperChapter .paperTitle,.paperTitle{
+       margin-left:40px;
+       font-size:16px;
+       font-weight:700;}
+      </style>
       </style>
 </head>
 
@@ -54,7 +68,7 @@
 <!--侧栏部分结束-->
 <!--右侧的部分-->
             <!--右侧的顶部结束-->
-            <div class="row  border-bottom white-bg dashboard-header" style="height: 100%;">
+            <div class="row  border-bottom white-bg dashboard-header" >
 				       <div class="col-lg-12" class="paperRule">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
@@ -114,73 +128,130 @@
                                  <div class="form-group">
                                         <label class="col-sm-3 control-label">总分</label>
                                         <div class="col-sm-8">
-                                            <input id="totalScore" name="full_score" placeholder="填写数字" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字" value="100">
+                                            <input id="totalScore" name="full_score"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字" value="100">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                <label class="col-sm-3 control-label">试卷题目信息</label>
-
+                                 <div class="paperTitle">试卷题目信息</div>
+                                    <label class="col-sm-3 control-label"> </label>
                                     	<table>
                                     		<thead>
                                     		<tr>
-                                    			<th>题目类型</th>
-                                    			<th>个数</th>
-                                    			<th>题型总分数</th>
+                                    			<td>题目类型</td>
+                                    			<td>个数</th>
+                                    			<td>题型总分数</td>
                                     		</tr>
                                     		</thead>
                                     		<tbody>
                                     		<tr>
                                     			<td>单选</td>
-                                    			<td> <input id="simpleSelect" name="single_choice_num" placeholder="填写数字" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字">
+                                    			<td> <input id="simpleSelect" name="single_choice_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber">
                                     			</td>
-                                    		    <td>  <input id="simpleSelectScore" name="single_choice_score" placeholder="填写数字" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字">
+                                    		    <td>  <input id="simpleSelectScore" name="single_choice_score"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     		    </td>
                                     		</tr>
                                     		 <tr>
                                     			<td>判断</td>
-                                    			<td> <input id="mulitfySelectScore" name="judge_num" placeholder="填写数字" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber">
+                                    			<td> <input id="mulitfySelectScore" name="judge_num"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber">
                                                  </td>
-                                    			 <td>   <input id="mulitfySelectScore" name="judge_score" placeholder="填写数字" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber">
+                                    			 <td>   <input id="mulitfySelectScore" name="judge_score"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber">
                                             </td>
                                     		 </tr>
                                     		 <tr>
                                     			<td>填空</td>
-                                    			<td> <input id="mulitfySelectScore" name="blank_num" placeholder="填写数字" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber">
+                                    			<td> <input id="mulitfySelectScore" name="blank_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber">
                                                  </td>
-                                    			 <td>   <input id="mulitfySelectScore" name="blank_score" placeholder="填写数字" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber">
+                                    			 <td>   <input id="mulitfySelectScore" name="blank_score"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber">
                                             </td>
                                     		 </tr>
                                     		 <tr>
                                     			<td>名词解释</td>
-                                    			<td>  <input id="example0" name="translate_num" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字">
+                                    			<td>  <input id="example0" name="translate_num" class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                                </td>
-                                    		   <td> <input id="example0s" name="translate_score" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字">
+                                    		   <td> <input id="example0s" name="translate_score" class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber"  >
                                                 </td>
                                     		 </tr>
                                     		 	 <tr>
                                     			<td>简答题</td>
-                                    			<td>  <input id="example1" name="simple_question_num" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字">
+                                    			<td>  <input id="example1" name="simple_question_num" class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber"  >
                                                </td>
-                                    		   <td> <input id="example1s" name="simple_question_score" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字">
+                                    		   <td> <input id="example1s" name="simple_question_score" class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                                 </td>
                                     		 </tr>
                                     		 	 <tr>
                                     			<td>计算</td>
-                                    			<td>  <input id="example2" name="compute_num" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字">
+                                    			<td>  <input id="example2" name="compute_num" class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber"  >
                                                </td>
-                                    		   <td> <input id="example2s" name="compute_score" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字">
+                                    		   <td> <input id="example2s" name="compute_score" class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber"  >
                                                 </td>
                                     		 </tr>
                                     		 	 <tr>
                                     			<td>综和</td>
-                                    			<td>  <input id="example3" name="mix_num" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字">
+                                    			<td>  <input id="example3" name="mix_num" class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber"  >
                                                </td>
-                                    		   <td> <input id="example3s" name="mix_score" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字">
+                                    		   <td> <input id="example3s" name="mix_score" class="form-control" type= "number" aria-required="true" aria-invalid="true" class="error snumber"  >
                                                </td>
                                     		 </tr>
                                     		</tbody>
                                     	</table>
                                     </div>
+                                  <!-- 在这里新增加了章节信息 --> 
+                                               <div class="form-group col-lg-12" id="paperChapter" style="width: 600px">
+                                <div class="   paperTitle">试卷题目章节分布信息</div>
+
+                                   <table>
+                                    <thead>
+                                    		<tr>
+                                    			<td >章节</td>
+                                    			<td>单选</td>
+                                    			<td>判断</td>
+                                    			<td>填空</td>
+                                    			<td>名词解释</td>
+                                    			<td>简答题</td>
+                                    			<td>计算</td>
+                                    			<td>综合</td>
+                                    		</tr>
+                                   </thead>
+                                    <tbody>
+                                      <tr>
+                                    			<td id="one">第一章</td>
+                                    			<td> <input id="one_single_choice" name="one_single_choice"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    			</td>
+                                    		    <td>  <input id="one_judge_num" name="one_judge_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    </td>
+                                    		    <td> <input id="one_blank_num" name="one_blank_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    			</td>
+                                    		    <td>  <input id="one_translate_num" name="one_translate_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    </td>
+                                    		    <td> <input id="one_simple_question" name="one_simple_question"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    			</td>
+                                    		    <td>  <input id="one_compute_num" name="one_compute_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    </td>
+                                    		    <td> <input id="one_mix_num" name="one_mix_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    			</td>
+                                    		</tr>
+                                    		<tr>
+                                    			<td id="two">第二章</td>
+                                    			<td> <input id="two_single_choice" name="one_single_choice"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    			</td>
+                                    		    <td>  <input id="two_judge_num" name="one_judge_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    </td>
+                                    		    <td> <input id="two_blank_num" name="one_blank_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    			</td>
+                                    		    <td>  <input id="two_translate_num" name="one_translate_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    </td>
+                                    		    <td> <input id="two_simple_question" name="one_simple_question"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    			</td>
+                                    		    <td>  <input id="two_compute_num" name="one_compute_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    </td>
+                                    		    <td> <input id="two_mix_num" name="one_mix_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    			</td>
+                                    		</tr>
+                                    		</tbody>
+                                    	</table>
+                                    </div>
+                                    		
+                                    		 
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">备注</label>
                                         <div class="col-sm-8">
@@ -207,14 +278,6 @@
     
        <!-- DROPZONE -->
     <script src="../style/js/plugins/dropzone/dropzone.js"></script>
-   
-    <!--angularjs-->
-        <!--引入angular插件-->
-    <!--<script src="../style/js/anjularJS/bower_components/angular/angular.min.js"></script>
-    <script src="../style/js/anjularJS/bower_components/angular-route/angular-route.js"></script>
-    <script src="../style/js/anjularJS/anjularjs/app.js"></script>
-    <script src="../style/js/anjularJS/anjularjs/control.js"></script>-->
-    <!-- jQuery Validation plugin javascript-->
     <script src="../style/js/plugins/validate/jquery.validate.min.js"></script>
     <script src="../style/js/plugins/validate/messages_zh.min.js"></script>
 
@@ -295,11 +358,9 @@
        	  }
        	  
          });
-         
          $.datetimepicker.setLocale('en');
 
          $('#datetimepicker_format').datetimepicker({value:'2015/04/15 05:03', format: $("#datetimepicker_format_value").val()});
-         console.log($('#datetimepicker_format').datetimepicker('getValue'));
 
          $("#datetimepicker_format_change").on("click", function(e){
          	$("#datetimepicker_format").data('xdsoft_datetimepicker').setOptions({format: $("#datetimepicker_format_value").val()});
@@ -307,21 +368,23 @@
          $("#datetimepicker_format_locale").on("change", function(e){
          	$.datetimepicker.setLocale($(e.currentTarget).val());
          });
-
+         //获取到本地的时间
+         var dataTime=new Date();
+         var nowtime=dataTime.toLocaleDateString()+" "+dataTime.getHours()+":"+dataTime.getMinutes();
          $('#datetimepicker').datetimepicker({
          dayOfWeekStart : 1,
          lang:'en',
          disabledDates:['2015/01/08','2015/01/09','2015/01/10'],
-         startDate:	'2015/01/05'
+         startDate:	dataTime.toLocaleDateString()
          });
-         $('#datetimepicker').datetimepicker({value:'2015/04/15 05:03',step:10});
+         $('#datetimepicker').datetimepicker({value:nowtime,step:10});
          $('#datetimepicker1').datetimepicker({
          dayOfWeekStart : 1,
          lang:'en',
          disabledDates:['2015/01/08','2015/01/09','2015/01/10'],
-         startDate:	'2015/01/05'
+         startDate:	dataTime.toLocaleDateString()
          });
-         $('#datetimepicker1').datetimepicker({value:'2015/04/15 05:03',step:10});
+         $('#datetimepicker1').datetimepicker({value:nowtime,step:10});
 </script>
 </body>
 

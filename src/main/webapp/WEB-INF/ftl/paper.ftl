@@ -602,11 +602,11 @@ function getData() {
 	$(function(){
 		var p_id = ${rule.p_id};
 		var data = {p_id:p_id};
-		$.post('${contextPath}/student/paper_getEndTime.action',data,function(data){
-			var time = new Date(data.endTime - new Date().getTime());
-			var hour = time.getHours();
-			var minu = time.getMinutes();
-			var second = time.getSeconds();
+		$.post('${contextPath}/student/getEndTime.action',data,function(data){
+			var time = (data.endTime - new Date().getTime())/1000
+			var hour = Math.floor(time/3600);
+    		var minu = Math.floor((time-(hour*3600))/60);
+            var second = Math.floor(time-hour*3600-minu*60)
 			$(".alt-1").html(hour+':'+minu+':'+second);  //01:40
 		},"json")
 	})

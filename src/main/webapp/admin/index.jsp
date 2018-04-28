@@ -78,7 +78,7 @@
                     <li>
                         <a href="index.html#"  ><i class="fa fa-picture-o"></i> <span class="nav-label">考场信息监控</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a href="emportStatus.html"   class="J_menuItem">导出考试状态</a>
+                            <li><a href="${pageContext.request.contextPath }/admin/admin_showExamInfo.action"   class="J_menuItem">考试信息</a>
                             </li>
                         </ul>
                     </li>
@@ -107,7 +107,7 @@
             <div class="row  border-bottom white-bg dashboard-header" style="overflow: hidden;">
   <!--应用框架来弄-->
               <div class="row J_mainContent" id="content-main">
-			   <iframe class="J_iframe" name="iframe0" width="100%" height="900px" src="hello.html" frameborder="0" data-id="hello.html" seamless></iframe>
+			   <iframe class="J_iframe" name="iframe0" width="100%" height="900px" src="../hello.html" frameborder="0" data-id="hello.html" seamless></iframe>
 			  </div>
 
             <div class="footer">

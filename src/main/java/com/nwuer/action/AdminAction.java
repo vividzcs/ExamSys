@@ -30,6 +30,7 @@ import com.nwuer.entity.GuardianShip;
 import com.nwuer.entity.JudgeQuestion;
 import com.nwuer.entity.JudgeQuestionTest;
 import com.nwuer.entity.Major;
+import com.nwuer.entity.PaperRule;
 import com.nwuer.entity.StudentRegister;
 import com.nwuer.entity.Subject;
 import com.nwuer.entity.SubjectiveQuestion;
@@ -45,6 +46,7 @@ import com.nwuer.service.JudgeQuestionService;
 import com.nwuer.service.JudgeQuestionTestService;
 import com.nwuer.service.MajorService;
 import com.nwuer.service.ObjectiveAnswerService;
+import com.nwuer.service.PaperRuleService;
 import com.nwuer.service.PaperService;
 import com.nwuer.service.StudentRegisterService;
 import com.nwuer.service.StudentService;
@@ -76,6 +78,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		return admin;
 	}  //模型驱动获取数据
 	String info;
+	HttpServletRequest req = ServletActionContext.getRequest();
 	
 	@Autowired
 	private AdminService adminService;
@@ -110,6 +113,8 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	@Autowired
 	private PaperService paperService;
 	@Autowired
+	private PaperRuleService paperRuleService;
+	@Autowired
 	private ObjectiveAnswerService objectiveAnswerService;
 	@Autowired
 	private SubjectiveAnswerService subjectiveAnswerService;
@@ -131,7 +136,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	 * @return
 	 */
 	public String update() {
-		HttpServletRequest req = ServletActionContext.getRequest();
 		String newPass = req.getParameter("newPass");
 		//验证密码
 		if(!this.admin.getAd_pass().equals(newPass)) {
@@ -157,7 +161,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	}
 	
 	public String logout() {
-		ServletActionContext.getRequest().getSession().setAttribute("admin", null);
+		req.getSession().setAttribute("admin", null);
 		return "logout";
 	}
 	
@@ -167,11 +171,10 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	 */
 	public String login() {
 		//验证
-		HttpServletRequest request = ServletActionContext.getRequest();
-		HttpSession session = request.getSession();
+		HttpSession session = req.getSession();
 		
 		//验证验证码
-		String code = request.getParameter("code");
+		String code = req.getParameter("code");
 		String codeReal = (String)session.getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
 		if(!codeReal.equalsIgnoreCase(code)) {
 			result.put("status","0");
@@ -220,7 +223,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	}
 	public String findTeacher() {
 		//检查数据合法性
-		HttpServletRequest req = ServletActionContext.getRequest();
 		info = validateUtil.isNumber(t_number);
 		if(info != null) {
 			req.setAttribute("info","编号"+ info);
@@ -299,6 +301,40 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		return SUCCESS;
 	}
 	
+	public String showExamInfo() {
+		List<ExamInfo> list = this.examInfoService.getAll();
+		for(ExamInfo info : list) {
+			//查监考人员
+			info.setGuardianShip(this.guardianShipService.getByIdEager(info.getG_id()));
+			//查考试规则
+			PaperRule p = this.paperRuleService.getByIdEager(info.getP_id());
+			if(System.currentTimeMillis()<p.getStart_time())
+				info.setStatus((byte)0);
+			else if(System.currentTimeMillis()>p.getStart_time() && System.currentTimeMillis()<p.getEnd_time())
+				info.setStatus((byte)1);
+			else
+				info.setStatus((byte)2);
+			info.setRule(p);
+		}
+		req.setAttribute("list", list);
+		return "showExamInfo";
+	}
+	
+	public String showExamInfoDetail() {
+		String id = req.getParameter("e_id");
+		//检查数据合法性
+		info = validateUtil.isNumber(id);
+		if(info != null) {
+			req.setAttribute("info","系统错误");
+			return "erroro";
+		}
+		
+		List<StudentRegister> srList = this.studentRegisterService.getByEId(Integer.parseInt(id));
+		req.setAttribute("srList", srList);
+		return "showExamInfoDetail";
+	}
+	
+	
 	
 	/**
 	 * 导入题库相关数据
@@ -361,7 +397,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		}
 		
 		//到这里说明导入失败
-		ServletActionContext.getRequest().setAttribute("info", info);
+		req.setAttribute("info", info);
 		return "erroro";
 		
 	}
@@ -403,7 +439,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		
 		//到这里说明导入失败
 		info = "系统错误,请稍后重试";
-		ServletActionContext.getRequest().setAttribute("info", info);
+		req.setAttribute("info", info);
 		return "erroro";
 		
 	}
@@ -426,7 +462,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		//开始导入
 		FileInputStream excel = null;
 		Workbook wb =  null;
-		HttpServletRequest req = ServletActionContext.getRequest();
 		try {
 			//得到Excel文件
 			excel = new FileInputStream(file_upload);
@@ -585,7 +620,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		//开始导入
 		FileInputStream excel = null;
 		Workbook wb =  null;
-		HttpServletRequest req = ServletActionContext.getRequest();
 		try {
 			//得到Excel文件
 			excel = new FileInputStream(file_upload);
@@ -746,7 +780,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				//开始导入
 				FileInputStream excel = null;
 				Workbook wb =  null;
-				HttpServletRequest req = ServletActionContext.getRequest();
 				try {
 					//得到Excel文件
 					excel = new FileInputStream(file_upload);
@@ -880,7 +913,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				//开始导入
 				FileInputStream excel = null;
 				Workbook wb =  null;
-				HttpServletRequest req = ServletActionContext.getRequest();
 				try {
 					//得到Excel文件
 					excel = new FileInputStream(file_upload);
@@ -1013,7 +1045,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		//开始导入
 		FileInputStream excel = null;
 		Workbook wb =  null;
-		HttpServletRequest req = ServletActionContext.getRequest();
 		try {
 			//得到Excel文件
 			excel = new FileInputStream(file_upload);
@@ -1152,7 +1183,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		//开始导入
 		FileInputStream excel = null;
 		Workbook wb =  null;
-		HttpServletRequest req = ServletActionContext.getRequest();
 		try {
 			//得到Excel文件
 			excel = new FileInputStream(file_upload);
@@ -1924,7 +1954,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	}
 	public String importPeopleRelated() {
 		
-		HttpServletRequest req = ServletActionContext.getRequest();
 		//开始导入 先导入学生
 		info = importStudentReg(); 
 		if(info != null) {
@@ -2022,6 +2051,9 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						sRegister.setSr_name(sr_name);
 						sRegister.setMajor(m);
 						sRegister.setSubject(s);
+						//考试信息
+						int e_id = this.examInfoService.getIdByMajorAndSubject(m_id, sub_id);		
+						sRegister.setE_id(e_id);
 						
 						int id = this.studentRegisterService.add(sRegister);
 						if(id <= 0) {

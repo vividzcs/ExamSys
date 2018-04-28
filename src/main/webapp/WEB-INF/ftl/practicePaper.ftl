@@ -599,17 +599,6 @@ function getData() {
 	$.ajaxSetup({  
         async : false //取消异步  
     }); 
-	$(function(){
-		var p_id = ${rule.p_id};
-		var data = {p_id:p_id};
-		$.post('${contextPath}/student/getEndTime.action',data,function(data){
-			var time = new Date(data.endTime - new Date().getTime());
-			var hour = time.getHours();
-			var minu = time.getMinutes();
-			var second = time.getSeconds();
-			$(".alt-1").html(hour+':'+minu+':'+second);  //01:40
-		},"json")
-	})
 	
 	window.jQuery(function($) {
 		"use strict";

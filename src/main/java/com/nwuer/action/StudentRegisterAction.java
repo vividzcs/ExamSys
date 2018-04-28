@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.nwuer.entity.ExamInfo;
 import com.nwuer.entity.GuardianShip;
 import com.nwuer.entity.StudentRegister;
+import com.nwuer.service.ExamInfoService;
 import com.nwuer.service.GuardianShipService;
 import com.nwuer.service.StudentRegisterService;
 import com.nwuer.service.StudentService;
@@ -34,6 +36,8 @@ public class StudentRegisterAction extends ActionSupport implements ModelDriven<
 	private StudentRegisterService studentRegisterService;
 	@Autowired
 	private StudentService studentService;
+	@Autowired
+	private ExamInfoService examInfoService;
 	@Autowired
 	private ValidateUtil validateUtil;
 	
@@ -65,7 +69,9 @@ public class StudentRegisterAction extends ActionSupport implements ModelDriven<
 			return ERROR;
 		}
 		this.studentRegister.setSr_name(sr_name);
-				
+		//考试信息
+		int e_id = this.examInfoService.getIdByMajorAndSubject(this.studentRegister.getMajor().getM_id(), this.studentRegister.getSubject().getSub_id());		
+		this.studentRegister.setE_id(e_id);
 		int id = this.studentRegisterService.add(this.studentRegister);
 		if(id<=0) {
 			req.setAttribute("info", "添加失败,请重试!");

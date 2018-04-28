@@ -6,7 +6,7 @@
 		<meta charset="UTF-8">
 		<title>学生考试系统</title>
 		    <link href="${pageContext.request.contextPath }/style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link href="${pageContext.request.contextPath }/style/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="${pageContext.request.contextPath }/style/font-awesome/css/font-awesome.css" rel="stylesheet">
     <!-- Morris -->
     <link href="${pageContext.request.contextPath }/style/css/plugins/morris/morris-0.4.3.min.css" rel="stylesheet">
     <!-- Gritter -->

@@ -67,6 +67,8 @@
 				<result name="logout">/index.jsp</result>
 				<result name="erroro">/opationError.jsp</result>
 				<result name="showsr" type="redirectAction">studentRegister_list</result>
+				<result name="showExamInfo">examInfo.jsp</result>
+				<result name="showExamInfoDetail">examInfoDetail.jsp</result>
 			</action>
 			
 			<action name="teacher_*" class="teacherAction" method="{1}">

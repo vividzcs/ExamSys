@@ -59,6 +59,7 @@ public class GuardianShipAction extends ActionSupport implements ModelDriven<Gua
 			req.setAttribute("info", "已有监考信息,请勿重复添加!");
 			return ERROR;
 		}
+		//考试信息
 		
 		int id = this.guardianShipService.add(this.guardianShip);
 		if(id<=0) {

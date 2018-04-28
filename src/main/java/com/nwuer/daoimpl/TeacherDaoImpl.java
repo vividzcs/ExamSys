@@ -55,4 +55,12 @@ public class TeacherDaoImpl extends BaseDaoImpl<Teacher> {
 		}else
 			return null;
 	}
+	
+	public boolean getHasByAId(int a_id){
+		List<Teacher> list = (List<Teacher>) this.getHibernateTemplate().find("from Teacher where academy.a_id=?", a_id);
+		if(list != null  && list.size()>0) {
+			return true;
+		}else
+			return false;
+	}
 }

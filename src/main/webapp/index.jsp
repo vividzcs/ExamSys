@@ -19,21 +19,26 @@
     <link href="${pageContext.request.contextPath }/style/css/style.css?v=2.2.0" rel="stylesheet">
    <style>
    body{
-   	background: url(${pageContext.request.contextPath }/style/img/bg .jpg) no-repeat center ;
-   	background-position: 500px 200px;
+   	background: url(${pageContext.request.contextPath }/style/img/bg2.jpg) no-repeat -600px -100px ;
    }
   .login .role {
-    margin:35% auto;     	
+    margin:50% auto;   	
+    width:600px;
+    height:90px;
+    padding:15px;
+    background:rgba(207,220,220,0.5);
+    line-height:90px;
+    box-shadow:1px 1px 20px rgba(207,220,220,0.5);
    }
      .login .role a {
 	 display:block;
      	float: left;
      	list-style: none;
-     	width: 200px;
-     	height: 150px; 
-     	border-radius: 30%;
+     	width: 90px;
+     	height: 60px; 
+     	border-radius: 25%;
      	text-align: center;
-     	font: 40px/150px "微软雅黑";
+     	font: 25px/55px "微软雅黑";
      	margin-left: 20px;
      	box-shadow: 2px 2px 10px #444444;
      }
@@ -55,11 +60,24 @@
         	width:50%;
         	float:left;
         }
+            .header{
+        	width: 500px;
+        	text-align: center;
+        	margin: 50px auto;
+        	font: 60px/90px arial;
+        	color: #EFEFEF;
+        	 text-shadow:1px 1px 1px #000,-1px -1px 1px #fff;
+        }
    </style>
 </head>
 
 <body>
 <div class="  loginscreen  animated fadeInDown">
+   <div class="header">
+		 <div>
+		 	在&nbsp;线&nbsp;考&nbsp;试&nbsp;系&nbsp;统
+		 </div>
+	</div>
 	<div class="col-lg-3"></div>
  <div class="container  login col-lg-6">
     <div class="list-group role m-t">

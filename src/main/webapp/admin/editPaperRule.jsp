@@ -251,23 +251,10 @@
        		  allData = data;
      			var strProf = '<option value="">-- 请选择 --</option>';
      			for(var i in data) {
-     				if(i == major_id)
-     					strProf += '<option value="' + i + '" selected>'+ data[i].profess +'</option>'
-     				else
-     					strProf += '<option value="' + i + '">'+ data[i].profess +'</option>'
+   					strProf += '<option value="' + i + '">'+ data[i].profess +'</option>'
      			}
-     			var sub = $("#subject");  
-         		  var strSub = '<option value="">-- 请选择 --</option>';
-         		  var subjects = allData[subject_id];
-         		  for(var i in subjects.subject) {
-         			  if(i == subject_id)
-         				 strSub += '<option value="' + i + '" selected>'+ subjects.subject[i] +'</option>'
-         			  else
-         				strSub += '<option value="' + i + '">'+ subjects.subject[i] +'</option>'
-         			}
          		
      			$("#profess").html(strProf);
-     			sub.html(strSub);
      			
      		},"json")
          })

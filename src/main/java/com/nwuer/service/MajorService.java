@@ -57,5 +57,9 @@ public class MajorService implements BaseService<Major> {
 	public void delete(int id) {
 		this.majorDaoImpl.delete(id);
 	}
+	
+	public boolean getHasByAId(int a_id) {
+		return this.majorDaoImpl.getHasByAId(a_id);
+	}
 
 }

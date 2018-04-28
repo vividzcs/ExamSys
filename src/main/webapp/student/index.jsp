@@ -51,7 +51,7 @@
                         <ul class="nav nav-second-level">
                             <li><a class="J_menuItem"  href="${pageContext.request.contextPath }/student/more/signInExam.jsp">注册考试</a>
                             </li>
-                            <li><a class="J_menuItem"  href="${pageContext.request.contextPath }/student/more/loginExam.jsp">录登考试</a>
+                            <li><a class="J_menuItem"  href="${pageContext.request.contextPath }/student/more/loginExam.jsp">登录考试</a>
                             </li>
                         </ul>
                     </li>

@@ -12,13 +12,18 @@
 			margin: 10% auto;
 			width: 300px;
 			height: 200px;
-			background: rgba(200,200,200,0.5);
+			background: rgba(123,234,211,0.5);
+			box-shadow: rgba(123,221,211,0.6) 0px 1px 10px; 
 			border-radius: 10px;
 			position: relative;
+			padding:10px;
 		}
-		.information h2,.information h3{
+		.information h3,.information h4{
 			text-align: center;
+			margin-top:10px;
 		}
+		.information h4{
+		line-height:30px;}
 		button{
 			background: #00B7EE;
 			border:0 ;
@@ -39,8 +44,8 @@
 	</head>
 	<body>
 		<div class="information">
-			<h2>操作失败</h2>
-			<h3>${info }</h3>
+			<h3>操作失败</h3>
+			<h4>${info }</h4>
 		  <a href="javascript:history.go(-1)"><button class="btn btn-success" >返回</button></a> 
 		</div>
 	</body>

@@ -61,7 +61,7 @@
                                             <td> ${major.academy.a_name }</td>
                                             <td>${major.m_number }</td>
                                             <td>${major.m_name }</td>
-                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/profess_edit.action?m_id=${major.m_id}">修改</a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath }/admin/profess_delete.action?m_id=${major.m_id}">删除</a></td>
+                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/profess_edit.action?m_id=${major.m_id}">修改</a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath }/admin/profess_delete.action?m_id=${major.m_id}" onclick="javascript:return del();">删除</a></td>
                                         </tr>
                                         </c:forEach>
                                     </tbody>
@@ -94,6 +94,14 @@
     <script src="../style/js/plugins/pace/pace.min.js"></script>
 
     <script>
+    function del(){
+    	var msg="确认删除码?";
+    	if(confirm(msg)==true){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
     	 $(document).ready(function () {
             $('.dataTables-example').dataTable();
 

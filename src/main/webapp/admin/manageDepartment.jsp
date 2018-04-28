@@ -57,7 +57,7 @@
                                         <tr class="gradeX">
                                             <td> ${academy.a_number }</td>
                                             <td> ${academy.a_name }</td>
-                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/department_edit.action?a_id=${academy.a_id }">修改</a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath }/admin/department_delete.action?a_id=${academy.a_id }" class="deletedepartment">删除</a></td>
+                                            <td class="center"><a href="${pageContext.request.contextPath }/admin/department_edit.action?a_id=${academy.a_id }">修改</a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath }/admin/department_delete.action?a_id=${academy.a_id }" class="deletedepartment" onclick="javascript:return del();">删除</a></td>
                                         </tr>
                                        </c:forEach>
                                     </tbody><!-- 删除院系,院系下的老师也会被删除 -->
@@ -90,6 +90,14 @@
     <script src="../style/js/plugins/pace/pace.min.js"></script>
 
     <script>
+    function del(){
+    	var msg="确认删除码?";
+    	if(confirm(msg)==true){
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
     	 $(document).ready(function () {
             $('.dataTables-example').dataTable();
 

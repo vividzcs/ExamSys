@@ -78,5 +78,8 @@ public class TeacherService implements BaseService<Teacher> {
 		return this.teacherDaoImpl.getByNumberE(number);
 	}
 	
+	public boolean getHasByAId(int a_id){
+		return this.teacherDaoImpl.getHasByAId(a_id);
+	}
 	
 }

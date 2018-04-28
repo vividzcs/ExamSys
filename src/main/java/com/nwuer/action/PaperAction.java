@@ -229,7 +229,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 		String p_id = ServletActionContext.getRequest().getParameter("p_id");
 		info = this.validateUtil.isNumber(p_id);
 		if(info!=null) {
-			this.result.put("endTime", System.currentTimeMillis()+7200000);
+			this.result.put("endTime", System.currentTimeMillis());
 			return "end";
 		}
 		long time = this.paperRuleService.getByIdEager(Integer.parseInt(p_id)).getEnd_time();
