@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.nwuer.entity.Chapter;
 import com.nwuer.entity.ExamInfo;
 import com.nwuer.entity.ObjectiveAnswer;
 import com.nwuer.entity.Paper;
@@ -65,6 +66,28 @@ public class PaperRuleAction extends ActionSupport implements ModelDriven<PaperR
 				+paperRule.getMix_score() != paperRule.getFull_score()
 				) {
 			req.setAttribute("info", "各题型分数和总分不一致!");
+			return ERROR;
+		}
+		//检查章节分布和题目类型时填写是否符合
+		int[] cpt = new int[7];
+		for(Chapter c : paperRule.getChapter()) {
+			cpt[0] += c.getSingle_choice_num();
+			cpt[1] += c.getJudge_num();
+			cpt[2] += c.getBlank_num();
+			cpt[3] += c.getTranslate_num();
+			cpt[4] += c.getSimple_question_num();
+			cpt[5] += c.getCompute_num();
+			cpt[6] += c.getMix_num();
+		}
+		if(paperRule.getSingle_choice_num()!=cpt[0] ||
+				paperRule.getJudge_num()!=cpt[1] ||
+				paperRule.getBlank_num()!=cpt[2] ||
+				paperRule.getTranslate_num()!=cpt[3] ||
+				paperRule.getSimple_question_num()!=cpt[4] ||
+				paperRule.getCompute_num()!=cpt[5] ||
+				paperRule.getMix_num()!=cpt[6]
+				) {
+			req.setAttribute("info", "各题型个数和章节分布时的个数不相同");
 			return ERROR;
 		}
 		

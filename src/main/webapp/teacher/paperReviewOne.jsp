@@ -47,7 +47,7 @@ $(function(){SyntaxHighlighter.highlight(),$("table.syntaxhighlighter").each(fun
 									<%--0:名词解释,1:填空,2:简答,3:计算,4:综合  --%>
 									<c:if test="${sAnswer.kind eq 0 }">
 									<div class="form-group">
-										<label class="col-sm-3 control-label">题号：名词解释第${sAnswer.sequence}题</label>									
+										<label class="col-sm-3 control-label">题号：名词解释第${sAnswer.sequence+1}题</label>									
 											 <div class="col-sm-8">
 	                 	    题目     <textarea readonly class=form-control><!--${sAnswer.answer_question}  --></textareas>
 	                 	    考生作答：<textarea readonly>${sAnswer.answer_write}</textarea>
@@ -63,7 +63,7 @@ $(function(){SyntaxHighlighter.highlight(),$("table.syntaxhighlighter").each(fun
 									</c:if>
 									<c:if test="${sAnswer.kind eq 1 }">
 									<div class="form-group">
-										<label class="col-sm-3 control-label">题号：填空第${sAnswer.sequence}题</label>									
+										<label class="col-sm-3 control-label">题号：填空第${sAnswer.sequence+1}题</label>									
 										<div class="col-sm-8">
 	                 	    题目     <textarea readonly class=form-control>${sAnswer.answer_question}</textarea>
 	                 	    考生作答：<textarea readonly class=form-control>${sAnswer.answer_write}</textarea>
@@ -79,7 +79,7 @@ $(function(){SyntaxHighlighter.highlight(),$("table.syntaxhighlighter").each(fun
 									</c:if>
 									<c:if test="${sAnswer.kind eq 2 }">
 									<div class="form-group">
-										<label class="col-sm-3 control-label">题号：简答第${sAnswer.sequence}题</label>									
+										<label class="col-sm-3 control-label">题号：简答第${sAnswer.sequence+1}题</label>									
 										<div class="col-sm-8">
 	                 	    题目     <textarea readonly class=form-control>${sAnswer.answer_question}</textarea>
 	                                            考生作答：<textarea readonly class=form-control>${sAnswer.answer_write}</textarea>
@@ -95,7 +95,7 @@ $(function(){SyntaxHighlighter.highlight(),$("table.syntaxhighlighter").each(fun
 									</c:if>
 									<c:if test="${sAnswer.kind eq 3 }">
 									<div class="form-group">
-										<label class="col-sm-3 control-label">题号：计算第${sAnswer.sequence}题</label>									
+										<label class="col-sm-3 control-label">题号：计算第${sAnswer.sequence+1}题</label>									
 										<div class="col-sm-8">
 	                 	    题目     <textarea readonly class=form-control>${sAnswer.answer_question}</textarea>
 	                 	    考生作答：<textarea readonly class=form-control>${sAnswer.answer_write}</textarea>
@@ -111,7 +111,7 @@ $(function(){SyntaxHighlighter.highlight(),$("table.syntaxhighlighter").each(fun
 									</c:if>
 									<c:if test="${sAnswer.kind eq 4 }">
 									<div class="form-group">
-										<label class="col-sm-3 control-label">题号：综合第${sAnswer.sequence}题</label>									
+										<label class="col-sm-3 control-label">题号：综合第${sAnswer.sequence+1}题</label>									
 										<div class="col-sm-8">
 	                 	    题目     <textarea readonly class=form-control>${sAnswer.answer_question}</textarea>
 	                 	    考生作答：<textarea readonly  class=form-control>${sAnswer.answer_write}</textarea>

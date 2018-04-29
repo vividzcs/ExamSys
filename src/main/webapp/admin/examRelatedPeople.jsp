@@ -54,6 +54,9 @@
 				    <li class="nav-item">
 				      <a class="nav-link" data-toggle="tab" href="#importPeople"> 导入人员</a>
 				    </li>
+				    <li class="nav-item">
+				      <a class="nav-link" data-toggle="tab" href="#exportGrade"> 导出成绩</a>
+				    </li>
 				     
 				  </ul>
 				  <!-- Tab panes -->
@@ -67,6 +70,7 @@
 											 <th>科目</th>
 											 <th>学生姓名</th>
 											 <th>学号</th>
+											 <th>成绩</th>
 											 <th>监考老师1 </th>
 											 <th>监考老师2 </th>
 											 <th>阅卷老师1 </th>
@@ -81,6 +85,7 @@
 											 <th>${stu.subject.sub_name }</th>
 											 <th>${stu.sr_name }</th>
 											 <th>${stu.sr_number }</th>
+											 <th>${stu.grade }</th>
 											 <th>${stu.guardianShip.guard_1.t_name }</th>
 											 <th>${stu.guardianShip.guard_2.t_name }</th>
 											 <th>${stu.guardianShip.read_1.t_name }</th>
@@ -113,7 +118,7 @@
                                      <div class="form-group">
                                         <label class="col-sm-3 control-label">专业</label>
                                         <div class="col-sm-8">
-                                            <select id="sProfess" name="major.m_id" class="form-control m-b" style="width: 50%" ng-model="selected" ng-options="m.profess for m in professes" ng-change="changeClassification(selected)">
+                                            <select name="major.m_id" class="form-control m-b profess" style="width: 50%" ng-model="selected" ng-options="m.profess for m in professes" ng-change="changeClassification(selected)">
                                                  <option value="">-- 请选择 --</option>
                                             </select>
                                         </div>
@@ -121,7 +126,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">科目</label>
                                         <div class="col-sm-8">
-                                             <select id="sSubject" name="subject.sub_id" class="form-control m-b" style="width: 50%" ng-model="selected2" ng-options="m for m in course" >
+                                             <select name="subject.sub_id" class="form-control m-b subject" style="width: 50%" ng-model="selected2" ng-options="m for m in course" >
                                              	  <option value="">-- 请选择 --</option>
                                             </select>
                                         </div>
@@ -163,7 +168,7 @@
                                      <div class="form-group">
                                         <label class="col-sm-3 control-label">专业</label>
                                         <div class="col-sm-8">
-                                            <select id="tProfess" name="major.m_id" class="form-control m-b" style="width: 50%" ng-model="selected" ng-options="m.profess for m in professes" ng-change="changeClassification(selected)">
+                                            <select name="major.m_id" class="form-control m-b profess" style="width: 50%" ng-model="selected" ng-options="m.profess for m in professes" ng-change="changeClassification(selected)">
                                                  <option value="">-- 请选择 --</option>
                                             </select>
                                         </div>
@@ -171,7 +176,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">科目</label>
                                         <div class="col-sm-8">
-                                             <select id="tSubject" name="subject.sub_id" class="form-control m-b" style="width: 50%" ng-model="selected2" ng-options="m for m in course" >
+                                             <select name="subject.sub_id" class="form-control m-b subject" style="width: 50%" ng-model="selected2" ng-options="m for m in course" >
                                              	  <option value="">-- 请选择 --</option>
                                             </select>
                                         </div>
@@ -261,6 +266,44 @@
                             </div>
                         </div>
 				     </div>
+				     
+				     <div id="exportGrade" class="  container tab-pane  col-lg-12"><br>
+                            <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5> 导出成绩</h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                 <form class="form-horizontal m-t" id="addStudent" action="${pageContext.request.contextPath }/admin/studentRegister_export.action" method="post">
+                                     <div class="form-group">
+                                        <label class="col-sm-3 control-label">专业</label>
+                                        <div class="col-sm-8">
+                                            <select name="major.m_id" class="form-control m-b profess" style="width: 50%" ng-model="selected" ng-options="m.profess for m in professes" ng-change="changeClassification(selected)">
+                                                 <option value="">-- 请选择 --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">科目</label>
+                                        <div class="col-sm-8">
+                                             <select name="subject.sub_id" class="form-control m-b subject" style="width: 50%" ng-model="selected2" ng-options="m for m in course" >
+                                             	  <option value="">-- 请选择 --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-8 col-sm-offset-3">
+                                            <button class="btn btn-primary" type="submit">确认导出</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                      </div>
 				</div>
 		     </div>
 		  </div>
@@ -383,16 +426,15 @@
        				strProf += '<option value="' + i + '">'+ data[i].profess +'</option>'
        			}
        			console.log(11111111111111)
-       			$("#sProfess").html(strProf);
-       			$("#tProfess").html(strProf);
+       			$(".profess").html(strProf);
        			
        		},"json")
            })
            
-           $("#sProfess").change(function(){
+           $(".profess").change(function(){
          	  var id = $(this).val();
          	  if(id != '') {
-         		  var sub = $("#sSubject");  
+         		  var sub = $(".subject");  
          		  var strSub = '<option value="">-- 请选择 --</option>';
          		  var subjects = allData[id];
          		  for(var i in subjects.subject) {
@@ -402,19 +444,6 @@
          	  }
          	  
            });
-           $("#tProfess").change(function(){
-          	  var id = $(this).val();
-          	  if(id != '') {
-          		  var sub = $("#tSubject");  
-          		  var strSub = '<option value="">-- 请选择 --</option>';
-          		  var subjects = allData[id];
-          		  for(var i in subjects.subject) {
-          			strSub += '<option value="' + i + '">'+ subjects.subject[i] +'</option>'
-          			}
-          		sub.html(strSub);
-          	  }
-          	  
-            });
           
      //改变url中的参数
 //   $(".nav-link").on("click",function(){

@@ -342,6 +342,9 @@ public class StudentAction extends ActionSupport implements ModelDriven<Student>
 				sAnswer.setAnswer_write(simple[sAnswer.getSequence()]);
 				break;
 			case 3:
+				sAnswer.setAnswer_write(compute[sAnswer.getSequence()]);
+				break;
+			case 4:
 				sAnswer.setAnswer_write(mix[sAnswer.getSequence()]);
 				break;
 			}

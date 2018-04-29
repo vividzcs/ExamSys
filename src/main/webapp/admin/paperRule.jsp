@@ -197,7 +197,7 @@
                                     </div>
                                   <!-- 在这里新增加了章节信息 --> 
                                                <div class="form-group col-lg-12" id="paperChapter" style="width: 600px">
-                                <div class="   paperTitle">试卷题目章节分布信息</div>
+                                <div class="paperTitle">试卷题目章节分布信息</div>
 
                                    <table>
                                     <thead>
@@ -214,37 +214,39 @@
                                    </thead>
                                     <tbody>
                                       <tr>
-                                    			<td id="one">第一章</td>
-                                    			<td> <input id="one_single_choice" name="one_single_choice"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    			<td class="chapter">第1章</td>
+                                    			<input name="chapter[0].cpt_cpt"  class="form-control" type="hidden" aria-required="true" aria-invalid="true" class="error snumber" value="1">
+                                    			<td> <input name="chapter[0].single_choice_num"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     			</td>
-                                    		    <td>  <input id="one_judge_num" name="one_judge_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    <td>  <input name="chapter[0].judge_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     		    </td>
-                                    		    <td> <input id="one_blank_num" name="one_blank_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    <td> <input name="chapter[0].blank_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     			</td>
-                                    		    <td>  <input id="one_translate_num" name="one_translate_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    <td>  <input name="chapter[0].translate_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     		    </td>
-                                    		    <td> <input id="one_simple_question" name="one_simple_question"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    <td> <input name="chapter[0].simple_question_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     			</td>
-                                    		    <td>  <input id="one_compute_num" name="one_compute_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    <td>  <input name="chapter[0].compute_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     		    </td>
-                                    		    <td> <input id="one_mix_num" name="one_mix_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    <td> <input name="chapter[0].mix_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     			</td>
                                     		</tr>
                                     		<tr>
-                                    			<td id="two">第二章</td>
-                                    			<td> <input id="two_single_choice" name="one_single_choice"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    			<td class="chapter">第2章</td>
+                                    			<input name="chapter[1].cpt_cpt"  class="form-control" type="hidden" aria-required="true" aria-invalid="true" class="error snumber" value="2">
+                                    			<td> <input name="chapter[1].single_choice_num"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     			</td>
-                                    		    <td>  <input id="two_judge_num" name="one_judge_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    <td>  <input name="chapter[1].judge_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     		    </td>
-                                    		    <td> <input id="two_blank_num" name="one_blank_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    <td> <input name="chapter[1].blank_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     			</td>
-                                    		    <td>  <input id="two_translate_num" name="one_translate_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    <td>  <input name="chapter[1].translate_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     		    </td>
-                                    		    <td> <input id="two_simple_question" name="one_simple_question"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    <td> <input name="chapter[1].simple_question_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     			</td>
-                                    		    <td>  <input id="two_compute_num" name="one_compute_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    <td>  <input name="chapter[1].compute_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     		    </td>
-                                    		    <td> <input id="two_mix_num" name="one_mix_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
+                                    		    <td> <input name="chapter[1].mix_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
                                     			</td>
                                     		</tr>
                                     		</tbody>

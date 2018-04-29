@@ -55,7 +55,7 @@ public class ValidateUtil {
 	 * @return
 	 */
 	public String isNumber(String number) {
-		if(number == null)
+		if(number == null||number.equals(""))
 			return "字段格式或长度错误";
 		
 		if(!number.matches("[0-9]{0,10}")) {

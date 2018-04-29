@@ -68,7 +68,8 @@ public class GuardianShipAction extends ActionSupport implements ModelDriven<Gua
 		}
 		//更新考场信息
 		ExamInfo ei = this.examInfoService.getByMajorAndSubject(guardianShip.getMajor().getM_id(),guardianShip.getSubject().getSub_id());
-		ei.setP_id(id);
+		ei.setG_id(id);
+		this.examInfoService.update(ei);
 		
 		return SUCCESS;
 	}

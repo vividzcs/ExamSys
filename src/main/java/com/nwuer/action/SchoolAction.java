@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.nwuer.entity.School;
@@ -13,6 +14,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
 @Controller
+@Scope("prototype")
 public class SchoolAction extends ActionSupport implements ModelDriven<School> {
 	private School school = new School();
 	@Override
@@ -20,6 +22,7 @@ public class SchoolAction extends ActionSupport implements ModelDriven<School> {
 		return school;
 	} //模型驱动获取数据
 	String info;
+	HttpServletRequest req = ServletActionContext.getRequest();
 	
 	@Autowired
 	private SchoolService schoolService;
@@ -32,7 +35,7 @@ public class SchoolAction extends ActionSupport implements ModelDriven<School> {
 	 */
 	public String edit() {
 		School school = this.schoolService.get();
-		ServletActionContext.getRequest().setAttribute("school", school);
+		req.setAttribute("school", school);
 		return "edit";
 	}
 	
@@ -42,7 +45,6 @@ public class SchoolAction extends ActionSupport implements ModelDriven<School> {
 	 */
 	public String update() {
 		//验证信息 sch_number
-		HttpServletRequest req = ServletActionContext.getRequest();
 		info = validateUtil.validateNumber(school.getSch_number(), 5);
 		if(info != null) {
 			req.setAttribute("info", "学校编号"+info);
@@ -63,6 +65,12 @@ public class SchoolAction extends ActionSupport implements ModelDriven<School> {
 		
 		this.schoolService.update(school);
 		return SUCCESS;
+	}
+	
+	public String sMes() {
+		School s = this.schoolService.get();
+		req.setAttribute("school", s);
+		return "showSuccess";
 	}
 	
 }

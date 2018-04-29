@@ -24,6 +24,7 @@ public class SubjectiveQuestionTest {
 	private String sq_question;
 	@Column(columnDefinition="text")
 	private String sq_answer;
+	private int chapter; //章节
 	@Column(columnDefinition="tinyint not null default 0")
 	private byte degree;
 	private long create_time;  //创建时间
@@ -49,6 +50,12 @@ public class SubjectiveQuestionTest {
 	}
 	public int getSq_id() {
 		return sq_id;
+	}
+	public int getChapter() {
+		return chapter;
+	}
+	public void setChapter(int chapter) {
+		this.chapter = chapter;
 	}
 	public void setSq_id(int sq_id) {
 		this.sq_id = sq_id;

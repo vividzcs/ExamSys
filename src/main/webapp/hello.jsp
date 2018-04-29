@@ -41,47 +41,6 @@
 <body>
     
     <div class="hello row  border-bottom white-bg dashboard-header" style="height: 100%;" >
-      <div class="img">
-       <div class="col-lg-5">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-content ">
-                                <div class="carousel slide" id="carousel2">
-                                    <ol class="carousel-indicators">
-                                        <li data-slide-to="0" data-target="#carousel2" class="active"></li>
-                                        <li data-slide-to="1" data-target="#carousel2"></li>
-                                        <li data-slide-to="2" data-target="#carousel2" class=""></li>
-                                    </ol>
-                                    <div class="carousel-inner">
-                                        <div class="item active">
-                                            <img alt="image" class="img-responsive" src="./style/img/p_big1.jpg">
-                                            <div class="carousel-caption">
-                                                <p>This is simple caption 1</p>
-                                            </div>
-                                        </div>
-                                        <div class="item ">
-                                            <img alt="image" class="img-responsive" src="./style/img/p_big3.jpg">
-                                            <div class="carousel-caption">
-                                                <p>This is simple caption 2</p>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <img alt="image" class="img-responsive" src="./style/img/p_big2.jpg">
-                                            <div class="carousel-caption">
-                                                <p>This is simple caption 3</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a data-slide="prev" href="carousel.html#carousel2" class="left carousel-control">
-                                        <span class="icon-prev"></span>
-                                    </a>
-                                    <a data-slide="next" href="carousel.html#carousel2" class="right carousel-control">
-                                        <span class="icon-next"></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-         </div>
          <div class="schoolInstroce">
                <div class="col-lg-5">
                         <div class="ibox float-e-margins">
@@ -89,26 +48,39 @@
                             	<h3>西北大学简介</h3>
                             	  <table class="table   table-striped table-bordered table-hover dataTables-example">
                                     <tbody>
-                                    	 <tr>
-                                             <td>编号</td>
-											 <td>工号</td>
+                                         <tr>
+                                             <td>学校编号</td>
+											 <td>${school.sch_number }</td>
                                         </tr>
                                          <tr>
-                                             <td></td>院系数目</th>
-											 <td>15</td>
+                                             <td>学校名称</td>
+											 <td>${school.sch_name }</td>
                                         </tr>
                                          <tr>
-                                             <td>专业数目</td>
-											 <td>89</td>
+                                             <td>学校地址</td>
+											 <td>${school.sch_address }</td>
+                                        </tr>
+                                         <tr>
+                                             <td>学校网站</td>
+											 <td>${school.sch_website }</td>
                                         </tr>
                                         <tr>
-                                        	<td colspan="2">西北大学（Northwest University），简称“西大”，始建于1902年，由清末光绪皇帝御笔朱批设立[1]  ，坐落于古都西安，是国家教育部与陕西省人民政府共建的综合性全国重点大学[2]  ，位列国家“211工程”、首批国家“双一流”世界一流学科建设高校，入选“111计划”、“国家大学生创新性实验计划”、“国家建设高水平大学公派研究生项目”，是中西部高校基础能力建设工程大学、中日人文交流大学联盟高校[3]  ，是国家“一省一校”计划重点建设院校[4]  、“长安联盟”高校之一，是国家首批具有博士、硕士学位授予权的单位，是中国西北地区历史最为悠久的高等学府。</td>
+                                             <td>学校院系数</td>
+											 <td>${school.sch_aca_count }</td>
+                                        </tr>
+                                        <tr>
+                                             <td>学校专业数</td>
+											 <td>${school.sch_major_count }</td>
+                                        </tr>
+                                        <tr>
+                                        	<td colspan="2">${school.sch_desc }</td>
                                         </tr>
                                 </table>
                         </div>
                </div>
                
          </div>
+</div>
 </div>
       <!-- Mainly scripts -->
     <script src="style/js/jquery-2.1.1.min.js"></script>

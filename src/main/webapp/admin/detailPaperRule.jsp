@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html  ng-app="exam">
@@ -83,7 +84,7 @@
                                         </div>
                                     </div>
                                      <div class="form-group">
-                                        <label class="col-sm-3 control-label">结束事件</label>
+                                        <label class="col-sm-3 control-label">结束时间</label>
                                         <div class="col-sm-8">
                                         	<jsp:useBean id="end" class="java.util.Date"></jsp:useBean>
 											 <jsp:setProperty property="time" name="end" value="${rule.end_time }"/>
@@ -146,6 +147,46 @@
                                     			<td>备注</td>
                                     			<td colspan="2">${rule.p_desc }</td>
                                     		 </tr>
+                                    		</tbody>
+                                    	</table>
+                                    </div>
+                                    <!-- 在这里新增加了章节信息 --> 
+                                               <div class="form-group col-lg-12" id="paperChapter" style="width: 600px">
+                                <div class="paperTitle">试卷题目章节分布信息</div>
+
+                                   <table>
+                                    <thead>
+                                    		<tr>
+                                    			<td >章节</td>
+                                    			<td>单选</td>
+                                    			<td>判断</td>
+                                    			<td>填空</td>
+                                    			<td>名词解释</td>
+                                    			<td>简答题</td>
+                                    			<td>计算</td>
+                                    			<td>综合</td>
+                                    		</tr>
+                                   </thead>
+                                    <tbody>
+                                    <c:forEach items="${rule.chapter }" var="chapter">
+                                      <tr>
+                                    			<td class="chapter">第${chapter.cpt_cpt }章</td>
+                                    			<td> ${chapter.single_choice_num }
+                                    			</td>
+                                    		    <td>  ${chapter.judge_num }
+                                    		    </td>
+                                    		    <td> ${chapter.blank_num }
+                                    			</td>
+                                    		    <td>  ${chapter.translate_num }
+                                    		    </td>
+                                    		    <td> ${chapter.simple_question_num }
+                                    			</td>
+                                    		    <td>  ${chapter.compute_num }
+                                    		    </td>
+                                    		    <td> ${chapter.mix_num }
+                                    			</td>
+                                    		</tr>
+                                    		</c:forEach>
                                     		</tbody>
                                     	</table>
                                     </div>

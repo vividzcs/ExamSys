@@ -526,8 +526,18 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					return info;
 				}
 				
+				//处理章节cpt_cpt
+				Cell cptCell = sheet.getCell(5,j);
+				String cpt = cptCell.getContents().trim();
+				if(this.validateUtil.isNumber(cpt)!=null) {
+					//不对
+					info = "第" + j + "行章节填写错误";
+					return info;
+				}
+				int cpt_cpt = Integer.parseInt(cpt);
+				
 				//处理难易程度
-				Cell degreeCell = sheet.getCell(5,j);
+				Cell degreeCell = sheet.getCell(6,j);
 				String degree = degreeCell.getContents().trim();
 				if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 					//不对
@@ -537,7 +547,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				byte deg = Byte.parseByte(degree);
 				
 				//处理专业
-				Cell majorCell = sheet.getCell(6,j);
+				Cell majorCell = sheet.getCell(7,j);
 				String major = majorCell.getContents().trim();
 				int m_id = 0;
 				if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
@@ -547,7 +557,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				}
 				
 				//处理科目
-				Cell subjectCell = sheet.getCell(7,j);
+				Cell subjectCell = sheet.getCell(8,j);
 				String sub = subjectCell.getContents().trim();
 				int sub_id = 0;
 				if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
@@ -566,6 +576,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				choiceQuestion.setCho_choice_1(other1);
 				choiceQuestion.setCho_choice_2(other2);
 				choiceQuestion.setCho_choice_3(other3);
+				choiceQuestion.setChapter(cpt_cpt);
 				choiceQuestion.setDegree(deg);
 				choiceQuestion.setMajor(m);
 				choiceQuestion.setSubject(s);
@@ -684,8 +695,19 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					return info;
 				}
 				
+				//处理章节cpt_cpt
+				Cell cptCell = sheet.getCell(5,j);
+				String cpt = cptCell.getContents().trim();
+				if(this.validateUtil.isNumber(cpt)!=null) {
+					//不对
+					info = "第" + j + "行章节填写错误";
+					return info;
+				}
+				int cpt_cpt = Integer.parseInt(cpt);
+				
+				
 				//处理难易程度
-				Cell degreeCell = sheet.getCell(5,j);
+				Cell degreeCell = sheet.getCell(6,j);
 				String degree = degreeCell.getContents().trim();
 				if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 					//不对
@@ -695,7 +717,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				byte deg = Byte.parseByte(degree);
 				
 				//处理专业
-				Cell majorCell = sheet.getCell(6,j);
+				Cell majorCell = sheet.getCell(7,j);
 				String major = majorCell.getContents().trim();
 				int m_id = 0;
 				if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
@@ -705,7 +727,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				}
 				
 				//处理科目
-				Cell subjectCell = sheet.getCell(7,j);
+				Cell subjectCell = sheet.getCell(8,j);
 				String sub = subjectCell.getContents().trim();
 				int sub_id = 0;
 				if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
@@ -724,6 +746,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				choiceQuestionTest.setCho_choice_1(other1);
 				choiceQuestionTest.setCho_choice_2(other2);
 				choiceQuestionTest.setCho_choice_3(other3);
+				choiceQuestionTest.setChapter(cpt_cpt);
 				choiceQuestionTest.setDegree(deg);
 				choiceQuestionTest.setMajor(m);
 				choiceQuestionTest.setSubject(s);
@@ -819,8 +842,18 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						}
 						byte sub_answer = (byte) (answer.equals("T") ? 1 : 0);
 						
+						//处理章节cpt_cpt
+						Cell cptCell = sheet.getCell(2,j);
+						String cpt = cptCell.getContents().trim();
+						if(this.validateUtil.isNumber(cpt)!=null) {
+							//不对
+							info = "第" + j + "行章节填写错误";
+							return info;
+						}
+						int cpt_cpt = Integer.parseInt(cpt);
+						
 						//处理难易程度
-						Cell degreeCell = sheet.getCell(2,j);
+						Cell degreeCell = sheet.getCell(3,j);
 						String degree = degreeCell.getContents().trim();
 						if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 							//不对
@@ -830,7 +863,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						byte deg = Byte.parseByte(degree);
 						
 						//处理专业
-						Cell majorCell = sheet.getCell(3,j);
+						Cell majorCell = sheet.getCell(4,j);
 						String major = majorCell.getContents().trim();
 						int m_id = 0;
 						if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
@@ -840,7 +873,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						}
 						
 						//处理科目
-						Cell subjectCell = sheet.getCell(4,j);
+						Cell subjectCell = sheet.getCell(5,j);
 						String sub = subjectCell.getContents().trim();
 						int sub_id = 0;
 						if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
@@ -856,6 +889,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						s.setSub_id(sub_id);
 						judgeQuestion.setJud_question(question);
 						judgeQuestion.setJud_answer(sub_answer);
+						judgeQuestion.setChapter(cpt_cpt);
 						judgeQuestion.setDegree(deg);
 						judgeQuestion.setMajor(m);
 						judgeQuestion.setSubject(s);
@@ -952,8 +986,18 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						}
 						byte sub_answer = (byte) (answer.equals("T") ? 1 : 0);
 						
+						//处理章节cpt_cpt
+						Cell cptCell = sheet.getCell(2,j);
+						String cpt = cptCell.getContents().trim();
+						if(this.validateUtil.isNumber(cpt)!=null) {
+							//不对
+							info = "第" + j + "行章节填写错误";
+							return info;
+						}
+						int cpt_cpt = Integer.parseInt(cpt);
+						
 						//处理难易程度
-						Cell degreeCell = sheet.getCell(2,j);
+						Cell degreeCell = sheet.getCell(3,j);
 						String degree = degreeCell.getContents().trim();
 						if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 							//不对
@@ -963,7 +1007,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						byte deg = Byte.parseByte(degree);
 						
 						//处理专业
-						Cell majorCell = sheet.getCell(3,j);
+						Cell majorCell = sheet.getCell(4,j);
 						String major = majorCell.getContents().trim();
 						int m_id = 0;
 						if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
@@ -973,7 +1017,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						}
 						
 						//处理科目
-						Cell subjectCell = sheet.getCell(4,j);
+						Cell subjectCell = sheet.getCell(5,j);
 						String sub = subjectCell.getContents().trim();
 						int sub_id = 0;
 						if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
@@ -989,6 +1033,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						s.setSub_id(sub_id);
 						judgeQuestionTest.setJud_question(question);
 						judgeQuestionTest.setJud_answer(sub_answer);
+						judgeQuestionTest.setChapter(cpt_cpt);
 						judgeQuestionTest.setDegree(deg);
 						judgeQuestionTest.setMajor(m);
 						judgeQuestionTest.setSubject(s);
@@ -1083,8 +1128,18 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 					return info;
 				}
 				
+				//处理章节cpt_cpt
+				Cell cptCell = sheet.getCell(2,j);
+				String cpt = cptCell.getContents().trim();
+				if(this.validateUtil.isNumber(cpt)!=null) {
+					//不对
+					info = "第" + j + "行章节填写错误";
+					return info;
+				}
+				int cpt_cpt = Integer.parseInt(cpt);
+				
 				//处理难易程度
-				Cell degreeCell = sheet.getCell(2,j);
+				Cell degreeCell = sheet.getCell(3,j);
 				String degree = degreeCell.getContents().trim();
 				if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 					//不对
@@ -1094,7 +1149,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				byte deg = Byte.parseByte(degree);
 				
 				//处理类型
-				Cell questionKindCell = sheet.getCell(2,j);
+				Cell questionKindCell = sheet.getCell(4,j);
 				String qKind = questionKindCell.getContents().trim();
 				if(!qKind.equals("0") && !qKind.equals("1") && !qKind.equals("2") && !qKind.equals("3") && !qKind.equals("4")) {
 					//不对
@@ -1104,7 +1159,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				byte sq_kind = Byte.parseByte(qKind);
 				
 				//处理专业
-				Cell majorCell = sheet.getCell(4,j);
+				Cell majorCell = sheet.getCell(5,j);
 				String major = majorCell.getContents().trim();
 				int m_id = 0;
 				if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
@@ -1114,7 +1169,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				}
 				
 				//处理科目
-				Cell subjectCell = sheet.getCell(5,j);
+				Cell subjectCell = sheet.getCell(6,j);
 				String sub = subjectCell.getContents().trim();
 				int sub_id = 0;
 				if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
@@ -1126,6 +1181,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				//验证通过
 				subjectiveQuestion.setSq_question(question);
 				subjectiveQuestion.setSq_answer(answer);
+				subjectiveQuestion.setChapter(cpt_cpt);
 				subjectiveQuestion.setDegree(deg);
 				subjectiveQuestion.setSq_kind(sq_kind);
 				subjectiveQuestion.getMajor().setM_id(m_id);

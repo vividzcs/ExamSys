@@ -88,7 +88,7 @@
             <div class="row  border-bottom white-bg dashboard-header">
   <!--应用框架来弄-->
           <div class="row J_mainContent" id="content-main">
-			<iframe class="J_iframe" name="iframe0" width="100%" height="900px" src="../hello.html" frameborder="0" data-id="hello.html" seamless></iframe>
+			<iframe class="J_iframe" name="iframe0" width="100%" height="900px" src="${pageContext.request.contextPath }/student/sMes.action" frameborder="0" data-id="hello.html" seamless></iframe>
 		   </div>
             <div class="footer">
                     <div class="pull-right">

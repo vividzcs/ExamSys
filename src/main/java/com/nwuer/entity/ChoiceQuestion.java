@@ -26,6 +26,7 @@ public class ChoiceQuestion {
 	private String cho_choice_1;
 	private String cho_choice_2;
 	private String cho_choice_3;
+	private int chapter; //章节
 	@Column(columnDefinition="tinyint not null default 0")
 	private byte degree; //难度  0:简单  1:较简单  2:中等  3 较难  4:较难
 	private long create_time;  //创建时间
@@ -55,6 +56,12 @@ public class ChoiceQuestion {
 	}
 	public String getCho_choice_1() {
 		return cho_choice_1;
+	}
+	public int getChapter() {
+		return chapter;
+	}
+	public void setChapter(int chapter) {
+		this.chapter = chapter;
 	}
 	public void setCho_choice_1(String cho_choice_1) {
 		this.cho_choice_1 = cho_choice_1;

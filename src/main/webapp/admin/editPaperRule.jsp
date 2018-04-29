@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html ng-app="exam">
 
@@ -26,6 +27,8 @@
     <link href="../style/css/animate.css" rel="stylesheet">
     <link href="../style/css/style.css?v=2.2.0" rel="stylesheet">
       <link rel="stylesheet" href="../style/css/self.css" />
+      <link rel="stylesheet" href="../style/css/solvePlay.css" />
+      <link rel="stylesheet" type="text/css" href="../style/css/jquery.datetimepicker.css"/>
       <style>
       select{
       	width: 50%;
@@ -85,6 +88,20 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+						                <label for="dtp_input1" class="col-sm-3 control-label">考试开始时间</label>
+						                 <div class="col-sm-8">
+						                 	<input type="text" name="beginTime" class="beginTime" value="" id="datetimepicker"/><br><br>
+						                 </div>
+										<input type="hidden" id="dtp_input1" value="" /><br/>
+						            </div>
+						             <div class="form-group">
+						                <label for="dtp_input1" class="col-sm-3 control-label">考试结束时间</label>
+						                 <div class="col-sm-8">
+						                 	<input type="text" name="endTime" class="endTime" value="" id="datetimepicker1"/><br><br>
+						                 </div>
+										<input type="hidden" name="dtp_input1" id="dtp_input1" value="" /><br/>
+						            </div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label">试题难度</label>
                                         <div class="col-sm-8">
@@ -196,6 +213,11 @@
 
     <!-- iCheck -->
     <script src="../style/js/plugins/iCheck/icheck.min.js"></script>
+    <script src="../style/js/jquery.datetimepicker.full.js"></script>
+    <jsp:useBean id="start" class="java.util.Date"></jsp:useBean>
+		 <jsp:setProperty property="time" name="start" value="${rule.start_time }"/>
+		  <jsp:useBean id="end" class="java.util.Date"></jsp:useBean>
+		 <jsp:setProperty property="time" name="end" value="${rule.end_time }"/>
     <script>
       $.validator.setDefaults({
             highlight: function (element) {
@@ -216,28 +238,6 @@
             // validate the comment form when it is submitted
             $("#commentForm").validate();
 
-//          // validate signup form on keyup and submit
-//          $("#paperRuleForm").validate({
-//              rules: {
-//                  simpleSelect:  "required",
-//                  mulitfySelect: "required",
-//                  example:'required',
-//                  simpleSelectScore:  'required',
-//                   
-//                  mulitfySelectScore:'required',
-//                  totalScore:'required'
-//              },
-//              messages: {
-//                   simpleSelect:'填写数目',
-//                    mulitfySelect:'填写数目',
-//                     example:'填写数目',
-//                     simpleSelectScore:'填写单选分数',
-//                     mulitfySelectScore:'填写判断分数',
-//                     totalScore:'填写总分数'
-//              },
-//          });
-           
-             //
         });
          
         /**
@@ -272,6 +272,36 @@
        	  }
        	  
          });
+         
+         $.datetimepicker.setLocale('en');
+
+         $('#datetimepicker_format').datetimepicker({value:'2015/04/15 05:03', format: $("#datetimepicker_format_value").val()});
+
+         $("#datetimepicker_format_change").on("click", function(e){
+         	$("#datetimepicker_format").data('xdsoft_datetimepicker').setOptions({format: $("#datetimepicker_format_value").val()});
+         });
+         $("#datetimepicker_format_locale").on("change", function(e){
+         	$.datetimepicker.setLocale($(e.currentTarget).val());
+         });
+         //获取到本地的时间
+         var dataTime=new Date();
+         
+         $('#datetimepicker').datetimepicker({
+         dayOfWeekStart : 1,
+         lang:'en',
+         disabledDates:['2015/01/08','2015/01/09','2015/01/10'],
+         startDate:	dataTime.toLocaleDateString()
+         });
+         
+         $('#datetimepicker').datetimepicker({value:'<fmt:formatDate value="${start }" pattern="yyyy/MM/dd HH:mm:ss"/>',step:10});
+         $('#datetimepicker1').datetimepicker({
+         dayOfWeekStart : 1,
+         lang:'en',
+         disabledDates:['2015/01/08','2015/01/09','2015/01/10'],
+         startDate:	dataTime.toLocaleDateString()
+         });
+        
+         $('#datetimepicker1').datetimepicker({value:'<fmt:formatDate value="${end }" pattern="yyyy/MM/dd HH:mm:ss"/>',step:10});
 </script>
 </body>
 

@@ -234,5 +234,8 @@
 			<action name="pushPractice" class="studentAction" method="pushPractice">
 				<result name="showSuccess">/opationSuccess.jsp</result>
 			</action>
+			<action name="sMes" class="schoolAction" method="sMes">
+				<result name="showSuccess">/hello.jsp</result>
+			</action>
 		</package>
 	</struts>

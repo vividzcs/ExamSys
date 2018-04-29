@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.nwuer.entity.Chapter;
 import com.nwuer.entity.ChoiceQuestion;
 import com.nwuer.entity.ChoiceQuestionTest;
 import com.nwuer.entity.JudgeQuestion;
@@ -495,6 +496,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 	
 	public void generateChoiceQuestion(int type) {
 		//加选择题
+		PaperRule rule = this.paperRuleService.getByIdEager(this.rule.getP_id());  //每张试卷都会重新查询
 		int single_choice_num = rule.getSingle_choice_num();
 		if(single_choice_num != 0) {
 			//挑选选择题
@@ -526,6 +528,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			//分练习和考试题库
 			List cPaperList = new ArrayList();  //题目
 			StringBuilder cPaperAnswerList = new StringBuilder();  //答案
+			List<Chapter> cptList = rule.getChapter();
 			
 			if(type == 0) {
 				List<ChoiceQuestionTest> cList = choiceQuestionTestService.getAll();
@@ -534,59 +537,79 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 				Random random = new Random();
 				ChoiceQuestionTest choiceQuestionTest = null;
 				int count = 0;
+				
 				for(int j=0; j<cList.size(); j++) {
 					//挑选
 					choiceQuestionTest = cList.get(j);
+					if(cptList.size()<=choiceQuestionTest.getChapter()-1)
+						continue;
+					int scnum = cptList.get(choiceQuestionTest.getChapter()-1).getSingle_choice_num();
 					if(simpleCount != 0 && choiceQuestionTest.getDegree() == 0) {
-						List choice = new ArrayList();
-						//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
-						choice.add(choiceQuestionTest.getCho_choice_1());
-						choice.add(choiceQuestionTest.getCho_choice_2());
-						choice.add(choiceQuestionTest.getCho_choice_3());
-						Collections.shuffle(choice);
-						//生成随机数字,加正确答案
-						int cRight = random.nextInt(4);
-						choice.add(cRight,choiceQuestionTest.getCho_answer());
-						//再加答案
-						choice.add(0,choiceQuestionTest.getCho_question());
-						cPaperList.add(choice);
-						cPaperAnswerList.append("5_"+count+"_"+cRight+","); //将答案加到答案list中
-						count++;
-						simpleCount--;
+						//还得判断章节
+						if(choiceQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+							//说明要有这个题
+							List choice = new ArrayList();
+							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
+							choice.add(choiceQuestionTest.getCho_choice_1());
+							choice.add(choiceQuestionTest.getCho_choice_2());
+							choice.add(choiceQuestionTest.getCho_choice_3());
+							Collections.shuffle(choice);
+							//生成随机数字,加正确答案
+							int cRight = random.nextInt(4);
+							choice.add(cRight,choiceQuestionTest.getCho_answer());
+							//再加答案
+							choice.add(0,choiceQuestionTest.getCho_question());
+							cPaperList.add(choice);
+							cPaperAnswerList.append("5_"+count+"_"+cRight+","); //将答案加到答案list中
+							count++;
+							simpleCount--;
+							cptList.get(choiceQuestionTest.getChapter()-1).setSingle_choice_num(scnum-1);
+						}
+						
 						
 					}else if(middleCount != 0 && choiceQuestionTest.getDegree() == 1) {
-						List choice = new ArrayList();
-						//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
-						choice.add(choiceQuestionTest.getCho_choice_1());
-						choice.add(choiceQuestionTest.getCho_choice_2());
-						choice.add(choiceQuestionTest.getCho_choice_3());
-						Collections.shuffle(choice);
-						//生成随机数字,加正确答案
-						int cRight = random.nextInt(4);
-						choice.add(cRight,choiceQuestionTest.getCho_answer());
-						//再加答案
-						choice.add(0,choiceQuestionTest.getCho_question());
-						cPaperList.add(choice);
-						cPaperAnswerList.append("5_"+count+"_"+cRight+","); //将答案加到答案list中
-						count++;
-						middleCount--;
+						//还得判断章节
+						if(choiceQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+							List choice = new ArrayList();
+							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
+							choice.add(choiceQuestionTest.getCho_choice_1());
+							choice.add(choiceQuestionTest.getCho_choice_2());
+							choice.add(choiceQuestionTest.getCho_choice_3());
+							Collections.shuffle(choice);
+							//生成随机数字,加正确答案
+							int cRight = random.nextInt(4);
+							choice.add(cRight,choiceQuestionTest.getCho_answer());
+							//再加答案
+							choice.add(0,choiceQuestionTest.getCho_question());
+							cPaperList.add(choice);
+							cPaperAnswerList.append("5_"+count+"_"+cRight+","); //将答案加到答案list中
+							count++;
+							middleCount--;
+							cptList.get(choiceQuestionTest.getChapter()-1).setSingle_choice_num(scnum-1);
+						}
+						
 						
 					}else if(highCount != 0 && choiceQuestionTest.getDegree() == 2) {
-						List choice = new ArrayList();
-						//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
-						choice.add(choiceQuestionTest.getCho_choice_1());
-						choice.add(choiceQuestionTest.getCho_choice_2());
-						choice.add(choiceQuestionTest.getCho_choice_3());
-						Collections.shuffle(choice);
-						//生成随机数字,加正确答案
-						int cRight = random.nextInt(4);
-						choice.add(cRight,choiceQuestionTest.getCho_answer());
-						//再加答案
-						choice.add(0,choiceQuestionTest.getCho_question());
-						cPaperList.add(choice);
-						cPaperAnswerList.append("5_"+count+"_"+cRight+","); //将答案加到答案list中
-						count++;
-						highCount--;
+						//还得判断章节
+						if(choiceQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+							List choice = new ArrayList();
+							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
+							choice.add(choiceQuestionTest.getCho_choice_1());
+							choice.add(choiceQuestionTest.getCho_choice_2());
+							choice.add(choiceQuestionTest.getCho_choice_3());
+							Collections.shuffle(choice);
+							//生成随机数字,加正确答案
+							int cRight = random.nextInt(4);
+							choice.add(cRight,choiceQuestionTest.getCho_answer());
+							//再加答案
+							choice.add(0,choiceQuestionTest.getCho_question());
+							cPaperList.add(choice);
+							cPaperAnswerList.append("5_"+count+"_"+cRight+","); //将答案加到答案list中
+							count++;
+							highCount--;
+							cptList.get(choiceQuestionTest.getChapter()-1).setSingle_choice_num(scnum-1);
+						}
+						
 						
 					}else if(simpleCount == 0 && middleCount==0 && highCount==0) {
 						break; //否则已经挑选完成
@@ -604,56 +627,74 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 				for(int j=0; j<cList.size(); j++) {
 					//挑选
 					choiceQuestion = cList.get(j);
+					if(cptList.size()<=choiceQuestion.getChapter()-1)
+						continue;
+					int scnum = cptList.get(choiceQuestion.getChapter()-1).getSingle_choice_num();
 					if(simpleCount != 0 && choiceQuestion.getDegree() == 0) {
-						List choice = new ArrayList();
-						//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
-						choice.add(choiceQuestion.getCho_choice_1());
-						choice.add(choiceQuestion.getCho_choice_2());
-						choice.add(choiceQuestion.getCho_choice_3());
-						Collections.shuffle(choice);
-						//生成随机数字,加正确答案
-						int cRight = random.nextInt(4);
-						choice.add(cRight,choiceQuestion.getCho_answer());
-						//再加答案
-						choice.add(0,choiceQuestion.getCho_question());
-						cPaperList.add(choice);
-						cPaperAnswerList.append("5_"+count+"_"+cRight+","); //将答案加到答案list中
-						count++;
-						simpleCount--;
+						//还得判断章节
+						if(choiceQuestion.getChapter()<cptList.size() && scnum!=0) {
+							List choice = new ArrayList();
+							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
+							choice.add(choiceQuestion.getCho_choice_1());
+							choice.add(choiceQuestion.getCho_choice_2());
+							choice.add(choiceQuestion.getCho_choice_3());
+							Collections.shuffle(choice);
+							//生成随机数字,加正确答案
+							int cRight = random.nextInt(4);
+							choice.add(cRight,choiceQuestion.getCho_answer());
+							//再加答案
+							choice.add(0,choiceQuestion.getCho_question());
+							cPaperList.add(choice);
+							cPaperAnswerList.append("5_"+count+"_"+cRight+","); //将答案加到答案list中
+							count++;
+							simpleCount--;
+							cptList.get(choiceQuestion.getChapter()-1).setSingle_choice_num(scnum-1);
+						}
+						
 						
 					}else if(middleCount != 0 && choiceQuestion.getDegree() == 1) {
-						List choice = new ArrayList();
-						//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
-						choice.add(choiceQuestion.getCho_choice_1());
-						choice.add(choiceQuestion.getCho_choice_2());
-						choice.add(choiceQuestion.getCho_choice_3());
-						Collections.shuffle(choice);
-						//生成随机数字,加正确答案
-						int cRight = random.nextInt(4);
-						choice.add(cRight,choiceQuestion.getCho_answer());
-						//再加答案
-						choice.add(0,choiceQuestion.getCho_question());
-						cPaperList.add(choice);
-						cPaperAnswerList.append("5_"+count+"_"+cRight+","); //将答案加到答案list中
-						count++;
-						middleCount--;
+						//还得判断章节
+						if(choiceQuestion.getChapter()<cptList.size() && scnum!=0) {
+							List choice = new ArrayList();
+							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
+							choice.add(choiceQuestion.getCho_choice_1());
+							choice.add(choiceQuestion.getCho_choice_2());
+							choice.add(choiceQuestion.getCho_choice_3());
+							Collections.shuffle(choice);
+							//生成随机数字,加正确答案
+							int cRight = random.nextInt(4);
+							choice.add(cRight,choiceQuestion.getCho_answer());
+							//再加答案
+							choice.add(0,choiceQuestion.getCho_question());
+							cPaperList.add(choice);
+							cPaperAnswerList.append("5_"+count+"_"+cRight+","); //将答案加到答案list中
+							count++;
+							middleCount--;
+							cptList.get(choiceQuestion.getChapter()-1).setSingle_choice_num(scnum-1);
+						}
+						
 						
 					}else if(highCount != 0 && choiceQuestion.getDegree() == 2) {
-						List choice = new ArrayList();
-						//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
-						choice.add(choiceQuestion.getCho_choice_1());
-						choice.add(choiceQuestion.getCho_choice_2());
-						choice.add(choiceQuestion.getCho_choice_3());
-						Collections.shuffle(choice);
-						//生成随机数字,加正确答案
-						int cRight = random.nextInt(4);
-						choice.add(cRight,choiceQuestion.getCho_answer());
-						//再加答案
-						choice.add(0,choiceQuestion.getCho_question());
-						cPaperList.add(choice);
-						cPaperAnswerList.append("5_"+count+"_"+cRight+","); //将答案加到答案list中
-						count++;
-						highCount--;
+						//还得判断章节
+						if(choiceQuestion.getChapter()<cptList.size() && scnum!=0) {
+							List choice = new ArrayList();
+							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
+							choice.add(choiceQuestion.getCho_choice_1());
+							choice.add(choiceQuestion.getCho_choice_2());
+							choice.add(choiceQuestion.getCho_choice_3());
+							Collections.shuffle(choice);
+							//生成随机数字,加正确答案
+							int cRight = random.nextInt(4);
+							choice.add(cRight,choiceQuestion.getCho_answer());
+							//再加答案
+							choice.add(0,choiceQuestion.getCho_question());
+							cPaperList.add(choice);
+							cPaperAnswerList.append("5_"+count+"_"+cRight+","); //将答案加到答案list中
+							count++;
+							highCount--;
+							cptList.get(choiceQuestion.getChapter()-1).setSingle_choice_num(scnum-1);
+						}
+						
 						
 					}else if(simpleCount == 0 && middleCount==0 && highCount==0) {
 						break; //否则已经挑选完成
@@ -674,6 +715,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 	
 	public void generateJudgeQuestion(int type) {
 		//加判断题
+		PaperRule rule = this.paperRuleService.getByIdEager(this.rule.getP_id());  //每张试卷都会重新查询
 		int judge_num = rule.getJudge_num();
 		if(judge_num != 0) {
 			//挑选判断题
@@ -705,6 +747,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			//分练习题库,考试题库
 			List jPaperList = new ArrayList();  //题目
 			StringBuilder jPaperAnswerList = new StringBuilder();  //答案
+			List<Chapter> cptList = rule.getChapter();
 			
 			if(type == 0) {
 				List<JudgeQuestionTest> jList = judgeQuestionTestService.getAll();
@@ -716,32 +759,50 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 				for(int j=0; j<jList.size(); j++) {
 					//挑选
 					judgeQuestionTest = jList.get(j);
+					if(cptList.size()<=judgeQuestionTest.getChapter()-1)
+						continue;
+					int scnum = cptList.get(judgeQuestionTest.getChapter()-1).getJudge_num();
 					if(simpleCount != 0 && judgeQuestionTest.getDegree() == 0) {
-						List judge = new ArrayList();
-						//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
-						judge.add(judgeQuestionTest.getJud_question());
-						jPaperList.add(judge);
-						jPaperAnswerList.append("6_"+count+"_"+judgeQuestionTest.getJud_answer()+","); //将答案加到答案list中
-						count++;
-						simpleCount--;
+						//还得判断章节
+						if(judgeQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+							List judge = new ArrayList();
+							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
+							judge.add(judgeQuestionTest.getJud_question());
+							jPaperList.add(judge);
+							jPaperAnswerList.append("6_"+count+"_"+judgeQuestionTest.getJud_answer()+","); //将答案加到答案list中
+							count++;
+							simpleCount--;
+							cptList.get(judgeQuestionTest.getChapter()-1).setJudge_num(scnum-1);
+						}
+						
 						
 					}else if(middleCount != 0 && judgeQuestionTest.getDegree() == 1) {
-						List judge = new ArrayList();
-						//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
-						judge.add(judgeQuestionTest.getJud_question());
-						jPaperList.add(judge);
-						jPaperAnswerList.append("6_"+count+"_"+judgeQuestionTest.getJud_answer()+","); //将答案加到答案list中
-						count++;
-						middleCount--;
+						//还得判断章节
+						if(judgeQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+							List judge = new ArrayList();
+							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
+							judge.add(judgeQuestionTest.getJud_question());
+							jPaperList.add(judge);
+							jPaperAnswerList.append("6_"+count+"_"+judgeQuestionTest.getJud_answer()+","); //将答案加到答案list中
+							count++;
+							middleCount--;
+							cptList.get(judgeQuestionTest.getChapter()-1).setJudge_num(scnum-1);
+						}
+						
 						
 					}else if(highCount != 0 && judgeQuestionTest.getDegree() == 2) {
-						List judge = new ArrayList();
-						//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
-						judge.add(judgeQuestionTest.getJud_question());
-						jPaperList.add(judge);
-						jPaperAnswerList.append("6_"+count+"_"+judgeQuestionTest.getJud_answer()+","); //将答案加到答案list中
-						count++;
-						highCount--;
+						//还得判断章节
+						if(judgeQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+							List judge = new ArrayList();
+							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
+							judge.add(judgeQuestionTest.getJud_question());
+							jPaperList.add(judge);
+							jPaperAnswerList.append("6_"+count+"_"+judgeQuestionTest.getJud_answer()+","); //将答案加到答案list中
+							count++;
+							highCount--;
+							cptList.get(judgeQuestionTest.getChapter()-1).setJudge_num(scnum-1);
+						}
+						
 						
 					}else if(simpleCount==0 && middleCount==0 && highCount==0 )
 						break;//否则已经挑选完成
@@ -757,32 +818,50 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 				for(int j=0; j<jList.size(); j++) {
 					//挑选
 					judgeQuestion = jList.get(j);
+					if(cptList.size()<=judgeQuestion.getChapter()-1)
+						continue;
+					int scnum = cptList.get(judgeQuestion.getChapter()-1).getJudge_num();
 					if(simpleCount != 0 && judgeQuestion.getDegree() == 0) {
-						List judge = new ArrayList();
-						//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
-						judge.add(judgeQuestion.getJud_question());
-						jPaperList.add(judge);
-						jPaperAnswerList.append("6_"+count+"_"+judgeQuestion.getJud_answer()+","); //将答案加到答案list中
-						count++;
-						simpleCount--;
+						//还得判断章节
+						if(judgeQuestion.getChapter()<cptList.size() && scnum!=0) {
+							List judge = new ArrayList();
+							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
+							judge.add(judgeQuestion.getJud_question());
+							jPaperList.add(judge);
+							jPaperAnswerList.append("6_"+count+"_"+judgeQuestion.getJud_answer()+","); //将答案加到答案list中
+							count++;
+							simpleCount--;
+							cptList.get(judgeQuestion.getChapter()-1).setJudge_num(scnum-1);
+						}
+						
 						
 					}else if(middleCount != 0 && judgeQuestion.getDegree() == 1) {
-						List judge = new ArrayList();
-						//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
-						judge.add(judgeQuestion.getJud_question());
-						jPaperList.add(judge);
-						jPaperAnswerList.append("6_"+count+"_"+judgeQuestion.getJud_answer()+","); //将答案加到答案list中
-						count++;
-						middleCount--;
+						//还得判断章节
+						if(judgeQuestion.getChapter()<cptList.size() && scnum!=0) {
+							List judge = new ArrayList();
+							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
+							judge.add(judgeQuestion.getJud_question());
+							jPaperList.add(judge);
+							jPaperAnswerList.append("6_"+count+"_"+judgeQuestion.getJud_answer()+","); //将答案加到答案list中
+							count++;
+							middleCount--;
+							cptList.get(judgeQuestion.getChapter()-1).setJudge_num(scnum-1);
+						}
+						
 						
 					}else if(highCount != 0 && judgeQuestion.getDegree() == 2) {
-						List judge = new ArrayList();
-						//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
-						judge.add(judgeQuestion.getJud_question());
-						jPaperList.add(judge);
-						jPaperAnswerList.append("6_"+count+"_"+judgeQuestion.getJud_answer()+","); //将答案加到答案list中
-						count++;
-						highCount--;
+						//还得判断章节
+						if(judgeQuestion.getChapter()<cptList.size() && scnum!=0) {
+							List judge = new ArrayList();
+							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
+							judge.add(judgeQuestion.getJud_question());
+							jPaperList.add(judge);
+							jPaperAnswerList.append("6_"+count+"_"+judgeQuestion.getJud_answer()+","); //将答案加到答案list中
+							count++;
+							highCount--;
+							cptList.get(judgeQuestion.getChapter()-1).setJudge_num(scnum-1);
+						}
+						
 						
 					}else if(simpleCount==0 && middleCount==0 && highCount==0 )
 						break;//否则已经挑选完成
@@ -824,56 +903,113 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 					middleCount += subjective_num-simpleCount-middleCount-highCount;
 					break;
 			}
-			
+			PaperRule rule = this.paperRuleService.getByIdEager(this.rule.getP_id());  //每张试卷都会重新查询
 			//分练习题库,考试题库
 			List sPaperList = new ArrayList();  //题目
+			SubjectiveAnswer subjectiveAnswer = null; //答案
+			List<Chapter> cptList = rule.getChapter();
 			if(type == 0) {
 				List<SubjectiveQuestionTest> sList = subjectiveQuestionTestService.getAllByKind(kind);
 				//打乱题目
 				Collections.shuffle(sList);
 				Random random = new Random();
 				SubjectiveQuestionTest subjectiveQuestionTest = null;
-				SubjectiveAnswer subjectiveAnswer = null; //答案
 				int count = 0;
 				for(int j=0; j<sList.size(); j++) {
 					//挑选
 					subjectiveQuestionTest = sList.get(j);
 					subjectiveAnswer = new SubjectiveAnswer();
+					if(cptList.size()<=subjectiveQuestionTest.getChapter()-1)
+						continue;
+					int scnum = 0;  //0:名词解释,1:填空,2:简答,3:计算,4:综合
+					if(kind == 0)
+						scnum = cptList.get(subjectiveQuestionTest.getChapter()-1).getTranslate_num();
+					else if(kind==1)
+						scnum = cptList.get(subjectiveQuestionTest.getChapter()-1).getBlank_num();
+					else if(kind==2)
+						scnum = cptList.get(subjectiveQuestionTest.getChapter()-1).getSimple_question_num();
+					else if(kind==3)
+						scnum = cptList.get(subjectiveQuestionTest.getChapter()-1).getCompute_num();
+					else if(kind==4)
+						scnum = cptList.get(subjectiveQuestionTest.getChapter()-1).getMix_num();
+					
 					if(simpleCount != 0 && subjectiveQuestionTest.getDegree() == 0) {
-						List blank = new ArrayList();
-						//先加问题
-						blank.add(subjectiveQuestionTest.getSq_question());
-						sPaperList.add(blank);
-						//加答案
-						subjectiveAnswer.setAnswer_right(subjectiveQuestionTest.getSq_answer()); //将答案加到答案list中
-						subjectiveAnswer.setSequence(count);
-						z_answer.add(subjectiveAnswer);
-						count++;
-						simpleCount--;
+						//还得判断章节
+						if(subjectiveQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+							List blank = new ArrayList();
+							//先加问题
+							blank.add(subjectiveQuestionTest.getSq_question());
+							sPaperList.add(blank);
+							//加答案
+							subjectiveAnswer.setAnswer_right(subjectiveQuestionTest.getSq_answer()); //将答案加到答案list中
+							subjectiveAnswer.setSequence(count);
+							z_answer.add(subjectiveAnswer);
+							count++;
+							simpleCount--;
+							if(kind == 0)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setTranslate_num(scnum-1);
+							else if(kind==1)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setBlank_num(scnum-1);
+							else if(kind==2)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setSimple_question_num(scnum-1);
+							else if(kind==3)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setCompute_num(scnum-1);
+							else if(kind==4)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setMix_num(scnum-1);
+						}
+						
 						
 					}else if(middleCount != 0 && subjectiveQuestionTest.getDegree() == 1) {
-						List blank = new ArrayList();
-						//先加问题
-						blank.add(subjectiveQuestionTest.getSq_question());
-						sPaperList.add(blank);
-						//加答案
-						subjectiveAnswer.setAnswer_right(subjectiveQuestionTest.getSq_answer()); //将答案加到答案list中
-						subjectiveAnswer.setSequence(count);
-						z_answer.add(subjectiveAnswer);
-						count++;
-						middleCount--;
+						//还得判断章节
+						if(subjectiveQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+							List blank = new ArrayList();
+							//先加问题
+							blank.add(subjectiveQuestionTest.getSq_question());
+							sPaperList.add(blank);
+							//加答案
+							subjectiveAnswer.setAnswer_right(subjectiveQuestionTest.getSq_answer()); //将答案加到答案list中
+							subjectiveAnswer.setSequence(count);
+							z_answer.add(subjectiveAnswer);
+							count++;
+							middleCount--;
+							if(kind == 0)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setTranslate_num(scnum-1);
+							else if(kind==1)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setBlank_num(scnum-1);
+							else if(kind==2)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setSimple_question_num(scnum-1);
+							else if(kind==3)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setCompute_num(scnum-1);
+							else if(kind==4)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setMix_num(scnum-1);
+						}
+						
 						
 					}else if(highCount != 0 && subjectiveQuestionTest.getDegree() == 2) {
-						List blank = new ArrayList();
-						//先加问题
-						blank.add(subjectiveQuestionTest.getSq_question());
-						sPaperList.add(blank);
-						//加答案
-						subjectiveAnswer.setAnswer_right(subjectiveQuestionTest.getSq_answer()); //将答案加到答案list中
-						subjectiveAnswer.setSequence(count);
-						z_answer.add(subjectiveAnswer);
-						count++;
-						highCount--;
+						//还得判断章节
+						if(subjectiveQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+							List blank = new ArrayList();
+							//先加问题
+							blank.add(subjectiveQuestionTest.getSq_question());
+							sPaperList.add(blank);
+							//加答案
+							subjectiveAnswer.setAnswer_right(subjectiveQuestionTest.getSq_answer()); //将答案加到答案list中
+							subjectiveAnswer.setSequence(count);
+							z_answer.add(subjectiveAnswer);
+							count++;
+							highCount--;
+							if(kind == 0)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setTranslate_num(scnum-1);
+							else if(kind==1)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setBlank_num(scnum-1);
+							else if(kind==2)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setSimple_question_num(scnum-1);
+							else if(kind==3)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setCompute_num(scnum-1);
+							else if(kind==4)
+								cptList.get(subjectiveQuestionTest.getChapter()-1).setMix_num(scnum-1);
+						}
+						
 						
 					}else if(simpleCount==0 && middleCount==0 && highCount==0 )
 						break;//否则已经挑选完成
@@ -885,53 +1021,109 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 				Collections.shuffle(sList);
 				Random random = new Random();
 				SubjectiveQuestion subjectiveQuestion = null;
-				SubjectiveAnswer subjectiveAnswer = null; //答案
+				
 				int count = 0;
 				for(int j=0; j<sList.size(); j++) {
 					//挑选
 					subjectiveQuestion = sList.get(j);
 					subjectiveAnswer = new SubjectiveAnswer();
+					if(cptList.size()<=subjectiveQuestion.getChapter()-1)
+						continue;
+					int scnum = 0;  //0:名词解释,1:填空,2:简答,3:计算,4:综合
+					if(kind == 0)
+						scnum = cptList.get(subjectiveQuestion.getChapter()-1).getTranslate_num();
+					else if(kind==1)
+						scnum = cptList.get(subjectiveQuestion.getChapter()-1).getBlank_num();
+					else if(kind==2)
+						scnum = cptList.get(subjectiveQuestion.getChapter()-1).getSimple_question_num();
+					else if(kind==3)
+						scnum = cptList.get(subjectiveQuestion.getChapter()-1).getCompute_num();
+					else if(kind==4)
+						scnum = cptList.get(subjectiveQuestion.getChapter()-1).getMix_num();
+					
 					if(simpleCount != 0 && subjectiveQuestion.getDegree() == 0) {
-						List blank = new ArrayList();
-						//先加问题
-						blank.add(subjectiveQuestion.getSq_question());
-						sPaperList.add(blank);
-						//加答案
-						subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
-						subjectiveAnswer.setAnswer_question(subjectiveQuestion.getSq_question());
-						subjectiveAnswer.setKind(kind);
-						subjectiveAnswer.setSequence(count);
-						z_answer.add(subjectiveAnswer);
-						count++;
-						simpleCount--;
+						//还得判断章节
+						if(subjectiveQuestion.getChapter()<cptList.size() && scnum!=0) {
+							List blank = new ArrayList();
+							//先加问题
+							blank.add(subjectiveQuestion.getSq_question());
+							sPaperList.add(blank);
+							//加答案
+							subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
+							subjectiveAnswer.setAnswer_question(subjectiveQuestion.getSq_question());
+							subjectiveAnswer.setKind(kind);
+							subjectiveAnswer.setSequence(count);
+							z_answer.add(subjectiveAnswer);
+							count++;
+							simpleCount--;
+							if(kind == 0)
+								cptList.get(subjectiveQuestion.getChapter()-1).setTranslate_num(scnum-1);
+							else if(kind==1)
+								cptList.get(subjectiveQuestion.getChapter()-1).setBlank_num(scnum-1);
+							else if(kind==2)
+								cptList.get(subjectiveQuestion.getChapter()-1).setSimple_question_num(scnum-1);
+							else if(kind==3)
+								cptList.get(subjectiveQuestion.getChapter()-1).setCompute_num(scnum-1);
+							else if(kind==4)
+								cptList.get(subjectiveQuestion.getChapter()-1).setMix_num(scnum-1);
+						}
+						
 						
 					}else if(middleCount != 0 && subjectiveQuestion.getDegree() == 1) {
-						List blank = new ArrayList();
-						//先加问题
-						blank.add(subjectiveQuestion.getSq_question());
-						sPaperList.add(blank);
-						//加答案
-						subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
-						subjectiveAnswer.setAnswer_question(subjectiveQuestion.getSq_question());
-						subjectiveAnswer.setKind(kind);
-						subjectiveAnswer.setSequence(count);
-						z_answer.add(subjectiveAnswer);
-						count++;
-						middleCount--;
+						//还得判断章节
+						if(subjectiveQuestion.getChapter()<cptList.size() && scnum!=0) {
+							List blank = new ArrayList();
+							//先加问题
+							blank.add(subjectiveQuestion.getSq_question());
+							sPaperList.add(blank);
+							//加答案
+							subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
+							subjectiveAnswer.setAnswer_question(subjectiveQuestion.getSq_question());
+							subjectiveAnswer.setKind(kind);
+							subjectiveAnswer.setSequence(count);
+							z_answer.add(subjectiveAnswer);
+							count++;
+							middleCount--;
+							if(kind == 0)
+								cptList.get(subjectiveQuestion.getChapter()-1).setTranslate_num(scnum-1);
+							else if(kind==1)
+								cptList.get(subjectiveQuestion.getChapter()-1).setBlank_num(scnum-1);
+							else if(kind==2)
+								cptList.get(subjectiveQuestion.getChapter()-1).setSimple_question_num(scnum-1);
+							else if(kind==3)
+								cptList.get(subjectiveQuestion.getChapter()-1).setCompute_num(scnum-1);
+							else if(kind==4)
+								cptList.get(subjectiveQuestion.getChapter()-1).setMix_num(scnum-1);
+						}
+						
 						
 					}else if(highCount != 0 && subjectiveQuestion.getDegree() == 2) {
-						List blank = new ArrayList();
-						//先加问题
-						blank.add(subjectiveQuestion.getSq_question());
-						sPaperList.add(blank);
-						//加答案
-						subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
-						subjectiveAnswer.setAnswer_question(subjectiveQuestion.getSq_question());
-						subjectiveAnswer.setKind(kind);
-						subjectiveAnswer.setSequence(count);
-						z_answer.add(subjectiveAnswer);
-						count++;
-						highCount--;
+						//还得判断章节
+						if(subjectiveQuestion.getChapter()<cptList.size() && scnum!=0) {
+							List blank = new ArrayList();
+							//先加问题
+							blank.add(subjectiveQuestion.getSq_question());
+							sPaperList.add(blank);
+							//加答案
+							subjectiveAnswer.setAnswer_right(subjectiveQuestion.getSq_answer()); //将答案加到答案list中
+							subjectiveAnswer.setAnswer_question(subjectiveQuestion.getSq_question());
+							subjectiveAnswer.setKind(kind);
+							subjectiveAnswer.setSequence(count);
+							z_answer.add(subjectiveAnswer);
+							count++;
+							highCount--;
+							if(kind == 0)
+								cptList.get(subjectiveQuestion.getChapter()-1).setTranslate_num(scnum-1);
+							else if(kind==1)
+								cptList.get(subjectiveQuestion.getChapter()-1).setBlank_num(scnum-1);
+							else if(kind==2)
+								cptList.get(subjectiveQuestion.getChapter()-1).setSimple_question_num(scnum-1);
+							else if(kind==3)
+								cptList.get(subjectiveQuestion.getChapter()-1).setCompute_num(scnum-1);
+							else if(kind==4)
+								cptList.get(subjectiveQuestion.getChapter()-1).setMix_num(scnum-1);
+						}
+						
 						
 					}else if(simpleCount==0 && middleCount==0 && highCount==0 )
 						break;//否则已经挑选完成
@@ -943,4 +1135,5 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			data.put(name, sPaperList);
 		}
 	}
+	
 }

@@ -23,6 +23,7 @@ public class JudgeQuestion {
 	@Column(length=500)
 	private String jud_question;
 	private byte jud_answer; //0:F , 1:T
+	private int chapter; //章节
 	@Column(columnDefinition="tinyint not null default 0")
 	private byte degree; //难度
 	private long create_time;  //创建时间
@@ -47,6 +48,12 @@ public class JudgeQuestion {
 	}
 	public int getJud_id() {
 		return jud_id;
+	}
+	public int getChapter() {
+		return chapter;
+	}
+	public void setChapter(int chapter) {
+		this.chapter = chapter;
 	}
 	public void setJud_id(int jud_id) {
 		this.jud_id = jud_id;
