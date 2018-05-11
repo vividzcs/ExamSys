@@ -42,4 +42,14 @@ public class ExamInfoDaoImpl extends BaseDaoImpl<ExamInfo> {
 		}else
 			return null;
 	}
+	
+	public int getEIdByPId(int p_id) {
+		List<Number> list =  (List<Number>) this.getHibernateTemplate().find("select e_id from ExamInfo where p_id=?", p_id);
+		if(list != null && list.size()>0) {
+			return list.get(0).intValue();
+		}else
+			return 0;
+	}
+	
+	
 }

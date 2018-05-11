@@ -144,7 +144,7 @@
                                     </div>
                                       <div class="form-group">
                                         <div class="col-sm-8 col-sm-offset-3">
-                                           <a href="mangeStudent.html"> 下载学生模板</a>  <button class="btn btn-primary" type="submit"  >导入名单</button>
+                                           <a href="${pageContext.request.contextPath }/modellist/学生名单模板.xls"> 下载学生模板</a>  <button class="btn btn-primary" type="submit"  >导入名单</button>
                                         </div>
                                     </div>
                                 </form>

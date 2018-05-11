@@ -90,4 +90,8 @@ public class ExamInfoService implements BaseService<ExamInfo> {
 	public ExamInfo getByMajorAndSubject(int m_id,int sub_id) {
 		return this.examInfoDaoImpl.getByMajorAndSubject(m_id, sub_id);
 	}
+	
+	public int getEIdByPId(int p_id) {
+		return this.examInfoDaoImpl.getEIdByPId(p_id);
+	}
 }

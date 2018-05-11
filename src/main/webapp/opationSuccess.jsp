@@ -46,7 +46,7 @@
 		<div class="information">
 			<h3>操作成功</h3>
 			<h4>${info }</h4>
-		  <a href="${pageContext.request.contextPath }/hello.jsp"><button class="btn btn-success" >返回首页</button></a> 
+		  <a href="${pageContext.request.contextPath }/sMes.action"><button class="btn btn-success" >返回首页</button></a> 
 		</div>
 	</body>
 </html>

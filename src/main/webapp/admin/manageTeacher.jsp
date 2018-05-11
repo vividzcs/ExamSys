@@ -62,7 +62,6 @@
                                              <th>姓名</th>
 											 <th>工号</th>
 											 <th>性别</th>
-											 <th>密码</th>
 											 <th>院系 </th>
 											  <th>操作</th>
                                         </tr>
@@ -76,7 +75,6 @@
 											 	<c:if test="${teacher.t_sex eq 1 }">男</c:if>
 											 	<c:if test="${teacher.t_sex eq 0 }">女</c:if>
 											 </th>
-											 <th>${teacher.t_pass }</th>
 											 <th>${teacher.academy.a_name}</th>
                                             <td class="center"><a href="${pageContext.request.contextPath }/admin/teacher_delete?t_id=${teacher.t_id}" class="delete" onclick="javascript:return del();">删除</a>&nbsp<a href="${pageContext.request.contextPath }/admin/teacher_editA.action?t_id=${teacher.t_id}" class="edit">修改</a></td>
                                         </tr>
@@ -172,7 +170,7 @@
                                    
                                       <div class="form-group">
                                         <div class="col-sm-8 col-sm-offset-3">
-                                           <a href="mangeStudent.html"> 下载教师名单模板</a>  <button class="btn btn-primary" type="submit">导入名单</button>
+                                           <a href="${pageContext.request.contextPath }/modellist/教师名单模板.xls"> 下载教师名单模板</a>  <button class="btn btn-primary" type="submit">导入名单</button>
                                         </div>
                                     </div>
                                 </form>

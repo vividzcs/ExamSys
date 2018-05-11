@@ -145,15 +145,24 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 			//得到试卷路径
 			String url = p.getPap_url();
 			//删除
-			this.paperService.delete(p);
 			
-			//将答案清除
-			ObjectiveAnswer oAnswer = this.objectiveAnswerService.getByUuid(paper.getPap_id());
-			this.objectiveAnswerService.delete(oAnswer.getAnswer_id());
-			List<SubjectiveAnswer> sList = this.subjectiveAnswerService.getByUuid(paper.getPap_id());
-			for(int i=0; i<sList.size(); i++) {
-				this.subjectiveAnswerService.delete(sList.get(i).getAnswer_id());
+			try {
+				this.paperService.delete(p);
+				
+				//将答案清除
+				ObjectiveAnswer oAnswer = this.objectiveAnswerService.getByUuid(paper.getPap_id());
+				this.objectiveAnswerService.delete(oAnswer.getAnswer_id());
+				List<SubjectiveAnswer> sList = this.subjectiveAnswerService.getByUuid(paper.getPap_id());
+				for(int i=0; i<sList.size(); i++) {
+					this.subjectiveAnswerService.delete(sList.get(i).getAnswer_id());
+				}
+			}catch(Exception e) {
+				e.printStackTrace();
+				req.setAttribute("info", "出了点问题,请重试");
+				return ERROR;
+				
 			}
+			
 			
 			//  student/more/paper/4028b88162a5164a0162a51752ae0006.html
 			String tmp = this.getClass().getResource("/").getPath();
@@ -546,7 +555,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 					int scnum = cptList.get(choiceQuestionTest.getChapter()-1).getSingle_choice_num();
 					if(simpleCount != 0 && choiceQuestionTest.getDegree() == 0) {
 						//还得判断章节
-						if(choiceQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+						if(choiceQuestionTest.getChapter()<=cptList.size() && scnum!=0) {
 							//说明要有这个题
 							List choice = new ArrayList();
 							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
@@ -569,7 +578,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						
 					}else if(middleCount != 0 && choiceQuestionTest.getDegree() == 1) {
 						//还得判断章节
-						if(choiceQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+						if(choiceQuestionTest.getChapter()<=cptList.size() && scnum!=0) {
 							List choice = new ArrayList();
 							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
 							choice.add(choiceQuestionTest.getCho_choice_1());
@@ -591,7 +600,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						
 					}else if(highCount != 0 && choiceQuestionTest.getDegree() == 2) {
 						//还得判断章节
-						if(choiceQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+						if(choiceQuestionTest.getChapter()<=cptList.size() && scnum!=0) {
 							List choice = new ArrayList();
 							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
 							choice.add(choiceQuestionTest.getCho_choice_1());
@@ -632,7 +641,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 					int scnum = cptList.get(choiceQuestion.getChapter()-1).getSingle_choice_num();
 					if(simpleCount != 0 && choiceQuestion.getDegree() == 0) {
 						//还得判断章节
-						if(choiceQuestion.getChapter()<cptList.size() && scnum!=0) {
+						if(choiceQuestion.getChapter()<=cptList.size() && scnum!=0) {
 							List choice = new ArrayList();
 							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
 							choice.add(choiceQuestion.getCho_choice_1());
@@ -654,7 +663,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						
 					}else if(middleCount != 0 && choiceQuestion.getDegree() == 1) {
 						//还得判断章节
-						if(choiceQuestion.getChapter()<cptList.size() && scnum!=0) {
+						if(choiceQuestion.getChapter()<=cptList.size() && scnum!=0) {
 							List choice = new ArrayList();
 							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
 							choice.add(choiceQuestion.getCho_choice_1());
@@ -676,7 +685,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						
 					}else if(highCount != 0 && choiceQuestion.getDegree() == 2) {
 						//还得判断章节
-						if(choiceQuestion.getChapter()<cptList.size() && scnum!=0) {
+						if(choiceQuestion.getChapter()<=cptList.size() && scnum!=0) {
 							List choice = new ArrayList();
 							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
 							choice.add(choiceQuestion.getCho_choice_1());
@@ -764,7 +773,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 					int scnum = cptList.get(judgeQuestionTest.getChapter()-1).getJudge_num();
 					if(simpleCount != 0 && judgeQuestionTest.getDegree() == 0) {
 						//还得判断章节
-						if(judgeQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+						if(judgeQuestionTest.getChapter()<=cptList.size() && scnum!=0) {
 							List judge = new ArrayList();
 							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
 							judge.add(judgeQuestionTest.getJud_question());
@@ -778,7 +787,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						
 					}else if(middleCount != 0 && judgeQuestionTest.getDegree() == 1) {
 						//还得判断章节
-						if(judgeQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+						if(judgeQuestionTest.getChapter()<=cptList.size() && scnum!=0) {
 							List judge = new ArrayList();
 							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
 							judge.add(judgeQuestionTest.getJud_question());
@@ -792,7 +801,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						
 					}else if(highCount != 0 && judgeQuestionTest.getDegree() == 2) {
 						//还得判断章节
-						if(judgeQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+						if(judgeQuestionTest.getChapter()<=cptList.size() && scnum!=0) {
 							List judge = new ArrayList();
 							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
 							judge.add(judgeQuestionTest.getJud_question());
@@ -823,7 +832,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 					int scnum = cptList.get(judgeQuestion.getChapter()-1).getJudge_num();
 					if(simpleCount != 0 && judgeQuestion.getDegree() == 0) {
 						//还得判断章节
-						if(judgeQuestion.getChapter()<cptList.size() && scnum!=0) {
+						if(judgeQuestion.getChapter()<=cptList.size() && scnum!=0) {
 							List judge = new ArrayList();
 							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
 							judge.add(judgeQuestion.getJud_question());
@@ -837,7 +846,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						
 					}else if(middleCount != 0 && judgeQuestion.getDegree() == 1) {
 						//还得判断章节
-						if(judgeQuestion.getChapter()<cptList.size() && scnum!=0) {
+						if(judgeQuestion.getChapter()<=cptList.size() && scnum!=0) {
 							List judge = new ArrayList();
 							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
 							judge.add(judgeQuestion.getJud_question());
@@ -851,7 +860,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						
 					}else if(highCount != 0 && judgeQuestion.getDegree() == 2) {
 						//还得判断章节
-						if(judgeQuestion.getChapter()<cptList.size() && scnum!=0) {
+						if(judgeQuestion.getChapter()<=cptList.size() && scnum!=0) {
 							List judge = new ArrayList();
 							//先加3个错误答案  choice.add(choiceQuestion.getCho_question());
 							judge.add(judgeQuestion.getJud_question());
@@ -935,7 +944,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 					
 					if(simpleCount != 0 && subjectiveQuestionTest.getDegree() == 0) {
 						//还得判断章节
-						if(subjectiveQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+						if(subjectiveQuestionTest.getChapter()<=cptList.size() && scnum!=0) {
 							List blank = new ArrayList();
 							//先加问题
 							blank.add(subjectiveQuestionTest.getSq_question());
@@ -961,7 +970,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						
 					}else if(middleCount != 0 && subjectiveQuestionTest.getDegree() == 1) {
 						//还得判断章节
-						if(subjectiveQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+						if(subjectiveQuestionTest.getChapter()<=cptList.size() && scnum!=0) {
 							List blank = new ArrayList();
 							//先加问题
 							blank.add(subjectiveQuestionTest.getSq_question());
@@ -987,7 +996,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						
 					}else if(highCount != 0 && subjectiveQuestionTest.getDegree() == 2) {
 						//还得判断章节
-						if(subjectiveQuestionTest.getChapter()<cptList.size() && scnum!=0) {
+						if(subjectiveQuestionTest.getChapter()<=cptList.size() && scnum!=0) {
 							List blank = new ArrayList();
 							//先加问题
 							blank.add(subjectiveQuestionTest.getSq_question());
@@ -1043,7 +1052,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 					
 					if(simpleCount != 0 && subjectiveQuestion.getDegree() == 0) {
 						//还得判断章节
-						if(subjectiveQuestion.getChapter()<cptList.size() && scnum!=0) {
+						if(subjectiveQuestion.getChapter()<=cptList.size() && scnum!=0) {
 							List blank = new ArrayList();
 							//先加问题
 							blank.add(subjectiveQuestion.getSq_question());
@@ -1071,7 +1080,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						
 					}else if(middleCount != 0 && subjectiveQuestion.getDegree() == 1) {
 						//还得判断章节
-						if(subjectiveQuestion.getChapter()<cptList.size() && scnum!=0) {
+						if(subjectiveQuestion.getChapter()<=cptList.size() && scnum!=0) {
 							List blank = new ArrayList();
 							//先加问题
 							blank.add(subjectiveQuestion.getSq_question());
@@ -1099,7 +1108,7 @@ public class PaperAction extends ActionSupport implements ModelDriven<Paper> {
 						
 					}else if(highCount != 0 && subjectiveQuestion.getDegree() == 2) {
 						//还得判断章节
-						if(subjectiveQuestion.getChapter()<cptList.size() && scnum!=0) {
+						if(subjectiveQuestion.getChapter()<=cptList.size() && scnum!=0) {
 							List blank = new ArrayList();
 							//先加问题
 							blank.add(subjectiveQuestion.getSq_question());

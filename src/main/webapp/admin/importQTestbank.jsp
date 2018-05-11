@@ -68,7 +68,7 @@
                                       <div class="form-group">
                                         <label class="col-sm-3 control-label">练习题库模板</label>
                                         <div class="col-sm-8">
-                                            <a href="">下载模板</a>
+                                            <a href="${pageContext.request.contextPath }/modellist/题库模板.rar">下载模板</a>
                                         </div>
                                     </div>
                                 </form>

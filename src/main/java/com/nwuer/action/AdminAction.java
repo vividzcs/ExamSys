@@ -487,7 +487,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String question = questionCell.getContents().trim();
 				if(question.equals("")) {
 					//不对
-					info =  "第" + j + "行题目不能为空" ;
+					info =  "第" + (j+1) + "行题目不能为空" ;
 					return info;
 				}
 				
@@ -496,7 +496,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String answer = answerCell.getContents().trim();
 				if(answer.equals("")) {
 					//不对
-					info = "第" + j + "行正确选项不能为空";
+					info = "第" + (j+1) + "行正确选项不能为空";
 					return info;
 				}
 
@@ -505,7 +505,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String other1 = other1Cell.getContents().trim();
 				if(other1.equals("")) {
 					//不对
-					info = "第" + j + "行其他选项1不能为空";
+					info = "第" + (j+1) + "行其他选项1不能为空";
 					return info;
 				}
 				
@@ -514,7 +514,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String other2 = other2Cell.getContents().trim();
 				if(other2.equals("")) {
 					//不对
-					info = "第" + j + "行其他选项2填写错误";
+					info = "第" + (j+1) + "行其他选项2填写错误";
 					return info;
 				}
 				
@@ -522,7 +522,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				Cell other3Cell = sheet.getCell(4,j);
 				String other3 = other3Cell.getContents().trim();
 				if(other3.equals("")) {
-					info = "第" + j + "行其他选项3填写错误";
+					info = "第" + (j+1) + "行其他选项3填写错误";
 					return info;
 				}
 				
@@ -531,7 +531,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String cpt = cptCell.getContents().trim();
 				if(this.validateUtil.isNumber(cpt)!=null) {
 					//不对
-					info = "第" + j + "行章节填写错误";
+					info = "第" + (j+1) + "行章节填写错误";
 					return info;
 				}
 				int cpt_cpt = Integer.parseInt(cpt);
@@ -541,7 +541,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String degree = degreeCell.getContents().trim();
 				if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 					//不对
-					info = "第" + j + "行难易程度填写错误";
+					info = "第" + (j+1) + "行难易程度填写错误";
 					return info;
 				}
 				byte deg = Byte.parseByte(degree);
@@ -552,7 +552,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int m_id = 0;
 				if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 					
-					info = "第" + j + "行专业填写错误";
+					info = "第" + (j+1) + "行专业填写错误";
 					return info;
 				}
 				
@@ -562,7 +562,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int sub_id = 0;
 				if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 					
-					info = "第" + j + "行科目填写错误";
+					info = "第" + (j+1) + "行科目填写错误";
 					return info;
 				}
 				
@@ -584,7 +584,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int id = this.choiceQuestionService.add(choiceQuestion);
 				if(id <= 0) {
 					//添加失败
-					info = "第" + j + "个题目添加失败,请重试";
+					info = "第" + (j+1) + "个题目添加失败,请重试";
 					return info;
 				}
 			}
@@ -656,7 +656,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String question = questionCell.getContents().trim();
 				if(question.equals("")) {
 					//不对
-					info =  "第" + j + "行题目不能为空" ;
+					info =  "第" + (j+1) + "行题目不能为空" ;
 					return info;
 				}
 				
@@ -665,7 +665,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String answer = answerCell.getContents().trim();
 				if(answer.equals("")) {
 					//不对
-					info = "第" + j + "行正确选项不能为空";
+					info = "第" + (j+1) + "行正确选项不能为空";
 					return info;
 				}
 
@@ -674,7 +674,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String other1 = other1Cell.getContents().trim();
 				if(other1.equals("")) {
 					//不对
-					info = "第" + j + "行其他选项1不能为空";
+					info = "第" + (j+1) + "行其他选项1不能为空";
 					return info;
 				}
 				
@@ -683,7 +683,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String other2 = other2Cell.getContents().trim();
 				if(other2.equals("")) {
 					//不对
-					info = "第" + j + "行其他选项2填写错误";
+					info = "第" + (j+1) + "行其他选项2填写错误";
 					return info;
 				}
 				
@@ -691,7 +691,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				Cell other3Cell = sheet.getCell(4,j);
 				String other3 = other3Cell.getContents().trim();
 				if(other3.equals("")) {
-					info = "第" + j + "行其他选项3填写错误";
+					info = "第" + (j+1) + "行其他选项3填写错误";
 					return info;
 				}
 				
@@ -700,7 +700,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String cpt = cptCell.getContents().trim();
 				if(this.validateUtil.isNumber(cpt)!=null) {
 					//不对
-					info = "第" + j + "行章节填写错误";
+					info = "第" + (j+1) + "行章节填写错误";
 					return info;
 				}
 				int cpt_cpt = Integer.parseInt(cpt);
@@ -711,7 +711,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String degree = degreeCell.getContents().trim();
 				if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 					//不对
-					info = "第" + j + "行难易程度填写错误";
+					info = "第" + (j+1) + "行难易程度填写错误";
 					return info;
 				}
 				byte deg = Byte.parseByte(degree);
@@ -722,7 +722,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int m_id = 0;
 				if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 					
-					info = "第" + j + "行专业填写错误";
+					info = "第" +(j+1) + "行专业填写错误";
 					return info;
 				}
 				
@@ -732,7 +732,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int sub_id = 0;
 				if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 					
-					info = "第" + j + "行科目填写错误";
+					info = "第" + (j+1) + "行科目填写错误";
 					return info;
 				}
 				
@@ -754,7 +754,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int id = this.choiceQuestionTestService.add(choiceQuestionTest);
 				if(id <= 0) {
 					//添加失败
-					info = "第" + j + "个题目添加失败,请重试";
+					info = "第" + (j+1) + "个题目添加失败,请重试";
 					return info;
 				}
 			}
@@ -828,7 +828,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						String question = questionCell.getContents().trim();
 						if(question.equals("")) {
 							//不对
-							info =  "第" + j + "行题目不能为空" ;
+							info =  "第" + (j+1) + "行题目不能为空" ;
 							return info;
 						}
 						
@@ -837,7 +837,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						String answer = answerCell.getContents().trim();
 						if(!answer.equals("T") && !answer.equals("F")) {
 							//不对
-							info = "第" + j + "行答案格式错误";
+							info = "第" + (j+1) + "行答案格式错误";
 							return info;
 						}
 						byte sub_answer = (byte) (answer.equals("T") ? 1 : 0);
@@ -847,7 +847,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						String cpt = cptCell.getContents().trim();
 						if(this.validateUtil.isNumber(cpt)!=null) {
 							//不对
-							info = "第" + j + "行章节填写错误";
+							info = "第" + (j+1) + "行章节填写错误";
 							return info;
 						}
 						int cpt_cpt = Integer.parseInt(cpt);
@@ -857,7 +857,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						String degree = degreeCell.getContents().trim();
 						if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 							//不对
-							info = "第" + j + "行难易程度填写错误";
+							info = "第" +(j+1) + "行难易程度填写错误";
 							return info;
 						}
 						byte deg = Byte.parseByte(degree);
@@ -868,7 +868,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						int m_id = 0;
 						if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 							
-							info = "第" + j + "行专业填写错误";
+							info = "第" + (j+1) + "行专业填写错误";
 							return info;
 						}
 						
@@ -878,7 +878,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						int sub_id = 0;
 						if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 							
-							info = "第" + j + "行科目填写错误";
+							info = "第" + (j+1) + "行科目填写错误";
 							return info;
 						}
 						
@@ -897,7 +897,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						int id = this.judgeQuestionService.add(judgeQuestion);
 						if(id <= 0) {
 							//添加失败
-							info = "第" + j + "个题目添加失败,请重试";
+							info = "第" + (j+1) + "个题目添加失败,请重试";
 							return info;
 						}
 					}
@@ -972,7 +972,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						String question = questionCell.getContents().trim();
 						if(question.equals("")) {
 							//不对
-							info =  "第" + j + "行题目不能为空" ;
+							info =  "第" + (j+1) + "行题目不能为空" ;
 							return info;
 						}
 						
@@ -981,7 +981,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						String answer = answerCell.getContents().trim();
 						if(!answer.equals("T") && !answer.equals("F")) {
 							//不对
-							info = "第" + j + "行答案格式错误";
+							info = "第" + (j+1) + "行答案格式错误";
 							return info;
 						}
 						byte sub_answer = (byte) (answer.equals("T") ? 1 : 0);
@@ -991,7 +991,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						String cpt = cptCell.getContents().trim();
 						if(this.validateUtil.isNumber(cpt)!=null) {
 							//不对
-							info = "第" + j + "行章节填写错误";
+							info = "第" + (j+1) + "行章节填写错误";
 							return info;
 						}
 						int cpt_cpt = Integer.parseInt(cpt);
@@ -1001,7 +1001,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						String degree = degreeCell.getContents().trim();
 						if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 							//不对
-							info = "第" + j + "行难易程度填写错误";
+							info = "第" + (j+1) + "行难易程度填写错误";
 							return info;
 						}
 						byte deg = Byte.parseByte(degree);
@@ -1012,7 +1012,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						int m_id = 0;
 						if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 							
-							info = "第" + j + "行专业填写错误";
+							info = "第" + (j+1) + "行专业填写错误";
 							return info;
 						}
 						
@@ -1022,7 +1022,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						int sub_id = 0;
 						if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 							
-							info = "第" + j + "行科目填写错误";
+							info = "第" + (j+1) + "行科目填写错误";
 							return info;
 						}
 						
@@ -1041,7 +1041,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						int id = this.judgeQuestionTestService.add(judgeQuestionTest);
 						if(id <= 0) {
 							//添加失败
-							info = "第" + j + "个题目添加失败,请重试";
+							info = "第" + (j+1) + "个题目添加失败,请重试";
 							return info;
 						}
 					}
@@ -1115,7 +1115,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String question = questionCell.getContents().trim();
 				if(question.equals("")) {
 					//不对
-					info =  "第" + j + "行题目不能为空" ;
+					info =  "第" + (j+1) + "行题目不能为空" ;
 					return info;
 				}
 				
@@ -1124,7 +1124,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String answer = answerCell.getContents().trim();
 				if(answer.equals("")) {
 					//不对
-					info = "第" + j + "行答案不能为空";
+					info = "第" + (j+1) + "行答案不能为空";
 					return info;
 				}
 				
@@ -1133,7 +1133,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String cpt = cptCell.getContents().trim();
 				if(this.validateUtil.isNumber(cpt)!=null) {
 					//不对
-					info = "第" + j + "行章节填写错误";
+					info = "第" + (j+1) + "行章节填写错误";
 					return info;
 				}
 				int cpt_cpt = Integer.parseInt(cpt);
@@ -1143,7 +1143,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String degree = degreeCell.getContents().trim();
 				if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 					//不对
-					info = "第" + j + "行难易程度填写错误";
+					info = "第" + (j+1) + "行难易程度填写错误";
 					return info;
 				}
 				byte deg = Byte.parseByte(degree);
@@ -1153,7 +1153,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String qKind = questionKindCell.getContents().trim();
 				if(!qKind.equals("0") && !qKind.equals("1") && !qKind.equals("2") && !qKind.equals("3") && !qKind.equals("4")) {
 					//不对
-					info = "第" + j + "行主观题类型填写错误";
+					info = "第" + (j+1) + "行主观题类型填写错误";
 					return info;
 				}
 				byte sq_kind = Byte.parseByte(qKind);
@@ -1164,7 +1164,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int m_id = 0;
 				if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 					
-					info = "第" + j + "行专业填写错误";
+					info = "第" + (j+1) + "行专业填写错误";
 					return info;
 				}
 				
@@ -1174,7 +1174,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int sub_id = 0;
 				if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 					
-					info = "第" + j + "行科目填写错误";
+					info = "第" + (j+1) + "行科目填写错误";
 					return info;
 				}
 				
@@ -1190,7 +1190,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int id = this.subjectiveQuestionService.add(subjectiveQuestion);
 				if(id <= 0) {
 					//添加失败
-					info = "第" + j + "个题目添加失败,请重试";
+					info = "第" + (j+1) + "个题目添加失败,请重试";
 					return info;
 				}
 			}
@@ -1264,7 +1264,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String question = questionCell.getContents().trim();
 				if(question.equals("")) {
 					//不对
-					info =  "第" + j + "行题目不能为空" ;
+					info =  "第" +(j+1) + "行题目不能为空" ;
 					return info;
 				}
 				
@@ -1273,7 +1273,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String answer = answerCell.getContents();
 				if(answer.trim().equals("")) {
 					//不对
-					info = "第" + j + "行答案不能为空";
+					info = "第" + (j+1) + "行答案不能为空";
 					return info;
 				}
 				
@@ -1282,7 +1282,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String degree = degreeCell.getContents().trim();
 				if(!degree.equals("0") && !degree.equals("1") && !degree.equals("2")) {
 					//不对
-					info = "第" + j + "行难易程度填写错误";
+					info = "第" + (j+1) + "行难易程度填写错误";
 					return info;
 				}
 				byte deg = Byte.parseByte(degree);
@@ -1292,7 +1292,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				String qKind = questionKindCell.getContents().trim();
 				if(!qKind.equals("0") && !qKind.equals("1") && !qKind.equals("2") && !qKind.equals("3") && !qKind.equals("4")) {
 					//不对
-					info = "第" + j + "行主观题类型填写错误";
+					info = "第" + (j+1) + "行主观题类型填写错误";
 					return info;
 				}
 				byte sq_kind = Byte.parseByte(qKind);
@@ -1303,7 +1303,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int m_id = 0;
 				if(major.equals("") || (m_id=this.majorService.getIdByName(major))== 0) {
 					
-					info = "第" + j + "行专业填写错误";
+					info = "第" + (j+1) + "行专业填写错误";
 					return info;
 				}
 				
@@ -1313,7 +1313,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int sub_id = 0;
 				if(sub.equals("") || (sub_id=this.subjectService.getIdByName(sub))== 0) {
 					
-					info = "第" + j + "行科目填写错误";
+					info = "第" + (j+1) + "行科目填写错误";
 					return info;
 				}
 				
@@ -1328,7 +1328,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int id = this.subjectiveQuestionTestService.add(subjectiveQuestionTest);
 				if(id <= 0) {
 					//添加失败
-					info = "第" + j + "个题目添加失败,请重试";
+					info = "第" + (j+1) + "个题目添加失败,请重试";
 					return info;
 				}
 			}
@@ -2014,13 +2014,13 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 		info = importStudentReg(); 
 		if(info != null) {
 			req.setAttribute("info", info);
-			return ERROR;
+			return "erroro";
 		}
 		//开始导入监考阅卷人员
 		info = importTeacherGuard();
 		if(info != null) {
 			req.setAttribute("info", info);
-			return ERROR;
+			return "erroro";
 		}
 		
 		return "showsr";
@@ -2029,13 +2029,6 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 	public String importStudentReg() {
 		//开始导入 先导入注册学生 先清空注册学生
 				if(this.studentRegisterService.hasData()) {
-					//在清除注册学生前,清除考场信息
-					List<Integer> examInfoIds = this.studentRegisterService.getExamInfoIds();
-					for(Integer e_id : examInfoIds ) {
-						if(e_id == 0)
-							continue;
-						this.examInfoService.delete(e_id);
-					}
 					
 					this.studentRegisterService.clear();
 					
@@ -2077,7 +2070,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						int m_id = 0;
 						if(m_name.equals("") || (m_id=this.majorService.getIdByName(m_name))== 0) {
 							//不对
-							return "第" + j + "行专业错误";
+							return "第" + (j+1) + "行专业错误";
 						}
 						
 						//处理科目
@@ -2086,7 +2079,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						int sub_id = 0;
 						if(sub_name.equals("") || (sub_id=this.subjectService.getIdByName(sub_name))== 0) {
 							//不对
-							return "第" + j + "行科目错误";
+							return "第" + (j+1) + "行科目错误";
 						}
 
 						//处理学号 
@@ -2094,7 +2087,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						String s_number = s_numberCell.getContents().trim();
 						if(s_number.equals("") || this.studentRegisterService.getByMajorAndSubjectAndNumber(m_id, sub_id, s_number) != null || this.studentService.getByNumberE(s_number) == null) {
 							//不对
-							return "第" + j + "行学号为空或重复";
+							return "第" + (j+1) + "行学号为空或重复,或没有此学生信息";
 						}
 						//验证通过
 						
@@ -2114,11 +2107,11 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 						int id = this.studentRegisterService.add(sRegister);
 						if(id <= 0) {
 							//添加失败
-							return "第" + j + "个学生添加失败,请重试";
+							return "第" + (j+1) + "行学生添加失败,请重试";
 						}else {
 							//更新考场信息
 							if(!this.examInfoService.increaseExamNumAll(m_id,sub_id)) {
-								return "考场信息更新失败,请重试";
+								return "第"+(j+1)+"行考场信息更新失败,可能未有此专业科目对应考试,请添加考试规则后重试";
 							}
 						}
 					}
@@ -2194,7 +2187,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int m_id = 0;
 				if(m_name.equals("") || (m_id=this.majorService.getIdByName(m_name))== 0) {
 					//不对
-					return "第" + j + "行专业错误";
+					return "第" + (j+1) + "行专业错误";
 				}
 				
 				//处理科目
@@ -2203,7 +2196,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int sub_id = 0;
 				if(sub_name.equals("") || (sub_id=this.subjectService.getIdByName(sub_name))== 0) {
 					//不对
-					return "第" + j + "行科目错误";
+					return "第" + (j+1) + "行科目错误";
 				}
 
 				//处理监考信息
@@ -2212,7 +2205,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				Teacher t1 = null;
 				if((info = this.validateUtil.validateNumber(number1, 10))!= null || (t1 = this.teacherService.getByNumberE(number1))==null) {
 					//不对
-					return "第" + j + "行监考1错误";
+					return "第" + (j+1) + "行监考1错误";
 				}
 				//并且工号不能重复
 				
@@ -2221,7 +2214,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				Teacher t2 = null;
 				if((info = this.validateUtil.validateNumber(number2, 10))!= null || (t2 = this.teacherService.getByNumberE(number2))==null ) {
 					//不对
-					return "第" + j + "行监考2错误";
+					return "第" + (j+1) + "行监考2错误";
 				}
 				
 				//处理阅卷信息
@@ -2230,7 +2223,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				Teacher t3 = null;
 				if((info = this.validateUtil.validateNumber(number3, 10))!= null || (t3 = this.teacherService.getByNumberE(number3))==null) {
 					//不对
-					return "第" + j + "行阅卷1错误";
+					return "第" + (j+1) + "行阅卷1错误";
 				}
 				//并且工号不能重复
 				Cell number4Cell = sheet.getCell(5,j);
@@ -2238,16 +2231,16 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				Teacher t4 = null;
 				if((info = this.validateUtil.validateNumber(number4, 10))!= null || (t4 = this.teacherService.getByNumberE(number4))==null) {
 					//不对
-					return "第" + j + "行阅卷2错误";
+					return "第" + (j+1) + "行阅卷2错误";
 				}
 				//并且工号不能重复
 				
 				Cell number5Cell = sheet.getCell(6,j);
-				String number5 = number4Cell.getContents().trim();
+				String number5 = number5Cell.getContents().trim();
 				Teacher t5 = null;
 				if((info = this.validateUtil.validateNumber(number5, 10))!= null || (t5 = this.teacherService.getByNumberE(number5))==null) {
 					//不对
-					return "第" + j + "行阅卷3错误";
+					return "第" + (j+1) + "行阅卷3错误";
 				}
 				//并且工号不能重复
 				
@@ -2268,7 +2261,7 @@ public class AdminAction extends ActionSupport implements ModelDriven<Admin> {
 				int id = this.guardianShipService.add(guard);
 				if(id <= 0) {
 					//添加失败
-					return "第" + j + "个监考阅卷信息添加失败,请重试";
+					return "第" + (j+1) + "个监考阅卷信息添加失败,请重试";
 				}else {
 					//更新考场信息
 					ExamInfo ei = this.examInfoService.getByMajorAndSubject(m_id, sub_id);

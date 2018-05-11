@@ -448,7 +448,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		//查询所有院系
 		List<Academy> aca_list = this.academyService.getAll();
 		//查询老师名单
-		List<Teacher> tea_list = this.teacherService.getAllByTimeDesc();
+		List<Teacher> tea_list = this.teacherService.getAll();
 		
 		
 		req.setAttribute("aca_list", aca_list);
@@ -498,8 +498,6 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 		FileInputStream excel = null;
 		Workbook wb =  null;
 		try {
-			ApplicationContext application = WebApplicationContextUtils.getWebApplicationContext(ServletActionContext.getServletContext());
-			//事务开始
 			//得到Excel文件
 			excel = new FileInputStream(file_upload);
 			//获取工作簿对象
@@ -525,8 +523,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				String number = numCell.getContents();
 				if(number.trim().length() != 10) {
 					//不对
-					info =  "第" + j + "行工号有误" ;
-					req.setAttribute("info", info);
+					req.setAttribute("info", "第" + (j+1) + "行工号有误");
 					return ERROR;
 				}
 				//工号不能重复
@@ -537,8 +534,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				String pass = passCell.getContents();
 				if(pass.trim().equals("")) {
 					//不对
-					info = "第" + j + "行密码不能为空";
-					req.setAttribute("info", info);
+					req.setAttribute("info", "第" + (j+1) + "行密码不能为空");
 					return ERROR;
 				}
 
@@ -547,8 +543,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				String name = nameCell.getContents();
 				if(name.trim().equals("")) {
 					//不对
-					info = "第" + j + "行姓名不能为空";
-					req.setAttribute("info", info);
+					req.setAttribute("info", "第" + (j+1) + "行姓名不能为空");
 					return ERROR;
 				}
 				
@@ -557,8 +552,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				String sex = sexCell.getContents();
 				if(!sex.trim().equals("男") && !sex.trim().equals("女")) {
 					//不对
-					info = "第" + j + "行性别填写错误";
-					req.setAttribute("info", info);
+					req.setAttribute("info", "第" + (j+1) + "行性别填写错误");
 					return ERROR;
 				}
 				byte s_sex = (byte) (sex.trim().equals("男") ? 1 : 0);
@@ -568,21 +562,19 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				String academy = academyCell.getContents();
 				int a_id = 0;
 				if(academy.trim().equals("") || (a_id = this.academyService.getIdByName(academy)) ==0 ) {
-					info = "第" + j + "行院系填写错误";
-					req.setAttribute("info", info);
+					req.setAttribute("info", "第" + (j+1) + "行院系填写错误");
 					return ERROR;
 				}
 				
-				//处理是否能登录
+				/*//处理是否能登录
 				Cell loginCell = sheet.getCell(5,j);
 				String login = loginCell.getContents();
 				if(!login.trim().equals("0") && !login.trim().equals("1")) {
 					//不对
-					info = "第" + j + "行登录状态填写错误";
-					req.setAttribute("info", info);
+					req.setAttribute("info", "第" + (j+1) + "行登录状态填写错误");
 					return ERROR;
 				}
-				byte status = Byte.parseByte(login);
+				byte status = Byte.parseByte(login);*/
 				
 				//验证通过
 				Academy s_academy = new Academy();
@@ -592,12 +584,12 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 				teacher.setT_number(number);
 				teacher.setT_pass(pass);
 				teacher.setT_sex(s_sex);
-				teacher.setStatus(status);
+//				teacher.setStatus(status);
 				teacher.setAcademy(s_academy);
 				int id = this.teacherService.add(teacher);
 				if(id <= 0) {
 					//添加失败
-					info = "第" + j + "个学生添加失败,请重试";
+					info = "第" + (j+1) + "个学生添加失败,请重试";
 					req.setAttribute("info", info);
 					return ERROR;
 				}
@@ -624,8 +616,7 @@ public class TeacherAction extends ActionSupport implements ModelDriven<Teacher>
 					e.printStackTrace();
 				}
 		}
-		info = "添加失败,请重试";
-		req.setAttribute("info", info);
+		req.setAttribute("info", "添加失败,请重试");
 		return ERROR;
 	}
 }

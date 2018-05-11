@@ -69,6 +69,7 @@
                                 <div class="form-group">
                                         <label class="col-sm-3 control-label">规则名：</label>
                                         <div class="col-sm-8">
+                                        	<input type="hidden" name="p_id" value="${rule.p_id }">
                                             <input id="username" name="p_name" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error" value="${rule.p_name }">
                                         </div>
                                     </div>
@@ -177,6 +178,49 @@
                                     		   <td> <input id="example3s" name="mix_score" class="form-control" type="text" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字" value="${rule.mix_score }">
                                                </td>
                                     		 </tr>
+                                    		</tbody>
+                                    	</table>
+                                    </div>
+                                    <!-- 在这里新增加了章节信息 --> 
+                                               <div class="form-group col-lg-12" id="paperChapter" style="width: 600px">
+                                <div class="paperTitle">试卷题目章节分布信息</div>
+
+                                   <table>
+                                    <thead>
+                                    		<tr>
+                                    			<td >章节</td>
+                                    			<td>单选</td>
+                                    			<td>判断</td>
+                                    			<td>填空</td>
+                                    			<td>名词解释</td>
+                                    			<td>简答题</td>
+                                    			<td>计算</td>
+                                    			<td>综合</td>
+                                    		</tr>
+                                   </thead>
+                                    <tbody>
+                                      <tr>
+                                      
+                                      <c:forEach items="${rule.chapter }" var="chapter">
+                                    			<td class="chapter">第${chapter.cpt_cpt }章</td>
+                                    			<input name="chapter[${chapter.cpt_cpt-1 }].cpt_id"  class="form-control" type="hidden" aria-required="true" aria-invalid="true" class="error snumber" value="${chapter.cpt_id }">
+                                    			<input name="chapter[${chapter.cpt_cpt-1 }].cpt_cpt"  class="form-control" type="hidden" aria-required="true" aria-invalid="true" class="error snumber" value="${chapter.cpt_cpt }">
+                                    			<td> <input name="chapter[${chapter.cpt_cpt-1 }].single_choice_num"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" value="${chapter.single_choice_num }" >
+                                    			</td>
+                                    		    <td>  <input name="chapter[${chapter.cpt_cpt-1 }].judge_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" value="${chapter.judge_num }" >
+                                    		    </td>
+                                    		    <td> <input name="chapter[${chapter.cpt_cpt-1 }].blank_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" value="${chapter.blank_num }">
+                                    			</td>
+                                    		    <td>  <input name="chapter[${chapter.cpt_cpt-1 }].translate_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" value="${chapter.translate_num }">
+                                    		    </td>
+                                    		    <td> <input name="chapter[${chapter.cpt_cpt-1 }].simple_question_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" value="${chapter.simple_question_num }">
+                                    			</td>
+                                    		    <td>  <input name="chapter[${chapter.cpt_cpt-1 }].compute_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" value="${chapter.compute_num }">
+                                    		    </td>
+                                    		    <td> <input name="chapter[${chapter.cpt_cpt-1 }].mix_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" value="${chapter.mix_num }">
+                                    			</td>
+                                    		</tr>
+                                    		</c:forEach>
                                     		</tbody>
                                     	</table>
                                     </div>

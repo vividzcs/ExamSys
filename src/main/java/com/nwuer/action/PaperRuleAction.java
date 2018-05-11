@@ -57,7 +57,7 @@ public class PaperRuleAction extends ActionSupport implements ModelDriven<PaperR
 		String start = req.getParameter("beginTime");
 		String end = req.getParameter("endTime");
 		//检查数据
-		if(paperRule.getP_name().trim().equals("")) {
+		if(paperRule.getP_name()==null || paperRule.getP_name().trim().equals("")) {
 			req.setAttribute("info", "规则名不能为空!");
 			return ERROR;
 		}
@@ -168,14 +168,29 @@ public class PaperRuleAction extends ActionSupport implements ModelDriven<PaperR
 		}
 		List<Paper> list = this.paperService.getPaperByPid(this.paperRule.getP_id());
 		for(Paper pap : list) {
-			String info = this.deletePaper(pap.getPap_id());
+			String info = this.deletePaper(pap);
 			if(!info.equals("success")) {
 				req.setAttribute("info", "删除试卷规则下的试卷失败,请检查后重试!");
 				return ERROR;
 			}
+			this.paperService.delete(pap);
 		}
 		
-		this.paperRuleService.delete(this.paperRule.getP_id());
+		
+		try {
+			//在清除注册学生前,清除考场信息
+			int e_id = this.examInfoService.getEIdByPId(this.paperRule.getP_id());
+			if(e_id != 0) {
+				this.examInfoService.delete(e_id);
+			}
+			
+			this.paperRuleService.delete(this.paperRule.getP_id());
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			req.setAttribute("info", "试卷删除失败,请重试!");
+			return ERROR;
+		}
 		
 		return SUCCESS;
 	}
@@ -184,8 +199,7 @@ public class PaperRuleAction extends ActionSupport implements ModelDriven<PaperR
 	 * 删除试卷,同时删除本地存的试卷
 	 * @return
 	 */
-	public String deletePaper(String pap_id) {
-		Paper p = this.paperService.getByIdEager(pap_id);
+	public String deletePaper(Paper p) {
 		if(p == null) {
 			req.setAttribute("info", "删除失败");
 			return ERROR;
@@ -198,9 +212,9 @@ public class PaperRuleAction extends ActionSupport implements ModelDriven<PaperR
 			this.paperService.delete(p);
 			
 			//将答案清除
-			ObjectiveAnswer oAnswer = this.objectiveAnswerService.getByUuid(pap_id);
+			ObjectiveAnswer oAnswer = this.objectiveAnswerService.getByUuid(p.getPap_id());
 			this.objectiveAnswerService.delete(oAnswer.getAnswer_id());
-			List<SubjectiveAnswer> sList = this.subjectiveAnswerService.getByUuid(pap_id);
+			List<SubjectiveAnswer> sList = this.subjectiveAnswerService.getByUuid(p.getPap_id());
 			for(int i=0; i<sList.size(); i++) {
 				this.subjectiveAnswerService.delete(sList.get(i).getAnswer_id());
 			}
@@ -232,6 +246,13 @@ public class PaperRuleAction extends ActionSupport implements ModelDriven<PaperR
 		return "edit";
 	}
 	
+	private int p_id;
+	public int getP_id() {
+		return p_id;
+	}
+	public void setP_id(int p_id) {
+		this.p_id = p_id;
+	}
 	public String update() {
 		//验证信息
 		String start = req.getParameter("beginTime");
@@ -286,7 +307,17 @@ public class PaperRuleAction extends ActionSupport implements ModelDriven<PaperR
 			req.setAttribute("info", "日期格式错误,请重试!");
 			return ERROR;
 		}
-		this.paperRuleService.update(paperRule);
+//		for(Chapter c : paperRule.getChapter()) {
+//			
+//		}
+		try {
+			this.paperRuleService.update(paperRule);
+		}catch(Exception e) {
+			e.printStackTrace();
+			req.setAttribute("info", "检查填写内容是否没填!");
+			return ERROR;
+		}
+		
 		return SUCCESS;
 	}
 	

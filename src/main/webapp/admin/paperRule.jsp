@@ -131,6 +131,12 @@
                                             <input id="totalScore" name="full_score"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字" value="100">
                                         </div>
                                     </div>
+                                     <div class="form-group">
+                                        <label class="col-sm-3 control-label">章节总数 </label>
+                                        <div class="col-sm-8">
+                                            <input id="totalchacter" onchange='changeTable(this.value)'  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" placeholder="填写数字" value="100">
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                  <div class="paperTitle">试卷题目信息</div>
                                     <label class="col-sm-3 control-label"> </label>
@@ -212,43 +218,8 @@
                                     			<td>综合</td>
                                     		</tr>
                                    </thead>
-                                    <tbody>
-                                      <tr>
-                                    			<td class="chapter">第1章</td>
-                                    			<input name="chapter[0].cpt_cpt"  class="form-control" type="hidden" aria-required="true" aria-invalid="true" class="error snumber" value="1">
-                                    			<td> <input name="chapter[0].single_choice_num"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
-                                    			</td>
-                                    		    <td>  <input name="chapter[0].judge_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
-                                    		    </td>
-                                    		    <td> <input name="chapter[0].blank_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
-                                    			</td>
-                                    		    <td>  <input name="chapter[0].translate_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
-                                    		    </td>
-                                    		    <td> <input name="chapter[0].simple_question_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
-                                    			</td>
-                                    		    <td>  <input name="chapter[0].compute_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
-                                    		    </td>
-                                    		    <td> <input name="chapter[0].mix_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
-                                    			</td>
-                                    		</tr>
-                                    		<tr>
-                                    			<td class="chapter">第2章</td>
-                                    			<input name="chapter[1].cpt_cpt"  class="form-control" type="hidden" aria-required="true" aria-invalid="true" class="error snumber" value="2">
-                                    			<td> <input name="chapter[1].single_choice_num"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
-                                    			</td>
-                                    		    <td>  <input name="chapter[1].judge_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
-                                    		    </td>
-                                    		    <td> <input name="chapter[1].blank_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
-                                    			</td>
-                                    		    <td>  <input name="chapter[1].translate_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
-                                    		    </td>
-                                    		    <td> <input name="chapter[1].simple_question_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
-                                    			</td>
-                                    		    <td>  <input name="chapter[1].compute_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
-                                    		    </td>
-                                    		    <td> <input name="chapter[1].mix_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >
-                                    			</td>
-                                    		</tr>
+                                    <tbody id="ctbody">
+                                      
                                     		</tbody>
                                     	</table>
                                     </div>
@@ -387,6 +358,17 @@
          startDate:	dataTime.toLocaleDateString()
          });
          $('#datetimepicker1').datetimepicker({value:nowtime,step:10});
+         
+         
+       function  changeTable(num1){
+    	   var table = document.getElementById("ctbody");
+    	   table.innerHTML="";
+    	   for(var i=0;i<num1;i++){
+    		   var num=parseInt(i);
+    		   var str ='  <tr><td class="chapter">第'+(num+1)+'章</td><input name="chapter['+num+'].cpt_cpt"  class="form-control" type="hidden" aria-required="true" aria-invalid="true" class="error snumber" value="'+(num+1)+'"><td> <input name="chapter['+num+'].single_choice_num"  class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" ></td><td>  <input name="chapter['+num+'].judge_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" > </td><td> <input name="chapter['+num+'].blank_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" ></td> <td>  <input name="chapter['+num+'].translate_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" ></td><td> <input name="chapter['+num+'].simple_question_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" ></td> <td>  <input name="chapter['+num+'].compute_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" ></td> <td> <input name="chapter['+num+'].mix_num"   class="form-control" type="number" aria-required="true" aria-invalid="true" class="error snumber" >	</td></tr>';
+    		   table.innerHTML+=str;
+           	   }
+       }
 </script>
 </body>
 

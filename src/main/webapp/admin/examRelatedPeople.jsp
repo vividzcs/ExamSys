@@ -259,7 +259,7 @@
                                       <div class="form-group">
                                         <label class="col-sm-3 control-label">模板</label>
                                         <div class="col-sm-8">
-                                            <a href="">下载考试学生模板</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">下载监考阅卷模板</a>
+                                            <a href="${pageContext.request.contextPath }/modellist/注册学生名单.xls">下载考试学生模板</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath }/modellist/监考阅卷人员表.xls">下载监考阅卷模板</a>
                                         </div>
                                     </div>
                                 </form>

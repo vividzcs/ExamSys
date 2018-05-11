@@ -51,6 +51,12 @@ public class Chapter {
 	public void setCpt_cpt(int cpt_cpt) {
 		this.cpt_cpt = cpt_cpt;
 	}
+	public PaperRule getRule() {
+		return rule;
+	}
+	public void setRule(PaperRule rule) {
+		this.rule = rule;
+	}
 	public int getSingle_choice_num() {
 		return single_choice_num;
 	}

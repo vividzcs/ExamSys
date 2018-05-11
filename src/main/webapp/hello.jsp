@@ -12,28 +12,37 @@
     <title>学生考试系统</title>
     <meta name="keywords" content="学生考试系统，专为学生打造在校考试功能">
     <meta name="description" content="大学生在线考试系统，学生在网络上在线填写试卷">
-   <link href="style/css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+   <link href="style/css/bootstrap.min.css" rel="stylesheet">
     <link href="style/font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
 
     <link href="style/css/animate.css" rel="stylesheet">
-    <link href="style/css/style.css?v=2.2.0" rel="stylesheet">
+    <link href="style/css/style.css" rel="stylesheet">
     <link href="style/css/self.css" />
    <style>
    	.hello{
    		height: 600px;
    	}
-   	.img{
-   		width:55%;
-   		margin-left: -20px;
-   		box-shadow: 1px -1px 10px #ccc;
-   		float: left;
-   	}
+ 
    	.schoolInstroce{
-   		float: right;
-   	   right: 2%;
-   	   width: 45%;
+     
+     width:90%;
+     margin: 0 auto;
    	   border: 1px solid #eee;
    	   	/*box-shadow: 1px -1px 10px #ccc;*/
+   	   	text-align:center;
+   	}
+   	tbody tr:nth-child(2n+1){
+   	background:#efe;
+   	}
+   		tbody tr{
+   		height:30px;}
+   	tbody tr:nth-child(2n){
+   	background:#eee;
+   	}
+   	tbody tr:last-child{
+   	text-align:left;
+   	text-indent:2em;
+   	height:50px;
    	}
    </style>
 
@@ -42,7 +51,7 @@
     
     <div class="hello row  border-bottom white-bg dashboard-header" style="height: 100%;" >
          <div class="schoolInstroce">
-               <div class="col-lg-5">
+               <div class="col-lg-12">
                         <div class="ibox float-e-margins">
                             <div class="ibox-content ">
                             	<h3>西北大学简介</h3>

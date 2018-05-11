@@ -24,6 +24,10 @@
     <link href="../style/css/animate.css" rel="stylesheet">
     <link href="../style/css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../style/plugins/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css">
+<style>
+  div.form-control{
+  height:100%;}
+</style>
 <script type="text/javascript" src="../style/plugins/ueditor/third-party/SyntaxHighlighter/shCore.js"></script>
 <script>
 $(function(){SyntaxHighlighter.highlight(),$("table.syntaxhighlighter").each(function(){if(!$(this).hasClass("nogutter")){var h=$($(this).find(".gutter")[0]),i=$($(this).find(".code .line"));h.find(".line").each(function(h){$(this).height($(i[h]).height()),$(i[h]).height($(i[h]).height())})}})});
@@ -35,7 +39,7 @@ $(function(){SyntaxHighlighter.highlight(),$("table.syntaxhighlighter").each(fun
 </head>
 
 <body>
-			<div class="row  border-bottom white-bg dashboard-header" style="height: 100%;">
+			<div class="row  border-bottom white-bg dashboard-header" >
 			 <tr><td align="center">试卷编号:</td><td>${list[0].uuid }</td></tr><!--从页面传值 未实现-->
 			       <div class="row">
                     <div class="col-lg-12">
@@ -49,14 +53,14 @@ $(function(){SyntaxHighlighter.highlight(),$("table.syntaxhighlighter").each(fun
 									<div class="form-group">
 										<label class="col-sm-3 control-label">题号：名词解释第${sAnswer.sequence+1}题</label>									
 											 <div class="col-sm-8">
-	                 	    题目     <textarea readonly class=form-control><!--${sAnswer.answer_question}  --></textareas>
-	                 	    考生作答：<textarea readonly>${sAnswer.answer_write}</textarea>
-	                                            答案：<textarea readonly class=form-control>${sAnswer.answer_right}</textarea>
+	                 	   <b>题目:</b>      <div ><!--${sAnswer.answer_question}  --></div>
+	                 	   <b>考生作答:</b> <div  >${sAnswer.answer_write}</div>
+	                       <b>答案：</b><div   >${sAnswer.answer_right}</div>
 	                                        </div>
 											
 	                                    </div>
 		                                <div class="form-group">
-	                                        <div class=" col-sm-offset-3">
+	                                        <div class=" col-sm-offset-3 col-sm-3">
 	                                            评分:<input  name="_${sAnswer.kind }_${sAnswer.sequence }" class="form-control" required="" aria-required="true"/> 单个分数:${rule.translate_score/rule.translate_num }
 	                                        </div>
 	                                    </div>
@@ -65,9 +69,10 @@ $(function(){SyntaxHighlighter.highlight(),$("table.syntaxhighlighter").each(fun
 									<div class="form-group">
 										<label class="col-sm-3 control-label">题号：填空第${sAnswer.sequence+1}题</label>									
 										<div class="col-sm-8">
-	                 	    题目     <textarea readonly class=form-control>${sAnswer.answer_question}</textarea>
-	                 	    考生作答：<textarea readonly class=form-control>${sAnswer.answer_write}</textarea>
-	                                            答案：<textarea readonly class=form-control>${sAnswer.answer_right}</textarea>
+										
+	                 	   	   <b>题目:</b>      <div   >${sAnswer.answer_question}</div>
+	                 	       <b>考生作答:</b><div  >${sAnswer.answer_write}</div>
+	                           <b>答案:</b> <div  >${sAnswer.answer_right}</div>
 	                                        </div>
 											
 	                                    </div>
@@ -81,14 +86,14 @@ $(function(){SyntaxHighlighter.highlight(),$("table.syntaxhighlighter").each(fun
 									<div class="form-group">
 										<label class="col-sm-3 control-label">题号：简答第${sAnswer.sequence+1}题</label>									
 										<div class="col-sm-8">
-	                 	    题目     <textarea readonly class=form-control>${sAnswer.answer_question}</textarea>
-	                                            考生作答：<textarea readonly class=form-control>${sAnswer.answer_write}</textarea>
-	                                             答案：<textarea readonly class=form-control>${sAnswer.answer_right}</textarea>
+	                 	    	 <b>题目:</b>       <div   >${sAnswer.answer_question}</div>
+	                            <b>考生作答:</b><div   >${sAnswer.answer_write}</div>
+	                           <b>答案:</b>  <div   >${sAnswer.answer_right}</div>
 	                                        </div>
 											
 	                                    </div>
 		                                <div class="form-group">
-	                                        <div class=" col-sm-offset-3">
+	                                        <div class=" col-sm-offset-3 col-sm-3">
 	                                         评分:<input name="_${sAnswer.kind }_${sAnswer.sequence }" class="form-control" required="" aria-required="true"/>单个分数:${rule.simple_question_score/rule.simple_question_num }
 	                                        </div>
 	                                    </div>
@@ -97,14 +102,14 @@ $(function(){SyntaxHighlighter.highlight(),$("table.syntaxhighlighter").each(fun
 									<div class="form-group">
 										<label class="col-sm-3 control-label">题号：计算第${sAnswer.sequence+1}题</label>									
 										<div class="col-sm-8">
-	                 	    题目     <textarea readonly class=form-control>${sAnswer.answer_question}</textarea>
-	                 	    考生作答：<textarea readonly class=form-control>${sAnswer.answer_write}</textarea>
-	                                            答案：<textarea readonly class=form-control>${sAnswer.answer_right}</textarea>
+	                 	      <b>题目:</b>   <div   >${sAnswer.answer_question}</div>
+	                 	      <b>考生作答:</b><div   >${sAnswer.answer_write}</div>
+	                           <b>答案:</b> <div   >${sAnswer.answer_right}</div>
 	                                        </div>
 											
 	                                    </div>
 		                                <div class="form-group">
-	                                        <div class="col-sm-offset-3">
+	                                        <div class="col-sm-offset-3 col-sm-3">
 	                                          评分:<input name="_${sAnswer.kind }_${sAnswer.sequence }" class="form-control" required="" aria-required="true"/>单个分数:${rule.compute_score/rule.compute_num }
 	                                        </div>
 	                                    </div>
@@ -113,15 +118,15 @@ $(function(){SyntaxHighlighter.highlight(),$("table.syntaxhighlighter").each(fun
 									<div class="form-group">
 										<label class="col-sm-3 control-label">题号：综合第${sAnswer.sequence+1}题</label>									
 										<div class="col-sm-8">
-	                 	    题目     <textarea readonly class=form-control>${sAnswer.answer_question}</textarea>
-	                 	    考生作答：<textarea readonly  class=form-control>${sAnswer.answer_write}</textarea>
-	                                            答案：<textarea readonly class=form-control>${sAnswer.answer_right}</textarea>
+	                 	       <b>题目</b>       <div   >${sAnswer.answer_question}</div>
+	                 	      <b>考生作答:</b><div    >${sAnswer.answer_write}</div>
+	                          <b>答案:</b> <div   >${sAnswer.answer_right}</div>
 	                                        </div>
 											
 	                                    </div>
 		                                <div class="form-group">
-	                                        <div class=" col-sm-offset-3">
-	                                          评分:<input name="_${sAnswer.kind }_${sAnswer.sequence }" class="form-control" required="" aria-required="true"/>单个分数:${rule.mix_score/rule.mix_num }
+	                                        <div class=" col-sm-offset-3 col-sm-3">
+	                                                         评分:<input name="_${sAnswer.kind }_${sAnswer.sequence }" class="form-control" required="" aria-required="true"/>单个分数:${rule.mix_score/rule.mix_num }
 	                                        </div>
 	                                    </div>
 									</c:if>
